@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/CargarTrabajoProgramado" android:title="Cargar Trabajo"></item>
+    <item android:id="@+id/DescargarTrabajo" android:title="Descargar Trabajo" android:enabled="false">
+        <menu>
+            <item android:id="@+id/DescargarTrabajoRealizado" android:title="Trabajo Realizado"/>
+            <item android:id="@+id/DescargarTrabajoSinRealizar" android:title="Trabajo Sin Realizar"/>
+        </menu>
+    </item>
+    <item android:id="@+id/IniciarTrabajo" android:title="Ver Lista De Trabajo"></item>
+    <item android:id="@+id/Parametros" android:title="Parametros" android:enabled="false">
+    </item>
+    <item android:id="@+id/Salir" android:title="Salir"></item>
+</menu>

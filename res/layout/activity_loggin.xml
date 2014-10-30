@@ -1,0 +1,81 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".Loggin" >
+
+    <TextView
+        android:id="@+id/LblListaTrabajoRevision"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/LblParametros"
+        android:layout_below="@+id/LblParametros"
+        android:layout_marginTop="24dp"
+        android:text="@string/LblKey"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText
+        android:id="@+id/TxtClave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/LblListaTrabajoRevision"
+        android:layout_alignLeft="@+id/TxtUsuario"
+        android:ems="10"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/LblParametros"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="307dp"
+        android:layout_marginTop="147dp"
+        android:text="@string/LblUser"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText
+        android:id="@+id/TxtUsuario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/LblParametros"
+        android:layout_alignBottom="@+id/LblParametros"
+        android:layout_marginLeft="51dp"
+        android:layout_toRightOf="@+id/LblParametros"
+        android:ems="10"
+        android:inputType="text"
+        android:text="@string/TxtEmpty" />
+
+    <Button
+        android:id="@+id/BtnIngresar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TxtClave"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="33dp"
+        android:text="@string/BtnIngresar" />
+
+    <TextView
+        android:id="@+id/LblLogginCodigo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/BtnIngresar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="34dp"
+        android:text="@string/LblLogginCodigo"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/LblLogginVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LblLogginCodigo"
+        android:layout_centerHorizontal="true"
+        android:text="@string/LblLogginVersion"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+</RelativeLayout>

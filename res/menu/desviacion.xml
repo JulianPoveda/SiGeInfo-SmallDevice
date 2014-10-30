@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/DesviacionImprimir" android:title="Imprimir">
+        <menu>
+            <item android:id="@+id/ImpOriginal" android:title="Original" />
+            <item android:id="@+id/ImpUsuario" android:title="Usuario" />
+            <item android:id="@+id/ImpCopia" android:title="Copia" />
+        </menu>
+    </item><item android:id="@+id/DesviacionTerminar" android:title="Terminar"></item>
+    <item android:id="@+id/DesviacionSwapNotificacion" android:title="Iniciar Como Notificacion"></item>
+    
+
+</menu>
