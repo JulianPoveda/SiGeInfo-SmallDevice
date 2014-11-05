@@ -4,13 +4,9 @@
     <string name="app_name">EAAV</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="LblUser">Usuario</string>
-    <string name="LblKey">Contraseña</string>
-    <string name="TxtEmpty"></string>
     <string name="LblParametros">Parametros</string>
     <string name="title_activity_parametros">Parametros</string>
     <string name="title_activity_notificacion">Notificacion</string>
-    <string name="LblPDA">PDA</string>
     <string name="LblParamServidor">IP Servidor</string>
     <string name="LblParamPuerto">Puerto</string>
     <string name="LblParamServicio">Servicio</string>
@@ -137,8 +133,6 @@
     <string name="LblListaTrabajoNovedad1">Novedad 1</string>
     <string name="LblListaTrabajoLectura2">Lectura 2</string>
     <string name="LblListaTrabajoNovedad2">Novedad 2</string>
-    <string name="LblLogginCodigo">Codigo:</string>
-    <string name="LblLogginVersion">Version:</string>
     <string name="LblAperturaRevision">N° Revision</string>
     <string name="LblAperturaCodigo">Codigo de Apertura</string>
     <string name="BtnAperturaAbrirRevision">Abrir Revision</string>
@@ -147,5 +141,7 @@
     <string name="ds_lbl_titulo">TITULO</string>
     <string name="ds_lbl_text1">Texto</string>
     <string name="ds_btn_aceptar">Aceptar</string>
+    <string name="title_activity_modal_inf_general">INFORMACION GENERAL</string>
+    <string name="title_activity_modal_input_single"></string>
 
 </resources>

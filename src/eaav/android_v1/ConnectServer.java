@@ -17,6 +17,9 @@ import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import clases.ClassConfiguracion;
+import clases.ClassRevision;
+
 import Miscelanea.Archivos;
 import Miscelanea.Dialogos;
 import Miscelanea.SQLite;
@@ -27,9 +30,6 @@ import android.widget.Toast;
 
 public class ConnectServer {
 	//Instancias a clases
-	//private SQLite SQL;
-	private Archivos ArchConnectServer;
-	
 	private Context ConnectServerContext;
 	private String 	DirectorioConexionServer;
 	
@@ -40,10 +40,10 @@ public class ConnectServer {
 		
 		
 	public ConnectServer(Context context, String Directorio){
-		this.ConnectServerContext = context;
-		this.DirectorioConexionServer = Directorio;
-		//SQL = new SQLite(this.ConnectServerContext);
-		ArchConnectServer = new Archivos(this.ConnectServerContext,this.DirectorioConexionServer);
+		this.ConnectServerContext 		= context;
+		this.DirectorioConexionServer 	= Directorio;
+		//this.FcnSQL 		= new SQLite(this.ConnectServerContext, this.DirectorioConexionServer, Loggin.NOMBRE_DATABASE);
+		//this.FcnArchivos 	= new Archivos(this.ConnectServerContext,this.DirectorioConexionServer,10);
 	}
 	
 	
@@ -88,7 +88,7 @@ public class ConnectServer {
     		this.CtxTrabajoRealizado = context;
     		this.DirectorioCarga 	= DirectorioArchivo;
     		this.RealizadoSQL 		= new SQLite(this.CtxTrabajoRealizado, this.DirectorioCarga, "BdEAAV_Android");
-    		this.RealizadoArch 		= new Archivos(this.CtxTrabajoRealizado, this.DirectorioCarga);
+    		//this.RealizadoArch 		= new Archivos(this.CtxTrabajoRealizado, this.DirectorioCarga);
     		MensajeDialog 			= new Dialogos(this.CtxTrabajoRealizado);
 		}
 		
@@ -99,9 +99,9 @@ public class ConnectServer {
     		ArrayList<ArrayList<String>> InfSendRevision;
     		InfSendRevision = new ArrayList<ArrayList<String>>();
     		
-    		InfSendRevision = RealizadoSQL.SelectDataKeyValue(	"db_notificaciones",
+    		/*InfSendRevision = RealizadoSQL.SelectDataKeyValue(	"db_notificaciones",
 																"fecha_notificacion,revision,codigo,nombre,direccion,serie,ciclo,promedio,visita,lectura,medidor,precinto,observacion,fecha_visita,motivo,jornada_notificacion,hora_visita",
-																"revision IS NOT NULL");
+																"revision IS NOT NULL");*/
 			
 			ListIterator<ArrayList<String>> iCiclo = InfSendRevision.listIterator();
 			while(iCiclo.hasNext()){
@@ -115,7 +115,7 @@ public class ConnectServer {
 				NumNotificadas += 1;
 			}
     		
-    		InfSendRevision = RealizadoSQL.SelectDataKeyValue(	"db_desviaciones", 
+    		/*InfSendRevision = RealizadoSQL.SelectDataKeyValue(	"db_desviaciones", 
     															"revision, codigo, nombre," +
 																"direccion, serie, ciclo," +
 																"promedio, fecha, hora," +
@@ -146,7 +146,7 @@ public class ConnectServer {
 																"lavamanos, itemlavamanos,estadolavamanos, " +
 																"servicioacueducto, servicioalcantarillado, horacierre, " +
 																"segundoconcepto, respuestadesviacion",
-																"revision IS NOT NULL");		
+																"revision IS NOT NULL");*/		
     		
     		iCiclo = InfSendRevision.listIterator();
 			while(iCiclo.hasNext()){
@@ -185,11 +185,11 @@ public class ConnectServer {
 			CadenaArchivo = CadenaArchivo.replace("\n", ". "); 	//Se elimina los saltos de linea dentro de la informacion digitada por el tecnico
 			CadenaArchivo = CadenaArchivo.replace("&", "\n");	//Se hace salto de linea por cada revision notificada o terminada que exista
 			
-			if(!this.RealizadoArch.CrearArchivo(UpLoadTrabajoRealizado.ArchivoCarga, CadenaArchivo)){
+			/*if(!this.RealizadoArch.CrearArchivo(UpLoadTrabajoRealizado.ArchivoCarga, CadenaArchivo)){
 				Toast.makeText(this.CtxTrabajoRealizado,"Imposible crear el archivo de carga.", Toast.LENGTH_SHORT).show();
 			}else{
 				Toast.makeText(this.CtxTrabajoRealizado,"Enviando \n"+NumNotificadas+" revisiones notificaciones. \n"+NumTerminadas+" revisiones terminadas, por favor espere...", Toast.LENGTH_SHORT).show();	
-		    }  		
+		    }*/  		
     	}
 
     	
@@ -198,7 +198,7 @@ public class ConnectServer {
     	@Override
     	protected SoapPrimitive doInBackground(Void... params) {
     		try{
-    			String pda = RealizadoSQL.SelectShieldWhere("db_parametros", "valor", "item='pda'");			
+    			/*String pda = RealizadoSQL.SelectShieldWhere("db_parametros", "valor", "item='pda'");			
         		SoapObject so=new SoapObject(NAMESPACE, METHOD_NAME);
     			so.addProperty("Informacion", this.RealizadoArch.FileToBytes(ArchivoCarga));
     			so.addProperty("PDA", pda);	
@@ -208,7 +208,7 @@ public class ConnectServer {
     			sse.setOutputSoapObject(so);
     			HttpTransportSE htse=new HttpTransportSE(URL);
     			htse.call(SOAP_ACTION, sse);
-    			response=(SoapPrimitive) sse.getResponse();
+    			response=(SoapPrimitive) sse.getResponse();*/
     		} catch (Exception e) {
     			e.printStackTrace();
     		}
@@ -217,7 +217,7 @@ public class ConnectServer {
 
     	@Override
     	protected void onPostExecute(SoapPrimitive rta) {
-    		this.RealizadoArch.DeleteFolderOrFile(UpLoadTrabajoRealizado.ArchivoCarga);
+    		/*this.RealizadoArch.DeleteFolderOrFile(UpLoadTrabajoRealizado.ArchivoCarga);
     		if(rta==null) {
     			MensajeDialog.DialogoInformativo("ESTADO DE LA CONEXION","Error, no se ha obtenido respuesta del servidor.");
     		}else{
@@ -239,7 +239,7 @@ public class ConnectServer {
 				int NotificadaPendientes = this.RealizadoSQL.SelectCountWhere("db_notificaciones", "revision IS NOT NULL");	
 				int TerminadaPendientes = this.RealizadoSQL.SelectCountWhere("db_desviaciones", "revision IS NOT NULL");	
 				MensajeDialog.DialogoInformativo("ESTADO DEL ENVIO","Respuesta Del Servidor \n"+resultado+" \n"+NotificadaPendientes + " revisiones notificadas pendientes por enviar.\n"+TerminadaPendientes + " revisiones terminadas pendientes por enviar.");
-    		}
+    		}*/
     	}	
     }
 
@@ -264,7 +264,7 @@ public class ConnectServer {
     		this.CtxTrabajoSinRealizar 	= context;
     		this.DirectorioCarga 		= DirectorioArchivo;
     		this.SinRealizarSQL 		= new SQLite(this.CtxTrabajoSinRealizar, this.DirectorioCarga, "BdEAAV_Android");
-    		this.SinRealizarArch 		= new Archivos(this.CtxTrabajoSinRealizar, this.DirectorioCarga);
+    		//this.SinRealizarArch 		= new Archivos(this.CtxTrabajoSinRealizar, this.DirectorioCarga);
     		MensajeDialog 				= new Dialogos(this.CtxTrabajoSinRealizar);    		
     	}
     	 
@@ -274,7 +274,7 @@ public class ConnectServer {
     		ArrayList<ArrayList<String>> InfSendRevision;
     		InfSendRevision = new ArrayList<ArrayList<String>>();
     		
-    		InfSendRevision = SinRealizarSQL.SelectDataKeyValue("db_solicitudes", "revision", "estado = 0");			
+    		//InfSendRevision = SinRealizarSQL.SelectDataKeyValue("db_solicitudes", "revision", "estado = 0");			
 			ListIterator<ArrayList<String>> iCiclo = InfSendRevision.listIterator();
 			while(iCiclo.hasNext()){
 				ArrayList<String> Registro = iCiclo.next();				
@@ -283,20 +283,20 @@ public class ConnectServer {
 			}
 			
 			
-			if(!this.SinRealizarArch.CrearArchivo(UpLoadTrabajoSinRealizar.ArchivoCarga, CadenaArchivo)){
+			/*if(!this.SinRealizarArch.CrearArchivo(UpLoadTrabajoSinRealizar.ArchivoCarga, CadenaArchivo)){
 				Toast.makeText(this.CtxTrabajoSinRealizar,"Imposible crear el archivo de carga.", Toast.LENGTH_SHORT).show();
 			}else{
 				Toast.makeText(this.CtxTrabajoSinRealizar,"Enviando "+NumRegistros+" revisiones sin realizar, por favor espere...", Toast.LENGTH_SHORT).show();	
-			}
+			}*/
 		}
 
     	@Override
     	protected SoapPrimitive doInBackground(Void... params) {
     		try{
-    			String pda = SinRealizarSQL.SelectShieldWhere("db_parametros", "valor", "item='pda'");			
+    			//String pda = SinRealizarSQL.SelectShieldWhere("db_parametros", "valor", "item='pda'");			
         		SoapObject so=new SoapObject(NAMESPACE, METHOD_NAME);
-    			so.addProperty("Informacion", this.SinRealizarArch.FileToBytes(ArchivoCarga));
-    			so.addProperty("PDA", pda);	
+    			//so.addProperty("Informacion", this.SinRealizarArch.FileToBytes(ArchivoCarga));
+    			//so.addProperty("PDA", pda);	
     			SoapSerializationEnvelope sse=new SoapSerializationEnvelope(SoapEnvelope.VER11);
     			new MarshalBase64().register(sse);
     			sse.dotNet=true;
@@ -312,7 +312,7 @@ public class ConnectServer {
 
     	@Override
     	protected void onPostExecute(SoapPrimitive rta) {
-    		this.SinRealizarArch.DeleteFolderOrFile(UpLoadTrabajoSinRealizar.ArchivoCarga);
+    		/*this.SinRealizarArch.DeleteFolderOrFile(UpLoadTrabajoSinRealizar.ArchivoCarga);
     		if(rta==null) {
     			MensajeDialog.DialogoInformativo("ESTADO DE LA CONEXION","Error, no se ha obtenido respuesta del servidor.");
     		}else{
@@ -328,7 +328,7 @@ public class ConnectServer {
 				}
 				int pendientes = this.SinRealizarSQL.SelectCountWhere("db_solicitudes", "estado = 0");				
 				MensajeDialog.DialogoInformativo("ESTADO DEL ENVIO","Respuesta Del Servidor \n"+resultado+" \n"+pendientes + " registros pendientes por enviar.");
-    		}
+    		}*/
     	}	
     }
 	
@@ -338,29 +338,33 @@ public class ConnectServer {
 	//Clase privada para descargar el trabajo asignado
     private class DownLoadTrabajoProgramado extends AsyncTask<Void,Void,Void>{
     	static final String ArchivoDescarga = "TrabajoProgramado.txt";
-    	private SQLite DownLoadTrabajoSQL;
-    	private Dialogos MensajeDialog;
-    	private Context CtxTrabajoProgramado;
-    	private String 	DirectorioDescarga = null;
-    	private String  OrdenesTrabajoProgramadas = "";
-    	private String 	_servidor = null;
-    	private String 	_puerto = null;
-    	private String 	_pagina = null;
-    	private String 	_pda = null;
+    	private ClassRevision 		FcnRevision;
+    	private ClassConfiguracion 	FcnConfiguracion;
+    	private Archivos 			FcnArchivos;
+    	
+    	private Dialogos 	MensajeDialog;
+    	private Context 	CtxTrabajoProgramado;
+    	private String 		DirectorioDescarga = null;
+    	private String 		_servidor = null;
+    	private String 		_puerto = null;
+    	private String 		_pagina = null;
+    	private String 		_pda = null;
     	
     	private DownLoadTrabajoProgramado(Context context, String DirectorioArchivo){
     		this.CtxTrabajoProgramado 	= context;
     		this.DirectorioDescarga		= DirectorioArchivo;
-    		DownLoadTrabajoSQL			= new SQLite(this.CtxTrabajoProgramado, this.DirectorioDescarga, "BdEAAV_Android");
-    		MensajeDialog 				= new Dialogos(this.CtxTrabajoProgramado);			
+    		MensajeDialog 			= new Dialogos(this.CtxTrabajoProgramado);
+    		this.FcnRevision		= new ClassRevision(this.CtxTrabajoProgramado, this.DirectorioDescarga);
+    		this.FcnConfiguracion 	= new ClassConfiguracion(this.CtxTrabajoProgramado, this.DirectorioDescarga);
+    		this.FcnArchivos 		= new Archivos(this.CtxTrabajoProgramado,this.DirectorioDescarga,10);
     	}
     	
     	protected void onPreExecute(){
     		Toast.makeText(this.CtxTrabajoProgramado,"Conectando con el servidor.", Toast.LENGTH_SHORT).show();
-    		_servidor = DownLoadTrabajoSQL.SelectShieldWhere("db_parametros", "valor", "item='servidor'");
-			_puerto = DownLoadTrabajoSQL.SelectShieldWhere("db_parametros", "valor", "item='puerto'");
-			_pagina = DownLoadTrabajoSQL.SelectShieldWhere("db_parametros", "valor", "item='servicio'");
-			_pda = DownLoadTrabajoSQL.SelectShieldWhere("db_parametros", "valor", "item='pda'");
+    		_servidor 	= this.FcnConfiguracion.getServidor();
+			_puerto 	= this.FcnConfiguracion.getPuerto();
+			_pagina 	= this.FcnConfiguracion.getServicio();
+			_pda 		= this.FcnConfiguracion.getEquipo();
     	}
     	
     	@Override
@@ -400,28 +404,11 @@ public class ConnectServer {
     	@Override
     	protected void onPostExecute(Void unused) {
     		Toast.makeText(this.CtxTrabajoProgramado,"Conexion terminada.", Toast.LENGTH_SHORT).show();
-    		if(ArchConnectServer.ExistFolderOrFile(ArchivoDescarga)){
+    		if(this.FcnArchivos.ExistFolderOrFile(this.DirectorioDescarga+File.separator +ArchivoDescarga)){
     			ArrayList<String> OrdenesTrabajo = new ArrayList<String>();
-        		OrdenesTrabajo = ArchConnectServer.FileToArrayString(ArchivoDescarga);
-        		String[] Campos={"Id_serial","Revision","Codigo","Nombre","Direccion","Ciclo","Ruta","Uso","Marca","Serie","Novedad1","Lectura1","Novedad2","Lectura2","Promedio","Visita","Estado","Jornada","Factura","Periodo_ini","Periodo_fin","Codigo_apertura"};
-        		String Registro[];
-        		int numRegistros = 0;
-        		
-        		ListIterator<String> iCiclo = OrdenesTrabajo.listIterator();
-        		while(iCiclo.hasNext()){
-        			Registro = iCiclo.next().split("\\;",22);
-        			ContentValues Informacion = new ContentValues();
-        			for(int i=0;i<Campos.length;i++){
-						Informacion.put(Campos[i],Registro[i]);
-					}
-        			
-        			if(DownLoadTrabajoSQL.InsertarRegistro("db_solicitudes", Informacion)){
-        				this.OrdenesTrabajoProgramadas += Informacion.getAsString("Revision")+"\n";
-    	    			numRegistros ++;
-    	    		}
-        		}
-        		ArchConnectServer.DeleteFolderOrFile(ArchivoDescarga);
-        		MensajeDialog.DialogoInformativo("ESTADO DE LA RECEPCION","Lista de Revisiones Recepcionadas \n"+this.OrdenesTrabajoProgramadas+" \n"+numRegistros + " registros actualizados.");
+        		OrdenesTrabajo = this.FcnArchivos.FileToArrayString(ArchivoDescarga, false);
+        		this.FcnArchivos.DeleteFile(ArchivoDescarga);
+        		MensajeDialog.DialogoInformativo("ESTADO DE LA RECEPCION","Revisiones Recepcionadas \n"+this.FcnRevision.registrarRevisiones(OrdenesTrabajo)+" \n");
         	}else{
     			MensajeDialog.DialogoInformativo("ESTADO DE LA RECEPCION", "No tiene revisiones programadas.");
         	}		

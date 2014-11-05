@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,105 +13,80 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.os.Environment;
-
+import android.widget.Toast;
 
 public class Archivos {
-	private Context CtxArchivos;
-	//private FileInputStream fis;
-	private FileReader file;
+	private Context ctx;
+	private String 	Directory;
+	private int SizeBuffer;	
 	
-	private String DirectorioRaiz; //= Environment.getExternalStorageDirectory() + File.separator + "EAAV";	
-	static 	String Campos_OS = "id_archivo,num_os,tip_os,tip_serv,co_prior_ord,nic,coment_os,nombre,direccion,tip_cli,departamento,municipio,localidad";
-	static 	String Campos_Usuarios = "cedula,clave";
-	static 	String Campos_Codigos  = "codigo,descripcion";
-				
+	FileInputStream fis;
+	FileReader file;
 	
-	public Archivos(Context ctx, String CarpetaRaiz){
-		this.CtxArchivos = ctx;
-		this.DirectorioRaiz = CarpetaRaiz;
+	public Archivos(Context ctx, String CurrentDirectory, int BufferKbytes){
+		this.ctx = ctx;
+		this.Directory = CurrentDirectory;
+		this.SizeBuffer = BufferKbytes;
 		
-		//Se crea la carpeta de la aplicacion que contendra todos archivos creados en el programa
-		if(!ExistFolderOrFile(this.DirectorioRaiz)){
-			MakeDirectory(this.DirectorioRaiz);
+		if(!ExistFolderOrFile(this.Directory)){		
+			MakeDirectory();
 		}
 	}
 	
 	
 	//Metodo para crear una carpeta en el directorio raiz
-	public boolean MakeDirectory(String Ruta){
-		File f = new File(Ruta);
+	public boolean MakeDirectory(){
+		File f = new File(this.Directory);
         if(f.mkdir()){
+        	Toast.makeText(this.ctx,"Directorio "+this.Directory+" correctamente.", Toast.LENGTH_SHORT).show();
             return true;
         }else{
         	return false;
         }
 	}
 	
+
+	//Metodo para crear una carpeta en el directorio raiz
+	public boolean MakeDirectory(String _new_directory){
+		File f = new File(this.Directory+File.separator+_new_directory);
+		if(f.mkdir()){
+			Toast.makeText(this.ctx,"Directorio "+_new_directory+" correctamente.", Toast.LENGTH_SHORT).show();
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	
 	//Metodo para comprobar la existencia de un directorio y/o carpeta
-	public boolean ExistFolderOrFile(String Archivo){
-		File f = new File(this.DirectorioRaiz+File.separator+Archivo);
+	public boolean ExistFolderOrFile(String Carpeta){
+		File f = new File(Carpeta);
 		return f.exists();
 	}
 	
 	
-	//Metodo para eliminar un directorio y/o archivo
-	public boolean DeleteFolderOrFile(String Archivo){
-		File f = new File(this.DirectorioRaiz+File.separator+Archivo);
+	//Metodo para comprobar la existencia de un directorio y/o carpeta
+	public boolean DeleteFile(String Archivo){
+		File f = new File(Archivo);
 		return f.delete();
 	}
 	
 	
-	
-	//Metodo que realiza la lectura de un archivo y la convierte en un array de bytes
-	public byte[] FileToBytes(String Archivo){
-		InputStream is 			= null;
-		ByteArrayOutputStream os= new ByteArrayOutputStream(4096);
-		byte[] buffer 			= new byte[4096];
-		int len;
-		try{
-			is = new FileInputStream(this.DirectorioRaiz+File.separator+Archivo);
-			if (this.DirectorioRaiz+File.separator+Archivo != null) {
-				try {
-					while ((len = is.read(buffer)) >= 0) {
-						os.write(buffer, 0, len);
-					}
-				} finally {
-					is.close();
-				}
-			}
-		}catch (Exception e){
-			e.printStackTrace();
-			try {
-				throw new IOException("Unable to open R.raw.");
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
+	//Metodo para comprobar la exitencia de memoria externa
+	public boolean MemoryExt(){
+		boolean valorRetorno = false;
+		String estado = Environment.getExternalStorageState();
+		if (estado.equals(Environment.MEDIA_MOUNTED)){
+		    valorRetorno = true;			//Montada y disponible para lectura/escritura
+		}else if (estado.equals(Environment.MEDIA_MOUNTED_READ_ONLY)){
+		    valorRetorno = false;			//Montada y disponible solo para lectura
 		}
-		return os.toByteArray();
-	}
-	
-	
-		
-		
-	public boolean CrearArchivo(String NombreArchivo, String Informacion){
-		boolean ValorRetorno = false;
-		try {
-			File file = new File(this.DirectorioRaiz + File.separator + NombreArchivo);
-			file.createNewFile();
-			if (file.exists()&&file.canWrite()){
-				FileWriter filewriter = new FileWriter(file,false);
-				filewriter.write(Informacion);
-				filewriter.close();
-				ValorRetorno = true;
-			}
-		}catch (IOException e2) {
-			//e2.printStackTrace();
-			ValorRetorno = false;
+		else{
+		    valorRetorno = false;			//No se encuentra montada la memoria SD
 		}
-		return ValorRetorno;
+		return valorRetorno;
 	}
 	
 	
@@ -133,13 +109,18 @@ public class Archivos {
 	
 	
 	//Metodo para convertir el contenido de un archivo a un array 
-	public ArrayList<String> FileToArrayString(String Archivo){
+	public ArrayList<String> FileToArrayString(String Archivo, boolean ruta_completa){
+		File file;
 		String queryString;
 		String storageState = Environment.getExternalStorageState();
 		ArrayList<String> InformacionFile = new ArrayList<String>();
 		
 		if (storageState.equals(Environment.MEDIA_MOUNTED)) {
-		    File file = new File(this.DirectorioRaiz + File.separator + Archivo);
+		    if(ruta_completa){
+		    	file = new File(Archivo);
+		    }else{
+		    	file = new File(this.Directory + File.separator +Archivo);
+		    }
 		    		 
 		    BufferedReader inputReader2;
 			try {
@@ -156,6 +137,7 @@ public class Archivos {
 				e.printStackTrace();
 			}
 		}
+		
 		return InformacionFile;
 	}
 	
@@ -167,8 +149,75 @@ public class Archivos {
 	
 	
 	
+	public boolean DoFile(String _rutaArchivo, String NombreArchivo, String InformacionArchivo){
+		boolean Retorno = false;
+		File file;
+		try {
+			if(!_rutaArchivo.isEmpty()){
+				if(!ExistFolderOrFile(this.Directory + File.separator + _rutaArchivo)){
+					MakeDirectory(_rutaArchivo);
+				}
+				file = new File(this.Directory + File.separator + _rutaArchivo + File.separator + NombreArchivo);
+			}else{
+				file = new File(this.Directory + File.separator + NombreArchivo);
+			}
+			
+    		file.createNewFile();
+    		if (file.exists()&&file.canWrite()){
+    			FileWriter filewriter = new FileWriter(file,false);
+    			filewriter.write(InformacionArchivo);
+    			filewriter.close();
+    			Retorno = true;
+    		}
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+			Retorno = false;
+		}
+		return Retorno;
+	}
+	
+	
+	public byte[] FileToArrayBytes(String NombreArchivo){
+		int len = 0;
+		InputStream is 	= null;
+		ByteArrayOutputStream os = new ByteArrayOutputStream(1024 * this.SizeBuffer);
+		byte[] buffer = new byte[1024*this.SizeBuffer];
+		
+		try{
+			if (NombreArchivo != null) {
+				is = new FileInputStream(NombreArchivo);
+				try {
+					while ((len = is.read(buffer)) >= 0) {
+		    			os.write(buffer, 0, len);
+					}
+				} finally {
+					is.close();
+				}
+			}
+		}catch (Exception e){
+			e.printStackTrace();
+			try {
+				throw new IOException("Unable to open R.raw.");
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
+		return os.toByteArray();
+	}
+	
+	
+	
+	public void ByteArrayToFile(byte[] data, String NombreArchivo) throws IOException{
+		FileOutputStream out = new FileOutputStream(this.Directory + File.separator + NombreArchivo);
+		out.write(data);
+		out.close();
+	}
+	
+	
+	
+	
 	public boolean CrearArchivo(String NombreArchivo, String Encabezado, ArrayList<ArrayList<String>> Informacion){
-		//Se recorre el ArrayList<ArrayList<String>> y se convierte a un String para generar el archivo
 		ArrayList<String> Registro = new ArrayList<String>();
 		String CadenaArchivo = Encabezado;
 		
@@ -181,7 +230,7 @@ public class Archivos {
 		}
 		
 		try {
-			File file = new File(this.DirectorioRaiz + File.separator + NombreArchivo);
+			File file = new File(this.Directory + File.separator + NombreArchivo);
     		file.createNewFile();
     		if (file.exists()&&file.canWrite()){
     			FileWriter filewriter = new FileWriter(file,false);
@@ -194,50 +243,6 @@ public class Archivos {
 		}
 		return true;
 	}
-	
-	
-	public int LeerArchivoOS(String NombreArchivo){
-		int Registros = 0;
-		String queryString; 
-	    
-		//BaseDatos AccesoBD = new BaseDatos(ctx);
-		SQLite Insert = new SQLite(CtxArchivos);
-		//Insert.abrir();
-				
-		//StringBuffer stringBuffer2 = new StringBuffer();	    
-		String storageState = Environment.getExternalStorageState();
-		if (storageState.equals(Environment.MEDIA_MOUNTED)) {
-		    File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + NombreArchivo);
-		    		 
-		    BufferedReader inputReader2;
-			try {
-				String[] Datos; 
-				String[] Campos = Campos_OS.split("\\,");
-				
-				inputReader2 = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-				while ((queryString = inputReader2.readLine()) != null) {
-					Datos = queryString.split("\\|");
-			    	ContentValues Informacion = new ContentValues();
-					
-			    	for(int i=0;i<Campos.length;i++){
-						Informacion.put(Campos[i],Datos[i]);
-					}
-					
-			    	if(Insert.InsertarRegistro("db_os",Informacion)){
-			    		Registros += 1;
-			    	}
-			    }
-			    
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		//Insert.cerrar();
-		return Registros;
-	}
+
 }
 

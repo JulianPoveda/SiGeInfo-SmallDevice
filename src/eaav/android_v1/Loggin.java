@@ -1,8 +1,9 @@
 package eaav.android_v1;
 
 import java.io.File;
-import Miscelanea.Archivos;
-import Miscelanea.SQLite;
+
+import clases.ClassConfiguracion;
+import clases.ClassUsuario;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -17,35 +18,41 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Loggin extends Activity {
-	private static String 	CarpetaRaiz = Environment.getExternalStorageDirectory()+File.separator +"EAAV";		//Ruta donde se encuentra la carpeta principal del programa
-	Archivos 	Arch 	= new Archivos(this, CarpetaRaiz);
-	SQLite 		SQL;
+public class Loggin extends Activity implements OnClickListener{
+	public static String 	NOMBRE_DATABASE	= "BD_EAAV";
+	public static String 	CARPETA_RAIZ 	= Environment.getExternalStorageDirectory()+File.separator+"EAAV";		//Ruta donde se encuentra la carpeta principal del programa
+	
+	private ConnectServer 		ProgramadoCS;
+	private ClassConfiguracion 	FcnConfiguracion; 
+	private ClassUsuario		FcnUsuario;
+
 	final Handler mHandler = new Handler();    
-	String	Nivel = null;
-	boolean LogginUser  = false; 
-	TextView LblLogginCodigo,LblLogginVersion;
+	private int		Nivel = -1;
+	private boolean LogginUser  = false; 
+	
+	private EditText 	_txtUsuario, _txtClave;
+	private TextView 	_lblEquipo, _lblVersion;
+	private Button 		_btnLoggin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loggin);
+        
+        this.FcnConfiguracion 	= new ClassConfiguracion(this, Loggin.CARPETA_RAIZ);
+        this.FcnUsuario 		= new ClassUsuario(this, Loggin.CARPETA_RAIZ);
+        this.ProgramadoCS		= new ConnectServer(this, Loggin.CARPETA_RAIZ);
           
-        LblLogginCodigo = (TextView) findViewById(R.id.LblLogginCodigo);
-        LblLogginVersion = (TextView) findViewById(R.id.LblLogginVersion);
+        this._lblEquipo 	= (TextView) findViewById(R.id.LogginLblEquipo);
+        this._lblVersion 	= (TextView) findViewById(R.id.LogginLblVersion);
+        this._txtUsuario	= (EditText) findViewById(R.id.LogginTxtUsuario);
+        this._txtClave		= (EditText) findViewById(R.id.LogginTxtClave);
+        this._btnLoggin		= (Button) findViewById(R.id.LogginBtnIngresar);
         
+        this._lblEquipo.setText("Codigo: " +this.FcnConfiguracion.getEquipo());
+        this._lblVersion.setText("Version: " +this.FcnConfiguracion.getVersion());
         
-        SQL = new SQLite(getApplicationContext(), CarpetaRaiz, "BdEAAV_Android");
-        LblLogginCodigo.setText("Codigo: " +SQL.SelectShieldWhere("db_parametros", "valor", "item='pda'"));
-        LblLogginVersion.setText("Version: " +SQL.SelectShieldWhere("db_parametros", "valor", "item='version'"));
-        
-        Button Loggin = (Button) findViewById(R.id.BtnIngresar);
-        Loggin.setOnClickListener(new OnClickListener(){
-            @Override
-            public void onClick(View v){
-            ValidarUsuario((Menu) findViewById(R.menu.menu_loggin));
-            }
-        });        
+        this._btnLoggin.setOnClickListener(this);
     }
     
     
@@ -82,34 +89,35 @@ public class Loggin extends Activity {
 		case R.id.Parametros:
 			k = new Intent(this, Parametros.class);
 			k.putExtra("Nivel", Nivel);
+			k.putExtra("FolderAplicacion", Loggin.CARPETA_RAIZ);
 			startActivity(k);
 			return true;
 			
 		case R.id.CargarTrabajoProgramado:
-			ConnectServer ProgramadoCS= new ConnectServer(this, CarpetaRaiz);
-			ProgramadoCS.DownLoadTrabajoProgramado();
+			this.ProgramadoCS.DownLoadTrabajoProgramado();
 			return true;
 		
 		case R.id.DescargarTrabajoRealizado:
-			if((SQL.SelectCountWhere("db_notificaciones", "revision IS NOT NULL")>0)||(SQL.SelectCountWhere("db_desviaciones", "revision IS NOT NULL")>0)){
+			/*if((SQL.SelectCountWhere("db_notificaciones", "revision IS NOT NULL")>0)||(SQL.SelectCountWhere("db_desviaciones", "revision IS NOT NULL")>0)){
 				ConnectServer CS= new ConnectServer(this, CarpetaRaiz);
 				CS.UpLoadTrabajoRealizado();
 			}else{
 				Toast.makeText(getApplicationContext(),"No hay notificaciones por enviar.", Toast.LENGTH_SHORT).show();	
-			}
+			}*/
 			return true;
 			
 		case R.id.DescargarTrabajoSinRealizar:
-			if(SQL.SelectCountWhere("db_solicitudes", "estado = 0")>0){
+			/*if(SQL.SelectCountWhere("db_solicitudes", "estado = 0")>0){
 				ConnectServer SinRealizarCS= new ConnectServer(this, CarpetaRaiz);
 				SinRealizarCS.UpLoadTrabajoSinRealizar();
 			}else{
 				Toast.makeText(getApplicationContext(),"No hay trabajo sin realizar por enviar.", Toast.LENGTH_SHORT).show();	
-			}
+			}*/
 			return true;	
 	
 		case R.id.IniciarTrabajo:
 			k = new Intent(this, Lista_trabajo.class);
+			k.putExtra("FolderAplicacion", Loggin.CARPETA_RAIZ);
 			startActivity(k);
 			return true;
 			
@@ -121,22 +129,22 @@ public class Loggin extends Activity {
 	    }
 	}
     
-    
-    public void ValidarUsuario(Menu menu){
-    	EditText InputUsuario = (EditText) findViewById(R.id.TxtUsuario);
-		EditText InputClave = (EditText) findViewById(R.id.TxtClave);
-		SQL = new SQLite(getApplicationContext());
-		//SQL.abrir();
-		
-		if(SQL.ExisteRegistros("db_usuarios", "usuario='"+ InputUsuario.getText()+ "' AND clave='"+ InputClave.getText() +"'")){
-			Nivel = SQL.SelectShieldWhere("db_usuarios", "nivel", "usuario = '"+ InputUsuario.getText() + "'");
-			Toast.makeText(getApplicationContext(),"Acceso Concedido, Nivel " + Nivel, Toast.LENGTH_SHORT).show();
-			InputUsuario.setEnabled(false);
-			InputClave.setEnabled(false);
-			LogginUser = true;
-			invalidateOptionsMenu(); 
-		}else{
-			Toast.makeText(getApplicationContext(),"Acceso Denegado", Toast.LENGTH_SHORT).show();
-		}
+
+	@Override
+	public void onClick(View v){
+		switch(v.getId()){
+			case R.id.LogginBtnIngresar:
+				if(this.FcnUsuario.existeUsuario(this._txtUsuario.getText().toString(), this._txtClave.getText().toString())){
+					this._txtUsuario.setEnabled(false);
+					this._txtClave.setEnabled(false);
+					this._btnLoggin.setEnabled(false);
+					this.Nivel = this.FcnUsuario.getNivelUsuario(this._txtUsuario.getText().toString());
+					this.LogginUser = true;
+					invalidateOptionsMenu();
+				}else{
+					Toast.makeText(getApplicationContext(),"Acceso Denegado, favor verifique el nombre de usuario y/o contraseña", Toast.LENGTH_SHORT).show();
+				}
+				break;
+		}		
 	}    
 }

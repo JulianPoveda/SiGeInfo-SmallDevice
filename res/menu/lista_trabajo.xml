@@ -1,5 +1,0 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/mnu_desviacion" android:title="Desviacion" android:enabled="true"></item>
-    <item android:id="@+id/mnu_notificacion" android:title="Notificacion" android:enabled="true"></item>
-
-</menu>

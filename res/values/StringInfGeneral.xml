@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="GeneralLblRevision">Revision</string>
+    <string name="GeneralLblCodigo">Codigo</string>
+    <string name="GeneralLblSerie">Serie</string>
+    <string name="GeneralLblNombre">Nombre</string>
+    <string name="GeneralLblDireccion">Direccion</string>
+    <string name="GeneralLblMarca">Marca</string>
+    <string name="GeneralLblCiclo">Ciclo</string>
+    <string name="GeneralLblRuta">Ruta</string>
+    <string name="GeneralLblLectura">Lectura</string>
+    <string name="GeneralLblNovedad">Novedad</string>
+    
+</resources>

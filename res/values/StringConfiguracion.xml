@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="CfgLblEquipo">Equipo</string>
+    <string name="CfgLblServidor">Servidor</string>
+    <string name="CfgLblPuerto">Puerto</string>
+    <string name="CfgLblServicio">Servicio</string>
+    <string name="CfgLblWebServcice">Web Service</string>
+    <string name="CfgLblImpresora">Impresora</string>
+    <string name="CfgBtnGuardar">Guardar</string>
+    <string name="CfgLblNombreTecnico">Nombre Tec</string>
+    <string name="CfgLblCedulaTecnico">Cedula Tec</string>
+    
+</resources>

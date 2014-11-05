@@ -1,0 +1,213 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <TextView
+        android:id="@+id/GeneralLblRevision"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/GeneralTxtRevision"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/GeneralTxtRevision"
+        android:layout_toLeftOf="@+id/GeneralTxtRevision"
+        android:gravity="right|center_vertical"
+        android:text="@string/GeneralLblRevision"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/GeneralTxtCodigo"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_alignLeft="@+id/GeneralTxtRevision"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/GeneralTxtRevision"
+        android:inputType="text" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/GeneralTxtSerie"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_alignLeft="@+id/GeneralTxtCodigo"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/GeneralTxtCodigo"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/GeneralLblNombre"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/GeneralTxtSerie"
+        android:gravity="bottom|left"
+        android:text="@string/GeneralLblNombre"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/GeneralTxtNombre"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/GeneralLblNombre"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/GeneralLblDireccion"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/GeneralTxtNombre"
+        android:gravity="bottom|left"
+        android:text="@string/GeneralLblDireccion"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/GeneralTxtDireccion"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/GeneralLblDireccion"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/GeneralTxtMarca"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_alignLeft="@+id/GeneralTxtSerie"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/GeneralTxtDireccion"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/GeneralTxtRuta"
+        android:layout_width="80dp"
+        android:layout_height="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/GeneralTxtMarca"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/GeneralLblRuta"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/GeneralTxtRuta"
+        android:layout_below="@+id/GeneralTxtMarca"
+        android:layout_toLeftOf="@+id/GeneralTxtRuta"
+        android:gravity="right|center_vertical"
+        android:text="@string/GeneralLblRuta"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/GeneralLblCiclo"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/GeneralLblRuta"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/GeneralTxtMarca"
+        android:gravity="right|center_vertical"
+        android:text="@string/GeneralLblCiclo"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/GeneralTxtCiclo"
+        android:layout_width="80dp"
+        android:layout_height="35dp"
+        android:layout_alignTop="@+id/GeneralLblCiclo"
+        android:layout_toRightOf="@+id/GeneralLblCiclo"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/GeneralTxtRevision"
+        android:layout_width="210dp"
+        android:layout_height="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/GeneralTxtLectura"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_alignLeft="@+id/GeneralTxtMarca"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/GeneralTxtRuta"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/GeneralTxtNovedad"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_alignLeft="@+id/GeneralTxtLectura"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/GeneralTxtLectura"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/GeneralLblLectura"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/GeneralTxtNovedad"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/GeneralLblCiclo"
+        android:layout_toLeftOf="@+id/GeneralTxtLectura"
+        android:gravity="right|center_vertical"
+        android:text="@string/GeneralLblLectura"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/GeneralLblNovedad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/GeneralTxtNovedad"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/GeneralLblLectura"
+        android:layout_below="@+id/GeneralLblLectura"
+        android:gravity="right|center_vertical"
+        android:text="@string/GeneralLblNovedad"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/GeneralLblCodigo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/GeneralTxtSerie"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/GeneralLblRevision"
+        android:layout_alignTop="@+id/GeneralTxtCodigo"
+        android:gravity="right|center_vertical"
+        android:text="@string/GeneralLblCodigo"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/GeneralLblSerie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/GeneralLblNombre"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/GeneralLblCodigo"
+        android:layout_below="@+id/GeneralLblCodigo"
+        android:gravity="right|center_vertical"
+        android:text="@string/GeneralLblSerie"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/GeneralLblMarca"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/GeneralLblCiclo"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/GeneralLblLectura"
+        android:layout_below="@+id/GeneralTxtDireccion"
+        android:gravity="right|center_vertical"
+        android:text="@string/GeneralLblMarca"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+</RelativeLayout>

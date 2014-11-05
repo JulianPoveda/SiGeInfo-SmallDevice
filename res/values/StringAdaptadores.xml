@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="detalle_solicitud_revision">Solicitud</string>
+    <string name="detalle_solicitud_lbl_direccion">Direccion</string>
+    <string name="detalle_solicitud_serie">Serie</string>
+    
+</resources>

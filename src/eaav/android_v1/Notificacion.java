@@ -8,6 +8,8 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import clases.ClassNotificacion;
+
 import Miscelanea.DateTime;
 import Miscelanea.SQLite;
 import android.os.AsyncTask;
@@ -22,6 +24,7 @@ import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -33,18 +36,17 @@ import android.widget.Toast;
 
 
 
-public class Notificacion extends Activity implements OnItemSelectedListener{
+public class Notificacion extends Activity implements OnItemSelectedListener, OnClickListener{
 	Intent NombreUsuario;
 	public static int INGRESO_NOMBRE_USUARIO =1;
 	
+	private ClassNotificacion FcnNotificacion;
+	
 	private String StrNombreUsuario	="";
 	private String StrTipoUsuario	="";
+
 	//Instancias
 	private Impresiones Imp = new Impresiones(this);
-	DateTime DT = new DateTime();
-	SQLite SQL = new SQLite(this);
-	ArrayList<String> InfBasica;
-	ArrayList<String> InfNotificacion;
 	
 	//Adaptadores
 	String[] MotivoNotificacion={"...","Casa Sola","Inmueble Desocupado","No Permitir Acceso","Solo Menores De Edad","Sin Agua En El Sector"};																
@@ -53,7 +55,7 @@ public class Notificacion extends Activity implements OnItemSelectedListener{
 	ArrayAdapter<String> AdapJornadaNotificacion;
 	
 	//Variables
-	String Solicitud;
+	private String 		Revision;
 	static final int 	DATE_DIALOG_ID = 0;
 	private int 		pYear, pMonth, pDay;
 	private 			String sYear, sMonth, sDay;
@@ -80,62 +82,32 @@ public class Notificacion extends Activity implements OnItemSelectedListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_notificacion);
 
-		NombreUsuario = new Intent(this, DialogoSimple.class);
-		
+		NombreUsuario = new Intent(this, DialogoSimple.class);	
 		
 		Bundle bundle = getIntent().getExtras();
-		Solicitud	= bundle.getString("Solicitud");
+		Revision	= bundle.getString("Solicitud");
 		
-		if(!SQL.ExisteRegistros("db_notificaciones", "revision='"+ Solicitud +"'")){			//Si no existe el registro en la tabla de notificaciones se crea
-			SQL.SelectData(	RtaCamposNotificacion, 												//Se consulta la informacion basica
-							"db_solicitudes", 
-							"revision,codigo,nombre,direccion,serie,ciclo,promedio,visita", 
-							"revision = '" + Solicitud + "'");
-			
-			Informacion.clear();
-			Informacion.put("visita", Integer.parseInt(RtaCamposNotificacion.get(7).toString())+1);
-			Informacion.put("estado", 1);
-			SQL.ActualizarRegistro("db_solicitudes", Informacion, "revision='" + Solicitud + "'");	//Se actualiza el numero de visita y el estado de la solicitud en db_solicitudes
-			
-			
-			Informacion.clear();
-			Informacion.put("revision", RtaCamposNotificacion.get(0).toString());
-			Informacion.put("codigo", RtaCamposNotificacion.get(1).toString());
-			Informacion.put("nombre", RtaCamposNotificacion.get(2).toString());
-			Informacion.put("direccion", RtaCamposNotificacion.get(3).toString());
-			Informacion.put("serie", RtaCamposNotificacion.get(4).toString());
-			Informacion.put("ciclo", RtaCamposNotificacion.get(5).toString());
-			Informacion.put("promedio", RtaCamposNotificacion.get(6).toString());
-			Informacion.put("visita", (RtaCamposNotificacion.get(7)+1).toString());
-			Informacion.put("fecha_visita", DT.GetFecha());
-			Informacion.put("hora_visita", DT.GetHora());
-			Informacion.put("lectura", "");
-			Informacion.put("medidor", "");
-			Informacion.put("precinto", "");
-			Informacion.put("observacion", "");
-			Informacion.put("fecha_notificacion", DT.GetFecha());
-			Informacion.put("jornada_notificacion", "am");
-			Informacion.put("motivo", "");
-			
-			SQL.InsertarRegistro("db_notificaciones",Informacion);		//Una vez consultada la informacion basica de la revision se procede a crear el registro de notificacion en db_notificaciones
+		this.FcnNotificacion = new ClassNotificacion(this, "");
+		
+		if(!this.FcnNotificacion.existeRegistroNotificacion(this.Revision)){
+			this.FcnNotificacion.registrarNotificacion(this.Revision);
 		}
 		
-		//Intancias a Objetos
-		_Revision 	= (EditText) findViewById(R.id.TxtNotificacionRevision);
-		_Codigo 	= (EditText) findViewById(R.id.TxtNotificacionCodigo);
-		_Nombre		= (EditText) findViewById(R.id.TxtNotificacionNombre);
-		_Serie 		= (EditText) findViewById(R.id.TxtNotificacionSerie);
-		_Ciclo 		= (EditText) findViewById(R.id.TxtNotificacionCiclo);
-		_Visita 	= (EditText) findViewById(R.id.TxtNotificacionVisita);
-		_Uso 		= (EditText) findViewById(R.id.TxtNotificacionUso);
-		_Lectura 	= (EditText) findViewById(R.id.TxtNotificacionLectura);
-		_Medidor 	= (EditText) findViewById(R.id.TxtNotificacionMedidor);
-		_Precinto	= (EditText) findViewById(R.id.TxtNotificacionPrecinto);
-		_Observacion= (EditText) findViewById(R.id.TxtNotificacionObservacion);
-		_FechaNotificacion	= (EditText) findViewById(R.id.TxtNotificacionFecha);	
-		_NotificacionMotivo = (Spinner) findViewById(R.id.CmbNotificacionMotivo); 
-		_NotificacionJornada = (Spinner) findViewById(R.id.CmbNotificacionJornada); 
-		_BtnFechaNotificacion = (Button) findViewById(R.id.BtnNotificacionFecha);
+		this._Revision 				= (EditText) findViewById(R.id.TxtNotificacionRevision);
+		this._Codigo 				= (EditText) findViewById(R.id.TxtNotificacionCodigo);
+		this._Nombre				= (EditText) findViewById(R.id.TxtNotificacionNombre);
+		this._Serie 				= (EditText) findViewById(R.id.TxtNotificacionSerie);
+		this._Ciclo 				= (EditText) findViewById(R.id.TxtNotificacionCiclo);
+		this._Visita 				= (EditText) findViewById(R.id.TxtNotificacionVisita);
+		this._Uso 					= (EditText) findViewById(R.id.TxtNotificacionUso);
+		this._Lectura 				= (EditText) findViewById(R.id.TxtNotificacionLectura);
+		this._Medidor 				= (EditText) findViewById(R.id.TxtNotificacionMedidor);
+		this._Precinto				= (EditText) findViewById(R.id.TxtNotificacionPrecinto);
+		this._Observacion			= (EditText) findViewById(R.id.TxtNotificacionObservacion);
+		this._FechaNotificacion		= (EditText) findViewById(R.id.TxtNotificacionFecha);	
+		this._NotificacionMotivo 	= (Spinner) findViewById(R.id.CmbNotificacionMotivo); 
+		this._NotificacionJornada 	= (Spinner) findViewById(R.id.CmbNotificacionJornada); 
+		this._BtnFechaNotificacion 	= (Button) findViewById(R.id.BtnNotificacionFecha);
 		
 		//Adaptadores
 		AdapMotivoNotificacion 	= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,MotivoNotificacion);
@@ -145,14 +117,14 @@ public class Notificacion extends Activity implements OnItemSelectedListener{
 		_NotificacionJornada.setAdapter(AdapJornadaNotificacion);
 		
 		//Listener para el boton de seleccionar fecha notificacion
-		_BtnFechaNotificacion.setOnClickListener(new View.OnClickListener() {
+		/*_BtnFechaNotificacion.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				showDialog(DATE_DIALOG_ID);			// TODO Auto-generated method stub
 			}
 		});
 		
-		/** Get the current date */
+		
         final Calendar cal = Calendar.getInstance();
         pYear = cal.get(Calendar.YEAR);
         pMonth = cal.get(Calendar.MONTH)+1;
@@ -160,10 +132,10 @@ public class Notificacion extends Activity implements OnItemSelectedListener{
         sYear 	= String.valueOf(pYear);
 		sMonth 	= "00".substring(String.valueOf(pMonth).length()) + String.valueOf(pMonth);
 		sDay 	= "00".substring(String.valueOf(pDay).length()) + String.valueOf(pDay);
-		updateDisplay();
+		updateDisplay();*/
 		
 		//Consulta de informacion para mostrar en el formulario
-		SQL = new SQLite(this);
+		/*SQL = new SQLite(this);
 		InfBasica = new ArrayList<String>();
 		InfNotificacion = new ArrayList<String>();
 		SQL.SelectData(	InfBasica,
@@ -183,28 +155,28 @@ public class Notificacion extends Activity implements OnItemSelectedListener{
 		_Serie.setText(InfBasica.get(3).toString());
 		_Ciclo.setText(InfBasica.get(4).toString());
 		_Visita.setText(InfBasica.get(5).toString());
-		_Uso.setText(InfBasica.get(6).toString());
+		_Uso.setText(InfBasica.get(6).toString());*/
 		
-		_Lectura.setText(InfNotificacion.get(0).toString());
-		_Medidor.setText(InfNotificacion.get(1).toString());
-		_Precinto.setText(InfNotificacion.get(2).toString());
-		_Observacion.setText(InfNotificacion.get(3).toString());
-		_FechaNotificacion.setText(InfNotificacion.get(4).toString());
-		_NotificacionJornada.setSelection(AdapJornadaNotificacion.getPosition(InfNotificacion.get(5).toString()));
-		_NotificacionMotivo.setSelection(AdapMotivoNotificacion.getPosition(InfNotificacion.get(6).toString()));
+		this._Lectura.setText(this.FcnNotificacion.getLectura(this.Revision));
+		this._Medidor.setText(this.FcnNotificacion.getMedidor(this.Revision));
+		this._Precinto.setText(this.FcnNotificacion.getPrecinto(this.Revision));
+		this._Observacion.setText(this.FcnNotificacion.getObservacion(this.Revision));
+		this._FechaNotificacion.setText(this.FcnNotificacion.getFechaNotificacion(this.Revision));
+		this._NotificacionJornada.setSelection(AdapJornadaNotificacion.getPosition(this.FcnNotificacion.getJornadaNotificacion(this.Revision)));
+		this._NotificacionMotivo.setSelection(AdapMotivoNotificacion.getPosition(this.FcnNotificacion.getMotivo(this.Revision)));
 		
 		//Campos deshabilitados para edicion
-		_Revision.setEnabled(false);
-		_Codigo.setEnabled(false);
-		_Nombre.setEnabled(false);
-		_Serie.setEnabled(false);
-		_Ciclo.setEnabled(false);
-		_Visita.setEnabled(false);
-		_Uso.setEnabled(false);
-		_FechaNotificacion.setEnabled(false);
+		this._Revision.setEnabled(false);
+		this._Codigo.setEnabled(false);
+		this._Nombre.setEnabled(false);
+		this._Serie.setEnabled(false);
+		this._Ciclo.setEnabled(false);
+		this._Visita.setEnabled(false);
+		this._Uso.setEnabled(false);
+		this._FechaNotificacion.setEnabled(false);
 		
-		
-		_NotificacionMotivo.setOnItemSelectedListener(this);
+		this._BtnFechaNotificacion.setOnClickListener(this);
+		this._NotificacionMotivo.setOnItemSelectedListener(this);
 	}
 	
 	//Se deshabilitan opciones justo antes de crear el menu del formulario
@@ -239,26 +211,26 @@ public class Notificacion extends Activity implements OnItemSelectedListener{
 				Informacion.put("precinto", _Precinto.getText().toString());
 				Informacion.put("observacion", _Observacion.getText().toString());
 				Informacion.put("motivo", _NotificacionMotivo.getSelectedItem().toString());
-				SQL.ActualizarRegistro(	"db_notificaciones", Informacion, "revision='" + Solicitud + "'");
+				//SQL.ActualizarRegistro(	"db_notificaciones", Informacion, "revision='" + Solicitud + "'");
 				Toast.makeText(getApplicationContext(),"Datos guardados correctamente.", Toast.LENGTH_SHORT).show();
 			}			
 			return true;
 			
 		case R.id.ImpOriginal:
 			if(VerificarDatosNotificacion()){
-				Imp.FormatoNotificacion("Original", Solicitud, this.StrNombreUsuario, this.StrTipoUsuario);
+				//Imp.FormatoNotificacion("Original", Solicitud, this.StrNombreUsuario, this.StrTipoUsuario);
 			}
 			return true;
 			
 		case R.id.ImpUsuario:
 			if(VerificarDatosNotificacion()){
-				Imp.FormatoNotificacion("Usuario", Solicitud, this.StrNombreUsuario, this.StrTipoUsuario);
+				//Imp.FormatoNotificacion("Usuario", Solicitud, this.StrNombreUsuario, this.StrTipoUsuario);
 			}
 			return true;
 			
 		case R.id.ImpCopia:
 			if(VerificarDatosNotificacion()){
-				Imp.FormatoNotificacion("Copia", Solicitud, this.StrNombreUsuario, this.StrTipoUsuario);
+				//Imp.FormatoNotificacion("Copia", Solicitud, this.StrNombreUsuario, this.StrTipoUsuario);
 			}
 			return true;
 			
@@ -267,7 +239,7 @@ public class Notificacion extends Activity implements OnItemSelectedListener{
 			if(VerificarDatosNotificacion()){
 				Informacion.clear();
 				Informacion.put("estado", 3);
-				SQL.ActualizarRegistro("db_solicitudes", Informacion, "revision = '" + Solicitud + "'");
+				//SQL.ActualizarRegistro("db_solicitudes", Informacion, "revision = '" + Solicitud + "'");
 				
 				Informacion.clear();
 				Informacion.put("fecha_notificacion", _FechaNotificacion.getText().toString());
@@ -277,7 +249,7 @@ public class Notificacion extends Activity implements OnItemSelectedListener{
 				Informacion.put("precinto", _Precinto.getText().toString());
 				Informacion.put("observacion", _Observacion.getText().toString());
 				Informacion.put("motivo", _NotificacionMotivo.getSelectedItem().toString());
-				SQL.ActualizarRegistro(	"db_notificaciones", Informacion, "revision='" + Solicitud + "'");
+				//SQL.ActualizarRegistro(	"db_notificaciones", Informacion, "revision='" + Solicitud + "'");
 				
 				Toast.makeText(getApplicationContext(),"Datos guardados correctamente.", Toast.LENGTH_SHORT).show();		
 				new UpLoadNotificacion().execute();
@@ -296,12 +268,12 @@ public class Notificacion extends Activity implements OnItemSelectedListener{
 	        dialogo2.setCancelable(false);  
 	        dialogo2.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {  
 	            public void onClick(DialogInterface dialogo1, int id) {  
-	            	SQL.BorraRegistro("db_notificaciones", "revision ='"+Solicitud+"'");
+	            	//SQL.BorraRegistro("db_notificaciones", "revision ='"+Solicitud+"'");
 	            	
 	            	finish();
 	            	Intent k;
 					k = new Intent(getApplicationContext(), Desviacion.class);
-					k.putExtra("Solicitud", Solicitud);
+					//k.putExtra("Solicitud", Solicitud);
 					startActivity(k);
 	            }  
 	        });  
@@ -327,26 +299,20 @@ public class Notificacion extends Activity implements OnItemSelectedListener{
 	
 	private boolean VerificarDatosNotificacion(){
 		boolean Retorno = false;
-		SQL.SelectData(	InfNotificacion,
-						"db_notificaciones",
-						"fecha_notificacion,revision,codigo,nombre,direccion,serie,ciclo,promedio,visita,lectura,medidor,precinto,observacion,fecha_visita,motivo,jornada_notificacion,hora_visita",
-						"revision='" + Solicitud +"'");
-		
-		if(InfNotificacion.get(9).toString()==""){
+		if(this.FcnNotificacion.getLectura(this.Revision).isEmpty()){
 			Toast.makeText(getApplicationContext(),"Falta registrar la lectura, recuerde guardar los datos.", Toast.LENGTH_SHORT).show();
-		}else if(InfNotificacion.get(10).toString()==""){
+		}else if(this.FcnNotificacion.getMedidor(this.Revision).isEmpty()){
 			Toast.makeText(getApplicationContext(),"Falta registrar la medidor, recuerde guardar los datos.", Toast.LENGTH_SHORT).show();
-		}else if(InfNotificacion.get(11).toString()==""){
+		}else if(this.FcnNotificacion.getPrecinto(this.Revision).isEmpty()){
 			Toast.makeText(getApplicationContext(),"Falta registrar la precinto, recuerde guardar los datos.", Toast.LENGTH_SHORT).show();
-		}else if(InfNotificacion.get(12).toString()==""){
+		}else if(this.FcnNotificacion.getObservacion(this.Revision).isEmpty()){
 			Toast.makeText(getApplicationContext(),"Falta registrar la observacion, recuerde guardar los datos.", Toast.LENGTH_SHORT).show(); 		
-		}else if(InfNotificacion.get(14).toString()==""){
+		}else if(this.FcnNotificacion.getMotivo(this.Revision).isEmpty()){
 			Toast.makeText(getApplicationContext(),"Falta registrar el motivo de notificacion, recuerde guardar los datos.", Toast.LENGTH_SHORT).show(); 			
 		}else{
 			Retorno = true;
 		}
-		return Retorno;
-		
+		return Retorno;		
 	}
 	
 	
@@ -374,9 +340,7 @@ public class Notificacion extends Activity implements OnItemSelectedListener{
     protected Dialog onCreateDialog(int id) {
         switch (id) {
         case DATE_DIALOG_ID:
-            return new DatePickerDialog(this, 
-                        pDateSetListener,
-                        pYear, pMonth, pDay);
+            return new DatePickerDialog(this, pDateSetListener, pYear, pMonth, pDay);
         }
         return null;
     }
@@ -401,13 +365,13 @@ public class Notificacion extends Activity implements OnItemSelectedListener{
     		Toast.makeText(getApplicationContext(),"Terminando Notificacion, por favor espere...", Toast.LENGTH_SHORT).show();
     		
     		SendNotificacion = new ArrayList<String>();
-    		SQL.SelectData(	SendNotificacion,
+    		/*SQL.SelectData(	SendNotificacion,
 							"db_notificaciones",
 							"fecha_notificacion,revision,codigo,nombre,direccion,serie,ciclo,promedio,visita,lectura,medidor,precinto,observacion,fecha_visita,motivo,jornada_notificacion,hora_visita",
 							"revision='" + Solicitud +"'");
     		Toast.makeText(getApplicationContext(),"Revision: " + SendNotificacion.get(1).toString(), Toast.LENGTH_SHORT).show();
     		
-			pda 				= SQL.SelectShieldWhere("db_parametros", "valor", "item='pda'");
+			pda 				= SQL.SelectShieldWhere("db_parametros", "valor", "item='pda'");*/
 			MenuEnabled = true;    		
     	}
     	
@@ -443,8 +407,8 @@ public class Notificacion extends Activity implements OnItemSelectedListener{
     			httpTransportSE.call(SOAP_ACTION, envelope);
     			res = envelope.getResponse().toString();
     			if(res.equals("Ok")){
-    				SQL.BorraRegistro("db_solicitudes", "revision ='" + Solicitud + "'");
-    				SQL.BorraRegistro("db_notificaciones", "revision ='" + Solicitud + "'");
+    				//SQL.BorraRegistro("db_solicitudes", "revision ='" + Solicitud + "'");
+    				//SQL.BorraRegistro("db_notificaciones", "revision ='" + Solicitud + "'");
     			}
     		} catch (Exception e) {
     			e.printStackTrace();
@@ -511,4 +475,10 @@ public class Notificacion extends Activity implements OnItemSelectedListener{
 		}
 		
     }
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/mnu_informacion_general" android:title="Ver Informacion"></item><item android:id="@+id/mnu_notificacion" android:title="Iniciar Notificacion" android:enabled="true"></item><item android:id="@+id/mnu_desviacion" android:title="Iniciar Desviacion" android:enabled="true"></item>
+    
+    
+    <item android:id="@+id/mnu_apertura" android:title="Apertura de Revision"></item>
+    <item android:id="@+id/mnu_terminar" android:title="Terminar Revision"></item>
+
+</menu>

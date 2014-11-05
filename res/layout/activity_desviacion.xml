@@ -954,7 +954,7 @@
                         android:layout_toRightOf="@+id/LblVisitaTecnicaResultado"
                         android:ems="10"
                         android:inputType="number|text"
-                        android:text="@string/TxtEmpty" />
+                        android:text="Nada" />
 
                     <EditText
                         android:id="@+id/TxtVisitaTecnicaFuga"
@@ -966,7 +966,7 @@
                         android:layout_toLeftOf="@+id/CmbVisitaTecnicaMedidaFuga"
                         android:ems="10"
                         android:inputType="number|text"
-                        android:text="@string/TxtEmpty" />
+                        android:text="Nada" />
 
                     <TextView
                         android:id="@+id/LblVisitaTecnicaRegistroAntifraude"

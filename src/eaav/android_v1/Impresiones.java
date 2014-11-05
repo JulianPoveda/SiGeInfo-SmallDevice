@@ -2,14 +2,14 @@ package eaav.android_v1;
 
 import java.util.ArrayList;
 
-import Miscelanea.ManagerBluetooth;
+import Miscelanea.Bluetooth;
 import Miscelanea.SQLite;
 import android.content.Context;
 import android.widget.Toast;
 
 public class Impresiones {
 	private Context context;
-	private ManagerBluetooth MnBt;
+	private Bluetooth MnBt;
 	private ArrayList<String>  CamposImpresion= new ArrayList<String>();	
 	private String Impresora = null;
 	private String InfToPrinter= null;
@@ -31,23 +31,23 @@ public class Impresiones {
 	
 	
 	public void FormatoNotificacion(String TipoImpresion, String Solicitud, String NombreUsuario, String TipoUsuario){
-		MnBt = new ManagerBluetooth(this.context);
-		SQLite ImpSQL = new SQLite(this.context);
-		String periodo_ini = ImpSQL.SelectShieldWhere("db_solicitudes", "periodo_ini", "revision = '" + Solicitud + "'");
-		String periodo_fin = ImpSQL.SelectShieldWhere("db_solicitudes", "periodo_fin", "revision = '" + Solicitud + "'");
-		String factura = ImpSQL.SelectShieldWhere("db_solicitudes", "factura", "revision = '" + Solicitud + "'");
+		MnBt = new Bluetooth(this.context);
+		//SQLite ImpSQL = new SQLite(this.context);
+		//String periodo_ini = ImpSQL.SelectShieldWhere("db_solicitudes", "periodo_ini", "revision = '" + Solicitud + "'");
+		//String periodo_fin = ImpSQL.SelectShieldWhere("db_solicitudes", "periodo_fin", "revision = '" + Solicitud + "'");
+		//String factura = ImpSQL.SelectShieldWhere("db_solicitudes", "factura", "revision = '" + Solicitud + "'");
 		String NumVisita = "";
 		String CamposGeneral = "";
 		String Nombre= "";
 		String Direccion = "";
 		InfToPrinter = "";
 		
-		CamposGeneral = ImpSQL.SelectShieldWhere("db_solicitudes", "id_serial", "revision = '" + Solicitud + "'");
-		Impresora = ImpSQL.SelectShieldWhere("db_parametros", "valor", "item = 'impresora'");
-	    ImpSQL.SelectData(	CamposImpresion, 
+		//CamposGeneral = ImpSQL.SelectShieldWhere("db_solicitudes", "id_serial", "revision = '" + Solicitud + "'");
+		//Impresora = ImpSQL.SelectShieldWhere("db_parametros", "valor", "item = 'impresora'");
+	    /*ImpSQL.SelectData(	CamposImpresion, 
 							"db_notificaciones", 
 							"revision,codigo,nombre,direccion,serie,ciclo,promedio,visita,lectura,medidor,precinto,observacion,fecha_visita,hora_visita,motivo,fecha_notificacion,jornada_notificacion", 
-							"revision = '" + Solicitud + "'");
+							"revision = '" + Solicitud + "'");*/
 		   
 	    if (CamposImpresion != null){
 	    	Nombre = CamposImpresion.get(2).toString();
@@ -71,9 +71,9 @@ public class Impresiones {
 	        InfToPrinter = WrTitulo(InfToPrinter, "NOVEDAD DE VISITA TECNICA DE CRITICA", 0, 2);
 	        InfToPrinter = WrLabel(InfToPrinter, "Acta No:", "N" + CamposImpresion.get(0).toString() + "-" + CamposGeneral + "-" + CamposImpresion.get(7).toString(), 3, 0, 1);
 	        //String.format("%.7f", var)
-	        InfToPrinter = WrLabel(InfToPrinter, "Factura Investigacion: ", String.format("%.0f", factura), 3, 0, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "Periodo Investigacion:", periodo_ini, 3, 0, 0);
-	        InfToPrinter = WrLabel(InfToPrinter, " a ", periodo_fin, 365, 0, 1.5);
+	        //InfToPrinter = WrLabel(InfToPrinter, "Factura Investigacion: ", String.format("%.0f", factura), 3, 0, 1);
+	        //InfToPrinter = WrLabel(InfToPrinter, "Periodo Investigacion:", periodo_ini, 3, 0, 0);
+	        //InfToPrinter = WrLabel(InfToPrinter, " a ", periodo_fin, 365, 0, 1.5);
 	        
 	        InfToPrinter = WrLabel(InfToPrinter, "Fecha:  ", CamposImpresion.get(12).toString(), 3, 0, 0);
 	        InfToPrinter = WrLabel(InfToPrinter, "Hora: ", CamposImpresion.get(13).toString(), 250, 0, 1);
@@ -112,13 +112,13 @@ public class Impresiones {
             InfToPrinter = WrLabel(InfToPrinter, "Firma "+TipoUsuario, NombreUsuario, 3, 0, 3);
             
 	        	        
-	        String Tecnico 	= ImpSQL.SelectShieldWhere("db_parametros", "valor", "item = 'nombre_tecnico'");
-	        String Cedula 	= ImpSQL.SelectShieldWhere("db_parametros", "valor", "item = 'cedula_tecnico'");
+	        //String Tecnico 	= ImpSQL.SelectShieldWhere("db_parametros", "valor", "item = 'nombre_tecnico'");
+	        //String Cedula 	= ImpSQL.SelectShieldWhere("db_parametros", "valor", "item = 'cedula_tecnico'");
 	        InfToPrinter = JustInformation(InfToPrinter, "Declaro bajo la gravedad de juramento que los datos aqui consignados son veraces, fueron verificados y obdecen al estado actual del predio.", 3, 0, 1);        
 	        
 	        InfToPrinter = WrRectangle(InfToPrinter, 3, getCurrentLine(), 550, getCurrentLine() + 100, 1, 0);
-	        InfToPrinter = WrLabel(InfToPrinter, "Nombre del Operario:", Tecnico, 3, 0, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "CC: ", Cedula, 3, 0, 2);
+	        //InfToPrinter = WrLabel(InfToPrinter, "Nombre del Operario:", Tecnico, 3, 0, 1);
+	        //InfToPrinter = WrLabel(InfToPrinter, "CC: ", Cedula, 3, 0, 2);
 	        InfToPrinter = WrLabel(InfToPrinter, TipoImpresion, "", 3, 0, 1);
 	        InfToPrinter = WrTitulo(InfToPrinter, "CONSORCIO AGUAS DEL LLANO.", 0, 1);
 	        InfToPrinter = WrTitulo(InfToPrinter, "Contratista de la Empresa de Acueducto y Alcantarillado de Villavicencio E.S.P.", 0, 1);
@@ -131,8 +131,8 @@ public class Impresiones {
 	
 	
 	public void FormatoDesviacion(String TipoImpresion, String Solicitud){
-		MnBt = new ManagerBluetooth(this.context);
-		SQLite ImpSQL = new SQLite(this.context);
+		MnBt = new Bluetooth(this.context);
+		/*SQLite ImpSQL = new SQLite(this.context);
 		String periodo_ini = ImpSQL.SelectShieldWhere("db_solicitudes", "periodo_ini", "revision = '" + Solicitud + "'");
 		String periodo_fin = ImpSQL.SelectShieldWhere("db_solicitudes", "periodo_fin", "revision = '" + Solicitud + "'");
 		String factura = ImpSQL.SelectShieldWhere("db_solicitudes", "factura", "revision = '" + Solicitud + "'");
@@ -436,7 +436,7 @@ public class Impresiones {
 	        MnBt.IntentPrint(Impresora,InfToPrinter);
 	    }else{
 			Toast.makeText(this.context, "No existen registros de la revision, no olvide guardar los datos antes de imprimir.", Toast.LENGTH_LONG).show();   		
-	    }
+	    }*/
 	}
 	
 	

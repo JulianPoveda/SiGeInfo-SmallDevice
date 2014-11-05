@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="LogginLblUsuario">Usuario</string>
+    <string name="LogginLblContrasena">Contraseña</string>
+    <string name="LogginBtnIngresar">Ingresar</string>
+    <string name="LogginLblEquipo">Equipo</string>
+    <string name="LogginLblVersion">Version</string>
+    
+</resources>

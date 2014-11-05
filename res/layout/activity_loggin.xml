@@ -9,73 +9,72 @@
     tools:context=".Loggin" >
 
     <TextView
-        android:id="@+id/LblListaTrabajoRevision"
+        android:id="@+id/LogginLblUsuario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/LblParametros"
-        android:layout_below="@+id/LblParametros"
-        android:layout_marginTop="24dp"
-        android:text="@string/LblKey"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <EditText
-        android:id="@+id/TxtClave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/LblListaTrabajoRevision"
-        android:layout_alignLeft="@+id/TxtUsuario"
-        android:ems="10"
-        android:inputType="textPassword" />
+        android:layout_alignBottom="@+id/LogginTxtUsuario"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/LogginTxtUsuario"
+        android:layout_toLeftOf="@+id/LogginTxtUsuario"
+        android:gravity="right|center_vertical"
+        android:text="@string/LogginLblUsuario"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
-        android:id="@+id/LblParametros"
+        android:id="@+id/LogginLblContrasena"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="307dp"
-        android:layout_marginTop="147dp"
-        android:text="@string/LblUser"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_alignBottom="@+id/LogginTxtClave"
+        android:layout_alignTop="@+id/LogginTxtClave"
+        android:layout_toLeftOf="@+id/LogginTxtClave"
+        android:gravity="right|center_vertical"
+        android:text="@string/LogginLblContrasena"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
-        android:id="@+id/TxtUsuario"
+        android:id="@+id/LogginTxtUsuario"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/LogginTxtClave"
+        android:layout_alignRight="@+id/LogginLblVersion"
+        android:ems="10"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/LogginLblVersion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/LblParametros"
-        android:layout_alignBottom="@+id/LblParametros"
-        android:layout_marginLeft="51dp"
-        android:layout_toRightOf="@+id/LblParametros"
-        android:ems="10"
-        android:inputType="text"
-        android:text="@string/TxtEmpty" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/LogginLblVersion"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/LogginLblEquipo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LogginLblVersion"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp"
+        android:text="@string/LogginLblEquipo"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Button
-        android:id="@+id/BtnIngresar"
-        android:layout_width="wrap_content"
+        android:id="@+id/LogginBtnIngresar"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/TxtClave"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="33dp"
-        android:text="@string/BtnIngresar" />
+        android:layout_marginBottom="141dp"
+        android:text="@string/LogginBtnIngresar" />
 
-    <TextView
-        android:id="@+id/LblLogginCodigo"
+    <EditText
+        android:id="@+id/LogginTxtClave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/BtnIngresar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="34dp"
-        android:text="@string/LblLogginCodigo"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
-        android:id="@+id/LblLogginVersion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/LblLogginCodigo"
-        android:layout_centerHorizontal="true"
-        android:text="@string/LblLogginVersion"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_alignLeft="@+id/LogginTxtUsuario"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:inputType="textPassword" />
 
 </RelativeLayout>

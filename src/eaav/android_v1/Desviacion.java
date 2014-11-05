@@ -43,7 +43,7 @@ import android.widget.Toast;
 public class Desviacion extends Activity{
 	private Impresiones Imp = new Impresiones(this);
 	public String _OrdenServicio = "";
-	private SQLite SQL = new SQLite(this);
+	//private SQLite SQL = new SQLite(this);
 	DateTime DT = new DateTime();
 	private ArrayList<String> InfBasica;	
 	private ArrayList<String>  RtaCamposDesviacion= new ArrayList<String>();
@@ -154,7 +154,7 @@ public class Desviacion extends Activity{
 		Solicitud	= bundle.getString("Solicitud");
 		
 		//SQL.abrir();
-		if(!SQL.ExisteRegistros("db_desviaciones", "revision='"+ Solicitud +"'")){			//Si no existe el registro en la tabla de notificaciones se crea
+		/*if(!SQL.ExisteRegistros("db_desviaciones", "revision='"+ Solicitud +"'")){			//Si no existe el registro en la tabla de notificaciones se crea
 			SQL.SelectData(	RtaCamposDesviacion, 												//Se consulta la informacion basica
 							"db_solicitudes", 
 							"revision,codigo,nombre,direccion,serie,ciclo,promedio,visita,uso", 
@@ -178,7 +178,7 @@ public class Desviacion extends Activity{
 			Informacion.put("fecha", DT.GetFecha());
 			Informacion.put("hora", DT.GetHora());
 			SQL.InsertarRegistro("db_desviaciones", Informacion);
-		}
+		}*/
 		//SQL.cerrar();
 		
 		
@@ -593,7 +593,7 @@ public class Desviacion extends Activity{
 		
 		
 		//Consulta de la informacion basica de la desviacion
-		SQL = new SQLite(this);
+		/*SQL = new SQLite(this);
 		//SQL.abrir();
 		InfBasica = new ArrayList<String>();
 		SQL.SelectData(	InfBasica,
@@ -646,7 +646,7 @@ public class Desviacion extends Activity{
             	SQL.ActualizarRegistro(	"db_desviaciones", Informacion, "revision='" + Solicitud + "'");
         		Toast.makeText(getApplicationContext(), "Datos generales guardados correctamente.", Toast.LENGTH_SHORT).show(); 
             }
-        });
+        });*/
 		
 		
 		_BtnInfTecnicaObservacionSistema.setOnClickListener(new OnClickListener(){
@@ -675,10 +675,10 @@ public class Desviacion extends Activity{
             	}
             	
             	//SQL.abrir();
-    			SQL.SelectData(	RtaCamposDesviacion, 												//Se consulta la informacion basica
+    			/*SQL.SelectData(	RtaCamposDesviacion, 												//Se consulta la informacion basica
     							"db_desviaciones", 
     							"hermeticidadreginternos,hermeticidadequipomedida,hermeticidadfugas,hermeticidadfugaimperceptible,hermeticidadfugavisible,estadointernas",
-    							"revision = '" + Solicitud + "'");
+    							"revision = '" + Solicitud + "'");*/
     			//SQL.cerrar();
             	
     			if(RtaCamposDesviacion.get(0).equals("Si")&&(RtaCamposDesviacion.get(1).equals("Si"))){
@@ -734,7 +734,7 @@ public class Desviacion extends Activity{
 				Informacion.put("respuestadesviacion", _RespuestaDesviacion.getSelectedItem().toString());
 				Informacion.put("diagnostico", _txtVisitaTecnicaObservacion.getText().toString());
 				
-				SQL.ActualizarRegistro(	"db_desviaciones", Informacion, "revision='" + Solicitud + "'");
+				//SQL.ActualizarRegistro(	"db_desviaciones", Informacion, "revision='" + Solicitud + "'");
 				Toast.makeText(getApplicationContext(), "Informacion tecnica guardada correctamente.", Toast.LENGTH_SHORT).show(); 
             }
 		});
@@ -909,7 +909,7 @@ public class Desviacion extends Activity{
 		Informacion.put(Cantidad, _txtVisitaTecnicaCantidad.getText().toString());
 		Informacion.put(Items, ValorItems);
 		Informacion.put(Estado, ValorEstado);
-		SQL.ActualizarRegistro(	"db_desviaciones", Informacion, "revision='" + Solicitud + "'");		
+		//SQL.ActualizarRegistro(	"db_desviaciones", Informacion, "revision='" + Solicitud + "'");		
 	}
 	
 	
@@ -936,7 +936,7 @@ public class Desviacion extends Activity{
 		Informacion.put(tanque, _PruebasEstanqueidad.getSelectedItem().toString());
 		Informacion.put(capacidad, _txtVisitaTecnicaCapacidad.getText().toString()+' '+_CapacidadEstanqueidad.getSelectedItem().toString());
 		Informacion.put(fuga, _txtVisitaTecnicaFuga.getText().toString()+' '+_FugaEstanqueidad.getSelectedItem().toString());
-		SQL.ActualizarRegistro(	"db_desviaciones", Informacion, "revision='" + Solicitud + "'");
+		//SQL.ActualizarRegistro(	"db_desviaciones", Informacion, "revision='" + Solicitud + "'");
 	}
 	
 	
@@ -948,7 +948,7 @@ public class Desviacion extends Activity{
 		Informacion.put("medidorinvertido", _RtaInvertido.getSelectedItem().toString());
 		Informacion.put("medidorilegible", _RtaVidrioIlegible.getSelectedItem().toString());
 		Informacion.put("medidorprecintoroto", _RtaPrecintoSeguridad.getSelectedItem().toString());		
-		SQL.ActualizarRegistro(	"db_desviaciones", Informacion, "revision='" + Solicitud + "'");		
+		//SQL.ActualizarRegistro(	"db_desviaciones", Informacion, "revision='" + Solicitud + "'");		
 	}
 	
 	
@@ -968,7 +968,7 @@ public class Desviacion extends Activity{
 		
 		Informacion.clear();
 		Informacion.put(Campo, _RtaInstalacion.getSelectedItem().toString());
-		SQL.ActualizarRegistro("db_desviaciones", Informacion, "revision='" + Solicitud + "'");
+		//SQL.ActualizarRegistro("db_desviaciones", Informacion, "revision='" + Solicitud + "'");
 	}
 	
 	/*****************************************************/
@@ -1024,11 +1024,11 @@ public class Desviacion extends Activity{
 			            public void onClick(DialogInterface dialogo1, int id) {  
 			            	Informacion.clear();
 			            	Informacion.put("estado", 3);
-							SQL.ActualizarRegistro("db_solicitudes", Informacion, "revision = '" + Solicitud + "'");
+							//SQL.ActualizarRegistro("db_solicitudes", Informacion, "revision = '" + Solicitud + "'");
 							
 							Informacion.clear();
 							Informacion.put("horacierre", DT.GetHora());
-							SQL.ActualizarRegistro(	"db_desviaciones", Informacion, "revision='" + Solicitud + "'");
+							//SQL.ActualizarRegistro(	"db_desviaciones", Informacion, "revision='" + Solicitud + "'");
 							
 							new UpLoadDesviacion().execute();
 							Intent k;
@@ -1053,7 +1053,7 @@ public class Desviacion extends Activity{
 		        dialogo2.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {  
 		            public void onClick(DialogInterface dialogo1, int id) {  
 		            	//SQL.abrir();
-		            	SQL.BorraRegistro("db_desviaciones", "revision ='"+Solicitud+"'");
+		            	//SQL.BorraRegistro("db_desviaciones", "revision ='"+Solicitud+"'");
 		            	//SQL.cerrar();
 		            	
 		            	finish();
@@ -1080,14 +1080,14 @@ public class Desviacion extends Activity{
 		private boolean ValidarImpresionDesviacion(){
 			boolean ValorRetorno = false;
 			//SQL.abrir();
-			SQL.SelectData(	RtaCamposDesviacion, 												//Se consulta la informacion basica
+			/*SQL.SelectData(	RtaCamposDesviacion, 												//Se consulta la informacion basica
 							"db_desviaciones", 
 							"tipo,nombreusuario,nombretestigo,cedulausuario,cedulatestigo,estrato,area,pisos,uso,actividad,residentes,estado,habitado," +
 							"acueducto,camaramedidor,escapecamara,estadocamara,serviciodirecto,bypass,serieindividual,marcaindividual,lecturaindividual," +
 							"diametroindividual,serietotalizador,marcatotalizador,lecturatotalizador,diametrototalizador,segundoconcepto,respuestadesviacion," +
 							"diagnostico,medidorregpaso,medidorregantifraude,medidordestruido,medidorinvertido,medidorilegible,medidorprecintoroto," +
 							"hermeticidadreginternos,hermeticidadequipomedida,hermeticidadfugas,hermeticidadfugaimperceptible,hermeticidadfugavisible",
-							"revision = '" + Solicitud + "'");
+							"revision = '" + Solicitud + "'");*/
 			//SQL.cerrar();
 			if(RtaCamposDesviacion.get(0).toString().length()==0){
 				Toast.makeText(getApplicationContext(),"No ha seleccionado el tipo de predio, recuerde guardar los cambios.", Toast.LENGTH_LONG).show();	
@@ -1168,13 +1168,13 @@ public class Desviacion extends Activity{
 		private void CargarInfGuardada(){
 			String[] tempString;
 			//SQL.abrir();
-			SQL.SelectData(	RtaCamposDesviacion, 												//Se consulta la informacion basica
+			/*SQL.SelectData(	RtaCamposDesviacion, 												//Se consulta la informacion basica
 							"db_desviaciones", 
 							"tipo,nombreusuario,nombretestigo,cedulausuario,cedulatestigo,estrato,area,pisos,uso,actividad,residentes,estado,habitado," +
 							"acueducto,camaramedidor,escapecamara,estadocamara,serviciodirecto,bypass,serieindividual,marcaindividual,lecturaindividual," +
 							"diametroindividual,serietotalizador,marcatotalizador,lecturatotalizador,diametrototalizador,segundoconcepto,respuestadesviacion," +
 							"diagnostico,precinto,medidorregpaso,medidorregantifraude,medidordestruido,medidorinvertido,medidorilegible,medidorprecintoroto",
-							"revision = '" + Solicitud + "'");
+							"revision = '" + Solicitud + "'");*/
 			//sSQL.cerrar();
 			
 			tempString = RtaCamposDesviacion.get(0).split("@");			
@@ -1247,7 +1247,7 @@ public class Desviacion extends Activity{
 	    		//Se consulta la base de datos
 	    		SendDesviacion = new ArrayList<String>();
 	    		//SQL.abrir();
-	    		SQL.SelectData(	SendDesviacion,
+	    		/*SQL.SelectData(	SendDesviacion,
 								"db_desviaciones",
 								"revision, codigo, nombre, direccion, serie, ciclo, promedio, fecha, hora, tipo, area, pisos, actividad, uso, residentes, habitado, estado,"+
   								"acueducto, camaramedidor, estadocamara, serieindividual, marcaindividual, diametroindividual, lecturaindividual, serietotalizador, marcatotalizador,"+ 
@@ -1263,7 +1263,7 @@ public class Desviacion extends Activity{
   								"cedulatestigo, cisterna, itemcisterna, estadocisterna, ducha, itemducha, estadoducha, lavamanos, itemlavamanos,"+
   								"estadolavamanos, servicioacueducto, servicioalcantarillado, horacierre, segundoconcepto, respuestadesviacion",
 								"revision='" + Solicitud +"'");
-	    		pda = SQL.SelectShieldWhere("db_parametros", "valor", "item='pda'");
+	    		pda = SQL.SelectShieldWhere("db_parametros", "valor", "item='pda'");*/
 				//SQL.cerrar();
 	    		
 	    		CadenaArchivo = SendDesviacion.get(0)+";"+SendDesviacion.get(1)+";"+SendDesviacion.get(2)+";"+
@@ -1366,8 +1366,8 @@ public class Desviacion extends Activity{
 	    			
 	    			if(str.equals("Ok")){
 	    				//SQL.abrir();
-	    				SQL.BorraRegistro("db_solicitudes", "revision ='" + Solicitud + "'");
-	    				SQL.BorraRegistro("db_desviaciones", "revision ='" + Solicitud + "'");
+	    				//SQL.BorraRegistro("db_solicitudes", "revision ='" + Solicitud + "'");
+	    				//SQL.BorraRegistro("db_desviaciones", "revision ='" + Solicitud + "'");
 	    				//SQL.cerrar();
 	    			}
 	    		} catch (Exception e) {
