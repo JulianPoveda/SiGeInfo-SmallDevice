@@ -14,7 +14,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 
-public class Parametros extends Activity implements OnClickListener{
+public class FormParametros extends Activity implements OnClickListener{
 	private ClassConfiguracion FcnConfiguracion;
 	private Bluetooth MB;
 

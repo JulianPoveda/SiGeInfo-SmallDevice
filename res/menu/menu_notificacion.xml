@@ -1,5 +1,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/mnu_guardar" android:title="Guardar"></item>
+    <item android:id="@+id/mnu_ver_informacion" android:title="Ver Informacion"></item>
     <item android:id="@+id/mnu_imprimir" android:title="Imprimir">
         <menu>
             <item android:id="@+id/ImpOriginal" android:title="Original"/>
@@ -9,5 +9,6 @@
     </item>
     <item android:id="@+id/mnu_terminar_notificacion" android:title="Terminar Notificacion"></item>
     <item android:id="@+id/mnu_notificacion_swap_desviacion" android:title="Iniciar Como Desviacion"></item>
+    <item android:id="@+id/mnu_solicitudes" android:title="Ver Lista Solicitudes"></item>
 
 </menu>

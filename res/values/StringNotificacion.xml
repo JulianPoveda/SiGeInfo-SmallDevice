@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="NotificacionLblRevision">Revision</string>
+    <string name="NotificacionLblLectura">Lectura</string>
+    <string name="NotificacionLblMedidor">Medidor</string>
+    <string name="NotificacionLblPrecinto">Precinto</string>
+    <string name="NotificacionLblObservacion">Observacion</string>
+    <string name="NotificacionLblMotivo">Motivo Noti</string>
+    <string name="NotificacionLblFecha">Fecha Noti</string>
+    <string name="NotificacionLblJornada">Jornada Notificacion</string>
+    <string name="NotificacionBtnGuardar">Guardar</string>
+    <string name="NotificacionBtnFecha">Cambiar</string>
+    
+</resources>

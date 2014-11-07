@@ -1,6 +1,6 @@
 package clases;
 
-import eaav.android_v1.Loggin;
+import eaav.android_v1.FormLoggin;
 import Miscelanea.SQLite;
 import android.content.Context;
 
@@ -13,7 +13,7 @@ public class ClassUsuario {
 	public ClassUsuario(Context _ctx, String _folder){
 		this._ctxUsuario		= _ctx;
 		this._folderAplicacion	= _folder;
-		this.FcnSQL				= new SQLite(this._ctxUsuario, this._folderAplicacion, Loggin.NOMBRE_DATABASE);
+		this.FcnSQL				= new SQLite(this._ctxUsuario, this._folderAplicacion, FormLoggin.NOMBRE_DATABASE);
 	}
 	
 	public boolean existeUsuario(String _usuario, String _contrasena){

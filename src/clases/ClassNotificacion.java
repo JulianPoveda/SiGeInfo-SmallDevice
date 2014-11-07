@@ -5,7 +5,7 @@ import Miscelanea.SQLite;
 import android.content.ContentValues;
 import android.content.Context;
 import android.widget.Toast;
-import eaav.android_v1.Loggin;
+import eaav.android_v1.FormLoggin;
 
 public class ClassNotificacion {
 	private DateTime 		FcnDateTime ;
@@ -18,7 +18,7 @@ public class ClassNotificacion {
 		this._ctxNotificacion	= _ctx;
 		this._folderAplicacion	= _folder;
 		this.FcnDateTime		= new DateTime();
-		this.FcnSQL				= new SQLite(this._ctxNotificacion, this._folderAplicacion, Loggin.NOMBRE_DATABASE);
+		this.FcnSQL				= new SQLite(this._ctxNotificacion, this._folderAplicacion, FormLoggin.NOMBRE_DATABASE);
 	}
 	
 	public String getFechaNotificacion(String _revision){

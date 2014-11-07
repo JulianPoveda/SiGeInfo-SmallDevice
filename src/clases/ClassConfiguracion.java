@@ -3,7 +3,7 @@ package clases;
 import Miscelanea.SQLite;
 import android.content.ContentValues;
 import android.content.Context;
-import eaav.android_v1.Loggin;
+import eaav.android_v1.FormLoggin;
 
 public class ClassConfiguracion {
 	private SQLite 	FcnSQL;
@@ -16,7 +16,7 @@ public class ClassConfiguracion {
 	public ClassConfiguracion(Context _ctx, String _folder){
 		this._ctxConfiguracion	= _ctx;
 		this._folderAplicacion	= _folder;
-		this.FcnSQL				= new SQLite(this._ctxConfiguracion, this._folderAplicacion, Loggin.NOMBRE_DATABASE);
+		this.FcnSQL				= new SQLite(this._ctxConfiguracion, this._folderAplicacion, FormLoggin.NOMBRE_DATABASE);
 	}
 	
 	public String getVersion(){

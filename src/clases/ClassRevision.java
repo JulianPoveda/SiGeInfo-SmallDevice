@@ -6,7 +6,7 @@ import java.util.ListIterator;
 import Miscelanea.SQLite;
 import android.content.ContentValues;
 import android.content.Context;
-import eaav.android_v1.Loggin;
+import eaav.android_v1.FormLoggin;
 
 public class ClassRevision {
 	private SQLite 	FcnSQL;
@@ -20,7 +20,7 @@ public class ClassRevision {
 	public ClassRevision(Context _ctx, String _folder){
 		this._ctxRevision		= _ctx;
 		this._folderAplicacion	= _folder;
-		this.FcnSQL				= new SQLite(this._ctxRevision, this._folderAplicacion, Loggin.NOMBRE_DATABASE);
+		this.FcnSQL				= new SQLite(this._ctxRevision, this._folderAplicacion, FormLoggin.NOMBRE_DATABASE);
 	}
 	
 	public String registrarRevisiones(ArrayList<String> _revisiones){
@@ -83,6 +83,38 @@ public class ClassRevision {
 	
 	public String getNovedad1(String _revision){
 		return this.FcnSQL.StrSelectShieldWhere("db_solicitudes", "novedad1", "revision='"+_revision+"'");
+	}
+	
+	
+	public void setEstadoRevision(String _revision, int _estado){
+		this._tempRegistro.clear();
+		this._tempRegistro.put("estado",_estado);
+		this.FcnSQL.UpdateRegistro("db_solicitudes", this._tempRegistro, "revision='"+_revision+"'");		
+	}
+	
+	
+	public boolean iniciarNotificacion(String _revision){
+		boolean _retorno = false;
+		if(this.FcnSQL.ExistRegistros("db_solicitudes", "estado IN (1,2) AND revision <>'"+_revision+"'")){
+			_retorno = false;
+		}else if(this.FcnSQL.ExistRegistros("db_solicitudes", "estado = '3' AND revision ='"+_revision+"'")){
+			_retorno = false;
+		}else if(this.FcnSQL.ExistRegistros("db_solicitudes", "estado IN (0,1) AND revision ='"+_revision+"'")){
+			_retorno = true;
+		}
+		return _retorno;
+	}
+	
+	public boolean iniciarDesviacion(String _revision){
+		boolean _retorno = false;
+		if(this.FcnSQL.ExistRegistros("db_solicitudes", "estado IN (1,2) AND revision <>'"+_revision+"'")){
+			_retorno = false;
+		}else if(this.FcnSQL.ExistRegistros("db_solicitudes", "estado = '3' AND revision ='"+_revision+"'")){
+			_retorno = false;
+		}else if(this.FcnSQL.ExistRegistros("db_solicitudes", "estado IN (0,2) AND revision ='"+_revision+"'")){
+			_retorno = true;
+		}
+		return _retorno;
 	}
 	
 	

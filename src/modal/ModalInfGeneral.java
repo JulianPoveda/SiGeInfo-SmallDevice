@@ -1,7 +1,7 @@
 package modal;
 
 import clases.ClassRevision;
-import eaav.android_v1.Loggin;
+import eaav.android_v1.FormLoggin;
 import eaav.android_v1.R;
 import android.app.Activity;
 import android.os.Bundle;
@@ -21,7 +21,7 @@ public class ModalInfGeneral extends Activity {
 		Bundle bundle = getIntent().getExtras();
 		this._revision 	= bundle.getString("Revision");
 		
-		this.FcnRevision = new ClassRevision(this, Loggin.CARPETA_RAIZ);
+		this.FcnRevision = new ClassRevision(this, FormLoggin.CARPETA_RAIZ);
 		
 		this._txtRevision 	= (EditText) findViewById(R.id.GeneralTxtRevision);
 		this._txtCodigo 	= (EditText) findViewById(R.id.GeneralTxtCodigo);

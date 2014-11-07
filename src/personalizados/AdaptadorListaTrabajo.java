@@ -63,6 +63,10 @@ public class AdaptadorListaTrabajo extends BaseAdapter{
 			Nodo.setBackgroundColor(Color.GREEN);
 			Tipo.setBackgroundColor(Color.GREEN);			
 		}else if(Sol.getEstado() == 2){
+			Solicitud.setBackgroundColor(Color.parseColor("#C1BFE6"));
+			Nodo.setBackgroundColor(Color.parseColor("#C1BFE6"));
+			Tipo.setBackgroundColor(Color.parseColor("#C1BFE6"));			
+		}else if(Sol.getEstado() == 3){
 			Solicitud.setBackgroundColor(Color.YELLOW);
 			Nodo.setBackgroundColor(Color.YELLOW);
 			Tipo.setBackgroundColor(Color.YELLOW);	

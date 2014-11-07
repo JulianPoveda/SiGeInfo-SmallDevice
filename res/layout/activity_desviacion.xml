@@ -49,221 +49,41 @@
                         android:layout_weight="1" >
 
                         <EditText
-                            android:id="@+id/TxtDesviacionRevision"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/GeneralTxtPrecinto"
+                            android:layout_width="75dp"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
                             android:layout_alignParentTop="true"
-                            android:layout_toRightOf="@+id/LblDesviacionRevision"
-                            android:inputType="text" />
-
-                        <EditText
-                            android:id="@+id/TxtDesviacionCodigo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignLeft="@+id/TxtDesviacionRevision"
-                            android:layout_alignParentRight="true"
-                            android:layout_below="@+id/TxtDesviacionRevision"
+                            android:layout_toRightOf="@+id/GeneralLblPrecinto"
                             android:inputType="text" />
 
                         <TextView
-                            android:id="@+id/LblDesviacionCodigo"
+                            android:id="@+id/GeneralLblPrecinto"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/TxtDesviacionCodigo"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignTop="@+id/TxtDesviacionCodigo"
-                            android:layout_toLeftOf="@+id/TxtDesviacionCodigo"
-                            android:gravity="center_vertical"
-                            android:text="@string/LblDesviacionCodigo"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                        <TextView
-                            android:id="@+id/LblDesviacionRevision"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/TxtDesviacionRevision"
+                            android:layout_alignBottom="@+id/GeneralTxtPrecinto"
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentTop="true"
                             android:gravity="center_vertical"
-                            android:text="@string/LblDesviacionRevision"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:text="@string/GeneralLblPrecinto"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <TextView
-                            android:id="@+id/LblDesviacionNombre"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_below="@+id/TxtDesviacionCodigo"
-                            android:text="@string/LblDesviacionNombre"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                        <EditText
-                            android:id="@+id/TxtDesviacionNombre"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_below="@+id/LblDesviacionNombre"
-                            android:inputType="text" />
-
-                        <TextView
-                            android:id="@+id/LblDesviacionDireccion"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_below="@+id/TxtDesviacionNombre"
-                            android:text="@string/LblDesviacionDireccion"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                        <EditText
-                            android:id="@+id/TxtDesviacionDireccion"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_below="@+id/LblDesviacionDireccion"
-                            android:inputType="text" />
-
-                        <EditText
-                            android:id="@+id/TxtDesviacionSerie"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignLeft="@+id/TxtDesviacionCodigo"
-                            android:layout_alignParentRight="true"
-                            android:layout_below="@+id/TxtDesviacionDireccion"
-                            android:inputType="text" />
-
-                        <TextView
-                            android:id="@+id/LblDesviacionSerie"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/TxtDesviacionSerie"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignRight="@+id/LblDesviacionCodigo"
-                            android:layout_alignTop="@+id/TxtDesviacionSerie"
-                            android:gravity="center_vertical"
-                            android:text="@string/LblDesviacionSerie"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                        <EditText
-                            android:id="@+id/TxtDesviacionCiclo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignLeft="@+id/TxtDesviacionPromedio"
-                            android:layout_alignParentRight="true"
-                            android:layout_below="@+id/TxtDesviacionSerie"
-                            android:inputType="number" />
-
-                        <TextView
-                            android:id="@+id/LblDesviacionCiclo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/TxtDesviacionCiclo"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignRight="@+id/LblDesviacionSerie"
-                            android:layout_alignTop="@+id/TxtDesviacionCiclo"
-                            android:gravity="center_vertical"
-                            android:text="@string/LblDesviacionCiclo"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                        <EditText
-                            android:id="@+id/TxtDesviacionPromedio"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignLeft="@+id/TxtDesviacionVisita"
-                            android:layout_alignParentRight="true"
-                            android:layout_below="@+id/TxtDesviacionCiclo"
-                            android:inputType="number" />
-
-                        <TextView
-                            android:id="@+id/LblDesviacionPromedio"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/TxtDesviacionPromedio"
-                            android:layout_alignParentLeft="true"
-                            android:layout_below="@+id/TxtDesviacionCiclo"
-                            android:gravity="center_vertical"
-                            android:text="@string/LblDesviacionPromedio"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                        <EditText
-                            android:id="@+id/TxtDesviacionVisita"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_toRightOf="@+id/LblDesviacionVisitaActual"
-                            android:inputType="number" />
-
-                        <TextView
-                            android:id="@+id/LblDesviacionVisitaActual"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:layout_alignParentLeft="true"
-                            android:layout_below="@+id/TxtDesviacionPromedio"
-                            android:gravity="center_vertical"
-                            android:text="@string/LblDesviacionVisita"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_weight="1" >
-
-                        <EditText
-                            android:id="@+id/TxtDesviacionPrecinto"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentTop="true"
-                            android:layout_toRightOf="@+id/LblDesviacionPrecinto"
-                            android:inputType="text" />
-
-                        <TextView
-                            android:id="@+id/LblDesviacionPrecinto"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/TxtDesviacionPrecinto"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentTop="true"
-                            android:gravity="center_vertical"
-                            android:text="@string/LblDesviacionPrecinto"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                        <TextView
-                            android:id="@+id/LblDesviacionEstrato"
+                            android:id="@+id/GeneralLblEstrato"
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
                             android:layout_alignParentLeft="true"
-                            android:layout_below="@+id/TxtDesviacionPrecinto"
-                            android:layout_toLeftOf="@+id/CmbDesviacionEstrato"
+                            android:layout_below="@+id/GeneralTxtPrecinto"
+                            android:layout_toLeftOf="@+id/GeneralCmbEstrato"
                             android:gravity="center_vertical"
-                            android:text="@string/LblDesviacionEstrato"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:text="@string/GeneralLblEstrato"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <Spinner
-                            android:id="@+id/CmbDesviacionEstrato"
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:layout_alignLeft="@+id/TxtDesviacionPrecinto"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignTop="@+id/LblDesviacionEstrato" />
-
-                        <EditText
-                            android:id="@+id/TxtDesviacionUso"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignLeft="@+id/CmbDesviacionEstrato"
-                            android:layout_alignParentRight="true"
-                            android:layout_below="@+id/CmbDesviacionEstrato"
-                            android:inputType="text" />
+                            android:id="@+id/GeneralCmbEstrato"
+                            android:layout_width="50dp"
+                            android:layout_height="35dp"
+                            android:layout_alignLeft="@+id/GeneralTxtPrecinto"
+                            android:layout_alignTop="@+id/GeneralLblEstrato" />
 
                         <TextView
                             android:id="@+id/LblDesviacionUso"
@@ -271,101 +91,183 @@
                             android:layout_height="wrap_content"
                             android:layout_alignBottom="@+id/TxtDesviacionUso"
                             android:layout_alignParentLeft="true"
-                            android:layout_alignRight="@+id/LblDesviacionEstrato"
                             android:layout_alignTop="@+id/TxtDesviacionUso"
                             android:gravity="center_vertical"
                             android:text="@string/LblDesviacionUso"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <TextView
                             android:id="@+id/LblDesviacionTipo"
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
                             android:layout_alignParentLeft="true"
-                            android:layout_alignRight="@+id/LblDesviacionUso"
                             android:layout_below="@+id/LblDesviacionUso"
+                            android:layout_toLeftOf="@+id/TxtDesviacionArea"
                             android:gravity="center_vertical"
                             android:text="@string/LblDesviacionTipo"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <Spinner
                             android:id="@+id/CmbDesviacionTipo"
-                            android:layout_width="match_parent"
+                            android:layout_width="110dp"
                             android:layout_height="40dp"
                             android:layout_alignLeft="@+id/TxtDesviacionUso"
                             android:layout_alignTop="@+id/LblDesviacionTipo" />
 
                         <TextView
-                            android:id="@+id/LblDesviacionAcueducto"
+                            android:id="@+id/GeneralLblServicioAcueducto"
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
                             android:layout_alignParentLeft="true"
-                            android:layout_alignRight="@+id/LblDesviacionAlcantarillado"
                             android:layout_below="@+id/LblDesviacionTipo"
                             android:gravity="center_vertical"
-                            android:text="@string/LblDesviacionAcueducto"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                        <Spinner
-                            android:id="@+id/CmbDesviacionAcueducto"
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:layout_alignTop="@+id/LblDesviacionAcueducto"
-                            android:layout_toRightOf="@+id/LblDesviacionAlcantarillado" />
+                            android:text="@string/GeneralLblServicioAcueducto"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <TextView
-                            android:id="@+id/LblDesviacionAlcantarillado"
+                            android:id="@+id/LblDesviacionUso2"
                             android:layout_width="wrap_content"
-                            android:layout_height="40dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/CmbDesviacionUso"
                             android:layout_alignParentLeft="true"
-                            android:layout_below="@+id/LblDesviacionAcueducto"
+                            android:layout_below="@+id/LblDesviacionArea"
+                            android:layout_toLeftOf="@+id/TxtDesviacionArea"
                             android:gravity="center_vertical"
-                            android:text="@string/LblDesviacionAlcantarrillado"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:text="@string/LblDesviacionUso"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-                        <Spinner
-                            android:id="@+id/CmbDesviacionAlcantarillado"
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:layout_alignLeft="@+id/CmbDesviacionAcueducto"
-                            android:layout_alignTop="@+id/LblDesviacionAlcantarillado" />
+                        <TextView
+                            android:id="@+id/GeneralLblActividad"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/GeneralTxtPrecinto"
+                            android:layout_alignParentTop="true"
+                            android:layout_toRightOf="@+id/GeneralTxtPrecinto"
+                            android:gravity="left|center_vertical"
+                            android:paddingLeft="5dp"
+                            android:text="@string/GeneralLblActividad"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <EditText
-                            android:id="@+id/TxtDesviacionCual"
+                            android:id="@+id/GeneralTxtActividad"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            android:layout_below="@+id/LblDesviacionAlcantarillado"
-                            android:layout_toRightOf="@+id/LblDesviacionCual"
+                            android:layout_alignParentTop="true"
+                            android:layout_toRightOf="@+id/GeneralLblActividad"
                             android:inputType="text" />
 
                         <TextView
-                            android:id="@+id/LblDesviacionCual"
+                            android:id="@+id/GeneralLblEstado"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/TxtDesviacionCual"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignTop="@+id/TxtDesviacionCual"
-                            android:gravity="center_vertical"
-                            android:text="@string/LblDesviacionCual"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:layout_alignBottom="@+id/GeneralLblEstrato"
+                            android:layout_alignTop="@+id/GeneralCmbEstrato"
+                            android:layout_toRightOf="@+id/GeneralCmbEstrato"
+                            android:gravity="right|center_vertical"
+                            android:text="@string/GeneralLblEstado"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                        <Spinner
+                            android:id="@+id/GeneralCmbEstado"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_alignBottom="@+id/GeneralCmbEstrato"
+                            android:layout_alignTop="@+id/GeneralLblEstado"
+                            android:layout_toRightOf="@+id/GeneralLblEstado" />
+
+                        <TextView
+                            android:id="@+id/GeneralLblNumeroPersonas"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/TxtDesviacionUso"
+                            android:layout_below="@+id/GeneralCmbEstado"
+                            android:layout_toRightOf="@+id/TxtDesviacionUso"
+                            android:gravity="right|center_vertical"
+                            android:text="@string/GeneralLblNumeroPersonas"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                        <EditText
+                            android:id="@+id/TxtDesviacionUso"
+                            android:layout_width="90dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/GeneralLblEstrato"
+                            android:layout_toRightOf="@+id/LblDesviacionUso"
+                            android:inputType="text" />
+
+                        <EditText
+                            android:id="@+id/GeneralTxtNumeroPersonas"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignLeft="@+id/GeneralTxtActividad"
+                            android:layout_alignParentRight="true"
+                            android:layout_below="@+id/GeneralCmbEstado"
+                            android:inputType="number" />
+
+                        <TextView
+                            android:id="@+id/GeneralLblOtros"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/CmbDesviacionTipo"
+                            android:layout_alignTop="@+id/CmbDesviacionTipo"
+                            android:layout_toRightOf="@+id/CmbDesviacionTipo"
+                            android:gravity="right|center_vertical"
+                            android:text="@string/GeneralLblCual"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                        <EditText
+                            android:id="@+id/GeneralCmbOtros"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_below="@+id/GeneralLblNumeroPersonas"
+                            android:layout_toRightOf="@+id/GeneralLblOtros"
+                            android:inputType="text" />
+
+                        <Spinner
+                            android:id="@+id/GeneralCmbServicioAcueducto"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_alignBottom="@+id/GeneralLblServicioAcueducto"
+                            android:layout_alignRight="@+id/GeneralTxtPrecinto"
+                            android:layout_alignTop="@+id/GeneralLblServicioAcueducto"
+                            android:layout_toRightOf="@+id/GeneralLblServicioAcueducto" />
+
+                        <TextView
+                            android:id="@+id/GeneralLblServicioAlcantarillado"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/GeneralCmbServicioAcueducto"
+                            android:layout_alignTop="@+id/GeneralCmbServicioAcueducto"
+                            android:layout_toRightOf="@+id/GeneralCmbServicioAcueducto"
+                            android:gravity="right|center_vertical"
+                            android:text="@string/GeneralLblServicioAlcantarillado"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                        <Spinner
+                            android:id="@+id/GeneralCmbServicioAlcantarillado"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_alignBottom="@+id/GeneralCmbServicioAcueducto"
+                            android:layout_alignTop="@+id/GeneralLblServicioAlcantarillado"
+                            android:layout_toRightOf="@+id/GeneralLblServicioAlcantarillado" />
 
                         <TextView
                             android:id="@+id/LblDesviacionArea"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/TxtDesviacionArea"
+                            android:layout_alignBottom="@+id/TxtDesviacionPisos"
                             android:layout_alignParentLeft="true"
-                            android:layout_below="@+id/TxtDesviacionCual"
+                            android:layout_below="@+id/GeneralLblServicioAcueducto"
                             android:gravity="center_vertical"
                             android:text="@string/LblDesviacionArea"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <EditText
                             android:id="@+id/TxtDesviacionArea"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/TxtDesviacionCual"
+                            android:layout_alignTop="@+id/LblDesviacionArea"
                             android:layout_toLeftOf="@+id/LblDesviacionPisos"
                             android:layout_toRightOf="@+id/LblDesviacionArea"
                             android:inputType="number|text" />
@@ -375,19 +277,19 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignBottom="@+id/TxtDesviacionArea"
-                            android:layout_alignTop="@+id/TxtDesviacionArea"
-                            android:layout_toLeftOf="@+id/CmbDesviacionAlcantarillado"
+                            android:layout_below="@+id/GeneralLblServicioAlcantarillado"
+                            android:layout_toRightOf="@+id/CmbDesviacionTipo"
                             android:gravity="center_vertical"
                             android:text="@string/LblDesviacionPisos"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <EditText
                             android:id="@+id/TxtDesviacionPisos"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignLeft="@+id/CmbDesviacionAlcantarillado"
                             android:layout_alignParentRight="true"
-                            android:layout_alignTop="@+id/LblDesviacionPisos"
+                            android:layout_below="@+id/GeneralLblServicioAlcantarillado"
+                            android:layout_toRightOf="@+id/LblDesviacionPisos"
                             android:inputType="number|text" />
 
                         <Spinner
@@ -395,198 +297,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:layout_alignLeft="@+id/TxtDesviacionArea"
-                            android:layout_alignParentBottom="true"
-                            android:layout_alignTop="@+id/LblDesviacionUso2" />
+                            android:layout_alignParentRight="true"
+                            android:layout_below="@+id/TxtDesviacionArea" />
 
-                        <TextView
-                            android:id="@+id/LblDesviacionUso2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:layout_alignParentLeft="true"
-                            android:layout_below="@+id/LblDesviacionArea"
-                            android:layout_toLeftOf="@+id/TxtDesviacionArea"
-                            android:gravity="center_vertical"
-                            android:text="@string/LblDesviacionUso"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
                     </RelativeLayout>
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_weight="1" >
-
-                        <TextView
-                            android:id="@+id/LblDesviacionActividad"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/TxtDesviacionActividad"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentTop="true"
-                            android:gravity="center_vertical"
-                            android:text="@string/LblDesviacionActividad"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                        <EditText
-                            android:id="@+id/TxtDesviacionActividad"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentTop="true"
-                            android:layout_toRightOf="@+id/LblDesviacionActividad"
-                            android:inputType="text" />
-
-                        <EditText
-                            android:id="@+id/TxtDesviacionPersonas"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_below="@+id/TxtDesviacionActividad"
-                            android:layout_toRightOf="@+id/LblDesviacionPersonas"
-                            android:inputType="number" />
-
-                        <TextView
-                            android:id="@+id/LblDesviacionPersonas"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/TxtDesviacionPersonas"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignTop="@+id/TxtDesviacionPersonas"
-                            android:gravity="center_vertical"
-                            android:text="@string/LblDesviacionPersonas"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                        <Spinner
-                            android:id="@+id/CmbDesviacionEstado"
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:layout_below="@+id/LblDesviacionPersonas"
-                            android:layout_toRightOf="@+id/LblDesviacionEstado" />
-
-                        <TextView
-                            android:id="@+id/LblDesviacionEstado"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/CmbDesviacionEstado"
-                            android:layout_alignParentLeft="true"
-                            android:layout_below="@+id/LblDesviacionPersonas"
-                            android:gravity="center_vertical"
-                            android:text="@string/LblDesviacionEstado"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                        <TextView
-                            android:id="@+id/LblDesviacionHabitado"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/CmbDesviacionHabitado"
-                            android:layout_alignParentLeft="true"
-                            android:layout_below="@+id/CmbDesviacionEstado"
-                            android:gravity="center_vertical"
-                            android:text="@string/LblDesviacionHabitado"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                        <Spinner
-                            android:id="@+id/CmbDesviacionHabitado"
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_below="@+id/CmbDesviacionEstado"
-                            android:layout_toRightOf="@+id/LblDesviacionHabitado" />
-
-                        <EditText
-                            android:id="@+id/TxtDesviacionNombreUsuario"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_below="@+id/CmbDesviacionHabitado"
-                            android:layout_toRightOf="@+id/LblDesviacionUsuario"
-                            android:inputType="text" />
-
-                        <TextView
-                            android:id="@+id/LblDesviacionUsuario"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/TxtDesviacionNombreUsuario"
-                            android:layout_alignParentLeft="true"
-                            android:layout_below="@+id/LblDesviacionHabitado"
-                            android:gravity="center_vertical"
-                            android:text="@string/LblDesviacionNombreUsuario"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                        <EditText
-                            android:id="@+id/TxtDesviacionCedulaUsuario"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_below="@+id/TxtDesviacionNombreUsuario"
-                            android:layout_toRightOf="@+id/LblDesviacionCedulaUsuario"
-                            android:inputType="number" />
-
-                        <TextView
-                            android:id="@+id/LblDesviacionCedulaUsuario"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/TxtDesviacionCedulaUsuario"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignTop="@+id/TxtDesviacionCedulaUsuario"
-                            android:gravity="center_vertical"
-                            android:text="@string/LblDesviacionCedulaUsuario"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                        <EditText
-                            android:id="@+id/TxtDesviacionNombreTestigo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignLeft="@+id/TxtDesviacionNombreUsuario"
-                            android:layout_alignParentRight="true"
-                            android:layout_below="@+id/TxtDesviacionCedulaUsuario"
-                            android:inputType="text" />
-
-                        <TextView
-                            android:id="@+id/LblDesviacionTestigo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/TxtDesviacionNombreTestigo"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignRight="@+id/LblDesviacionUsuario"
-                            android:layout_below="@+id/LblDesviacionCedulaUsuario"
-                            android:gravity="center_vertical"
-                            android:text="@string/LblDesviacionNombreTestigo"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                        <EditText
-                            android:id="@+id/TxtDesviacionCedulaTestigo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignLeft="@+id/TxtDesviacionCedulaUsuario"
-                            android:layout_alignParentRight="true"
-                            android:layout_below="@+id/TxtDesviacionNombreTestigo"
-                            android:inputType="number|text" />
-
-                        <TextView
-                            android:id="@+id/LblDesviacionCedulaTestigo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/TxtDesviacionCedulaTestigo"
-                            android:layout_alignParentLeft="true"
-                            android:layout_below="@+id/TxtDesviacionNombreTestigo"
-                            android:gravity="center_vertical"
-                            android:text="@string/LblDesviacionCedulaTestigo"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                        <Button
-                            android:id="@+id/BtnGuardarInfGeneral"
-                            style="?android:attr/buttonStyleSmall"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_below="@+id/TxtDesviacionCedulaTestigo"
-                            android:text="@string/BtnGuardarInfgeneral" />
-                    </RelativeLayout>
                 </LinearLayout>
 
                 <RelativeLayout
@@ -602,7 +317,7 @@
                         android:layout_height="40dp"
                         android:gravity="center_vertical"
                         android:text="@string/LblVisitaTecnicaElemento"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
 
                     <Spinner
                         android:id="@+id/CmbVisitaTecnicaElemento"
@@ -629,7 +344,7 @@
                         android:layout_below="@+id/LblVisitaTecnicaElemento"
                         android:gravity="center_vertical"
                         android:text="@string/LblVisitaTecnicaCantidad"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
 
                     <TextView
                         android:id="@+id/LblVisitaTecnicaItem1"
@@ -641,7 +356,7 @@
                         android:layout_marginTop="44dp"
                         android:gravity="center_vertical"
                         android:text="@string/LblVisitaTecnicaItem1"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
 
                     <EditText
                         android:id="@+id/TxtVisitaTecnicaCantidad"
@@ -671,7 +386,7 @@
                         android:layout_toLeftOf="@+id/CmbVisitaTecnicaItem2"
                         android:gravity="center_vertical"
                         android:text="@string/LblVisitaTecnicaItem2"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
 
                     <Spinner
                         android:id="@+id/CmbVisitaTecnicaItem3"
@@ -691,7 +406,7 @@
                         android:layout_alignTop="@+id/CmbVisitaTecnicaItem3"
                         android:gravity="center_vertical"
                         android:text="@string/LblVisitaTecnicaItem3"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
 
                     <TextView
                         android:id="@+id/LblVisitaTecnicaOtro"
@@ -702,7 +417,7 @@
                         android:layout_alignTop="@+id/TxtVisitaTecnicaOtro"
                         android:gravity="center_vertical"
                         android:text="@string/LblVisitaTecnicaOtro"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
 
                     <EditText
                         android:id="@+id/TxtVisitaTecnicaOtro"
@@ -739,7 +454,7 @@
                         android:layout_toRightOf="@+id/CmbVisitaTecnicaElemento"
                         android:gravity="center_vertical"
                         android:text="@string/LblVisitaTecnicaRegistroPaso"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
 
                     <Spinner
                         android:id="@+id/CmbVisitaTecnicaRegistroPaso"
@@ -773,7 +488,7 @@
                         android:layout_toLeftOf="@+id/CmbVisitaTecnicaDestruido"
                         android:gravity="center_vertical"
                         android:text="@string/LblVisitaTecnicaDestruido"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
 
                     <TextView
                         android:id="@+id/LblListraTrabajoSolicitud"
@@ -785,7 +500,7 @@
                         android:layout_toRightOf="@+id/CmbVisitaTecnicaDestruido"
                         android:gravity="center_vertical"
                         android:text="@string/LblVisitaTecnicaInvertido"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
 
                     <Spinner
                         android:id="@+id/CmbVisitaTecnicaInvertido"
@@ -804,7 +519,7 @@
                         android:layout_toLeftOf="@+id/CmbVisitaTecnicaDestruido"
                         android:gravity="center_vertical"
                         android:text="@string/LblVisitaTecnicaVidrioIlegible"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
 
                     <Spinner
                         android:id="@+id/CmbVisitaTecnicaVidrioIlegible"
@@ -823,7 +538,7 @@
                         android:layout_alignTop="@+id/CmbVisitaTecnicaVidrioIlegible"
                         android:layout_toRightOf="@+id/CmbVisitaTecnicaVidrioIlegible"
                         android:text="@string/LblVisitaTecnicaPrecintoSeguridad"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
 
                     <Spinner
                         android:id="@+id/CmbVisitaTecnicaPrecintoSeguridad"
@@ -867,7 +582,7 @@
                         android:layout_toLeftOf="@+id/CmbVisitaTecnicaVidrioIlegible"
                         android:gravity="center_vertical"
                         android:text="@string/LblVisitaTecnicaElementoPrueba"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
 
                     <Spinner
                         android:id="@+id/CmbVisitaTecnicaElementoPrueba"
@@ -887,7 +602,7 @@
                         android:layout_alignTop="@+id/TxtVisitaTecnicaOtro"
                         android:gravity="center_vertical"
                         android:text="@string/LblVisitaTecnicaResultado"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
 
                     <Spinner
                         android:id="@+id/CmbVisitaTecnicaEstanqueidadResultado"
@@ -907,7 +622,7 @@
                         android:layout_alignTop="@+id/BtnVisitaTecnicaGuardarElementos"
                         android:gravity="center_vertical"
                         android:text="@string/LblVisitaTecnicaCapacidad"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
 
                     <Spinner
                         android:id="@+id/CmbVisitaTecnicaCapacidadMedida"
@@ -926,7 +641,7 @@
                         android:layout_below="@+id/LblVisitaTecnicaCapacidad"
                         android:gravity="center_vertical"
                         android:text="@string/LblVisitaTecnicaFuga"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
 
                     <Spinner
                         android:id="@+id/CmbVisitaTecnicaMedidaFuga"
@@ -977,7 +692,7 @@
                         android:layout_toRightOf="@+id/CmbVisitaTecnicaRegistroPaso"
                         android:gravity="center_vertical"
                         android:text="@string/LblVisitaTecnicaRegistroAntifraude"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
 
                     <Button
                         android:id="@+id/BtnGuardarDatosMedidor"
@@ -1014,7 +729,7 @@
                             android:layout_alignParentTop="true"
                             android:gravity="center_vertical"
                             android:text="@string/LblInfTecnicaAcueducto"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <Spinner
                             android:id="@+id/CmbInfTecnicaAcueducto"
@@ -1047,7 +762,7 @@
                             android:layout_below="@+id/LblInfTecnicaAcueducto"
                             android:gravity="center_vertical"
                             android:text="@string/LblInfTecnicaCual"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <TextView
                             android:id="@+id/LblInfTecnicaEscape"
@@ -1058,7 +773,7 @@
                             android:layout_below="@+id/TxtInfTecnicaCual"
                             android:gravity="center_vertical"
                             android:text="@string/LblInfTecnicaEscape"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <Spinner
                             android:id="@+id/CmbInfTecnicaEscape"
@@ -1085,7 +800,7 @@
                             android:layout_below="@+id/LblInfTecnicaCamaraMedidor"
                             android:gravity="center_vertical"
                             android:text="@string/LblInfTecnicaEstado"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <Spinner
                             android:id="@+id/CmbInfTecnicaEstado"
@@ -1103,7 +818,7 @@
                             android:layout_alignTop="@+id/TxtInfTecnicaNumeroIndividual"
                             android:gravity="center_vertical"
                             android:text="@string/LblInfTecnicaNumero"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <TextView
                             android:id="@+id/LblInfTecnicaLecturaIndividual"
@@ -1114,7 +829,7 @@
                             android:layout_below="@+id/TxtInfTecnicaNumeroIndividual"
                             android:gravity="center_vertical"
                             android:text="@string/LblInfTecnicaLecturaIndividual"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <EditText
                             android:id="@+id/TxtInfTecnicaLecturaIndividual"
@@ -1142,7 +857,7 @@
                             android:layout_below="@+id/LblInfTecnicaEscape"
                             android:gravity="center_vertical"
                             android:text="@string/LblInfTecnicaServicioDirecto"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <TextView
                             android:id="@+id/LblInfTecnicaCamaraMedidor"
@@ -1152,7 +867,7 @@
                             android:layout_below="@+id/CmbInfTecnicaServicioDirecto"
                             android:gravity="center_vertical"
                             android:text="@string/LblInfTecnicaCamaraMedidor"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <Spinner
                             android:id="@+id/CmbInfTecnicaBypass"
@@ -1180,7 +895,7 @@
                             android:layout_toRightOf="@+id/TxtInfTecnicaNumeroIndividual"
                             android:gravity="center_vertical"
                             android:text="@string/LblInfTecnicaMarca"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <TextView
                             android:id="@+id/LblInfTecnicaDiametroIndividual"
@@ -1191,7 +906,7 @@
                             android:layout_alignTop="@+id/TxtInfTecnicaLecturaIndividual"
                             android:gravity="center_vertical"
                             android:text="@string/LblInfTecnicaDiametroIndividual"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <Spinner
                             android:id="@+id/CmbInfTecnicaDiametroIndividual"
@@ -1209,7 +924,7 @@
                             android:layout_below="@+id/CmbInfTecnicaEscape"
                             android:gravity="center_vertical"
                             android:text="@string/LblInfTecnicaBypass"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <EditText
                             android:id="@+id/TxtInfTecnicaNumeroIndividual"
@@ -1270,7 +985,7 @@
                             android:layout_below="@+id/TituloInfTecnicaTotalizador"
                             android:gravity="center_vertical"
                             android:text="@string/LblInfTecnicaNumero"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <EditText
                             android:id="@+id/TxtInfTecnicaNumeroTotalizador"
@@ -1290,7 +1005,7 @@
                             android:layout_toRightOf="@+id/TxtInfTecnicaNumeroTotalizador"
                             android:gravity="center_vertical"
                             android:text="@string/LblInfTecnicaMarca"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <EditText
                             android:id="@+id/TxtInfTecnicaMarcaTotalizador"
@@ -1311,7 +1026,7 @@
                             android:layout_below="@+id/LblInfTecnicaNumeroTotalizador"
                             android:gravity="center_vertical"
                             android:text="@string/LblInfTecnicaLecturaIndividual"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <TextView
                             android:id="@+id/LblInfTecnicaDiametroTotalizador"
@@ -1322,7 +1037,7 @@
                             android:layout_below="@+id/LblInfTecnicaMarcaTotalizador"
                             android:gravity="center_vertical"
                             android:text="@string/LblInfTecnicaDiametroIndividual"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <Spinner
                             android:id="@+id/CmbInfTecnicaDiametroTotalizador"
@@ -1380,7 +1095,7 @@
                             android:layout_marginTop="10dp"
                             android:gravity="center_vertical"
                             android:text="@string/LblInfTecnicaSegundoConcepto"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <TextView
                             android:id="@+id/LblInfTecnicaRespuesta"
@@ -1390,7 +1105,7 @@
                             android:layout_below="@+id/LblInfTecnicaSegundoConcepto"
                             android:gravity="center_vertical"
                             android:text="@string/LblInfTecnicaRespuesta"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <Spinner
                             android:id="@+id/CmbInfTecnicaRespuesta"
@@ -1407,7 +1122,7 @@
                             android:layout_alignParentRight="true"
                             android:layout_below="@+id/LblInfTecnicaRespuesta"
                             android:text="@string/LblInfTecnicaObservacion"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <EditText
                             android:id="@+id/TxtInfTecnicaObservacion"

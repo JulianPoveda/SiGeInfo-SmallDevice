@@ -53,7 +53,12 @@ public class ModalInputSingle extends Activity implements OnClickListener{
 	public void finish(boolean _caso) {
 		Intent data = new Intent();
 		data.putExtra("txt1", _txt1.getText().toString());
-		data.putExtra("accion", _caso);	 
+		if(_txt1.getText().toString().isEmpty()){
+			data.putExtra("accion", false);	
+		}else{
+			data.putExtra("accion", _caso);	
+		}
+		 
 		setResult(RESULT_OK, data);
 		super.finish();
 	}

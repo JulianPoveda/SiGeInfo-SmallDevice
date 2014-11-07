@@ -135,7 +135,7 @@ public class Desviacion extends Activity{
 	ArrayAdapter<String> AdaptadorRespuestaDesviacion;
 	
 	//Objetos
-	private EditText 	_txtRevision, _txtCodigo, _txtNombre, _txtDireccion, _txtSerie, _txtCiclo, _txtPromedio, _txtVisita, _txtPrecinto, _txtUso, _txtCual, _txtArea, _txtPisos, _txtActividad, _txtPersonas, _txtUsuario, _txtCedulaUsuario, _txtOtro, _txtTestigo, _txtCedulaTestigo;
+	private EditText 	_txtPrecinto, _txtUso, _txtCual, _txtArea, _txtPisos, _txtActividad, _txtPersonas, _txtUsuario, _txtCedulaUsuario, _txtOtro, _txtTestigo, _txtCedulaTestigo;
 	private EditText 	_txtInfTecnicaCual, _txtNumeroIndividual, _txtMarcaIndividual, _txtLecturaIndividual, _txtNumeroTotalizador, _txtMarcaTotalizador, _txtLecturaTotalizador, _txtVisitaTecnicaObservacion, _txtVisitaTecnicaCapacidad, _txtVisitaTecnicaFuga;
 	private EditText 	_txtVisitaTecnicaCantidad;
 	private Spinner  	_Estrato, _Tipo, _Acueducto, _Alcantarillado, _Uso, _Estado, _Habitado, _Elementos, _EstadoItem1, _EstadoItem2, _EstadoItem3, _EstadoOtro, _ItemInstalacion, _RtaInstalacion, _RtaRegistroPaso;
@@ -204,13 +204,13 @@ public class Desviacion extends Activity{
 		tabs.setCurrentTab(0);	
 		
 		//Referencia a objetos
-		_Estrato 		= (Spinner) findViewById(R.id.CmbDesviacionEstrato); 
+		_Estrato 		= (Spinner) findViewById(R.id.GeneralCmbEstrato); 
 		_Tipo 			= (Spinner) findViewById(R.id.CmbDesviacionTipo); 
 		_Acueducto  	= (Spinner) findViewById(R.id.CmbDesviacionAcueducto); 
 		_Alcantarillado	= (Spinner) findViewById(R.id.CmbDesviacionAlcantarillado); 
 		_Uso  			= (Spinner) findViewById(R.id.CmbDesviacionUso); 
-		_Estado 	 	= (Spinner) findViewById(R.id.CmbDesviacionEstado); 
-		_Habitado  		= (Spinner) findViewById(R.id.CmbDesviacionHabitado); 
+		/*_Estado 	 	= (Spinner) findViewById(R.id.CmbDesviacionEstado); 
+		_Habitado  		= (Spinner) findViewById(R.id.CmbDesviacionHabitado); */
 		_Elementos 		= (Spinner) findViewById(R.id.CmbVisitaTecnicaElemento); 
 		_EstadoItem1	= (Spinner) findViewById(R.id.CmbVisitaTecnicaItem1);
 		_EstadoItem2	= (Spinner) findViewById(R.id.CmbVisitaTecnicaItem2);
@@ -241,25 +241,25 @@ public class Desviacion extends Activity{
 		_SegundoConcepto 	= (Spinner) findViewById(R.id.CmbInfTecnicaSegundoConcepto);
 		_RespuestaDesviacion= (Spinner) findViewById(R.id.CmbInfTecnicaRespuesta);
 		
-		_txtRevision	= (EditText) findViewById(R.id.TxtDesviacionRevision); 
+		/*_txtRevision	= (EditText) findViewById(R.id.TxtDesviacionRevision); 
 		_txtCodigo		= (EditText) findViewById(R.id.TxtDesviacionCodigo);
 		_txtNombre		= (EditText) findViewById(R.id.TxtDesviacionNombre);
 		_txtDireccion	= (EditText) findViewById(R.id.TxtDesviacionDireccion);
 		_txtSerie		= (EditText) findViewById(R.id.TxtDesviacionSerie); 
 		_txtCiclo		= (EditText) findViewById(R.id.TxtDesviacionCiclo);
 		_txtPromedio	= (EditText) findViewById(R.id.TxtDesviacionPromedio); 
-		_txtVisita		= (EditText) findViewById(R.id.TxtDesviacionVisita); 
-		_txtPrecinto	= (EditText) findViewById(R.id.TxtDesviacionPrecinto); 
+		_txtVisita		= (EditText) findViewById(R.id.TxtDesviacionVisita); */
+		_txtPrecinto	= (EditText) findViewById(R.id.GeneralTxtPrecinto); 
 		_txtUso			= (EditText) findViewById(R.id.TxtDesviacionUso);
 		_txtCual		= (EditText) findViewById(R.id.TxtDesviacionCual); 
 		_txtArea		= (EditText) findViewById(R.id.TxtDesviacionArea);
 		_txtPisos		= (EditText) findViewById(R.id.TxtDesviacionPisos);
-		_txtActividad	= (EditText) findViewById(R.id.TxtDesviacionActividad);
+		/*_txtActividad	= (EditText) findViewById(R.id.TxtDesviacionActividad);
 		_txtPersonas	= (EditText) findViewById(R.id.TxtDesviacionPersonas);
 		_txtUsuario		= (EditText) findViewById(R.id.TxtDesviacionNombreUsuario);
 		_txtCedulaUsuario= (EditText) findViewById(R.id.TxtDesviacionCedulaUsuario); 
 		_txtTestigo		= (EditText) findViewById(R.id.TxtDesviacionNombreTestigo);
-		_txtCedulaTestigo= (EditText) findViewById(R.id.TxtDesviacionCedulaTestigo); 
+		_txtCedulaTestigo= (EditText) findViewById(R.id.TxtDesviacionCedulaTestigo);*/ 
 		_txtOtro		= (EditText) findViewById(R.id.TxtVisitaTecnicaOtro);
 		_txtVisitaTecnicaCantidad	= (EditText) findViewById(R.id.TxtVisitaTecnicaCantidad);
 		
@@ -278,13 +278,13 @@ public class Desviacion extends Activity{
 		
 		_LblInfTecnicaCual 	= (TextView) findViewById(R.id.LblInfTecnicaCual);
 		_LblCual 			= (TextView) findViewById(R.id.LblDesviacionCual);
-		_LblAcueducto 		= (TextView) findViewById(R.id.LblDesviacionAcueducto);
+		_LblAcueducto 		= (TextView) findViewById(R.id.GeneralLblServicioAcueducto);
 		_LblAlcantarillado 	= (TextView) findViewById(R.id.LblDesviacionAlcantarillado);
 		_item1	= (TextView) findViewById(R.id.LblVisitaTecnicaItem1);
 		_item2	= (TextView) findViewById(R.id.LblVisitaTecnicaItem2);
 		_item3	= (TextView) findViewById(R.id.LblVisitaTecnicaItem3);
 		
-		_BtnGuardarInfGeneral = (Button) findViewById(R.id.BtnGuardarInfGeneral);
+		//_BtnGuardarInfGeneral = (Button) findViewById(R.id.BtnGuardarInfGeneral);
 		_BtnGuardarInfTecnica = (Button) findViewById(R.id.BtnGuardarInfTecnica);
 		_BtnVisitaTecnicaInstalaciones = (Button) findViewById(R.id.BtnVisitaTecnicaInstalaciones);
 		_BtnVisitaTecnicaGuardarElementos = (Button) findViewById(R.id.BtnVisitaTecnicaGuardarElementos);
@@ -293,7 +293,7 @@ public class Desviacion extends Activity{
 		_BtnInfTecnicaObservacionSistema = (Button) findViewById(R.id.BtnInfTecnicaObservacion);
 		
 		//Deshabilitacion de los campos informativos
-		_txtRevision.setEnabled(false);
+		/*_txtRevision.setEnabled(false);
 		_txtCodigo.setEnabled(false);
 		_txtNombre.setEnabled(false);
 		_txtDireccion.setEnabled(false);
@@ -301,7 +301,7 @@ public class Desviacion extends Activity{
 		_txtCiclo.setEnabled(false);
 		_txtPromedio.setEnabled(false);
 		_txtVisita.setEnabled(false);
-		_txtUso.setEnabled(false);
+		_txtUso.setEnabled(false);*/
 	
 		//Asociacion de adaptadores y objetos
 		AdaptadorEstrato 	= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,Estrato);
@@ -319,11 +319,11 @@ public class Desviacion extends Activity{
 		AdaptadorUso= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,Uso);
 		_Uso.setAdapter(AdaptadorUso);
 		
-		AdaptadorEstado= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,Estado);
-		_Estado.setAdapter(AdaptadorEstado);
+		/*AdaptadorEstado= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,Estado);
+		_Estado.setAdapter(AdaptadorEstado);*/
 		
-		AdaptadorHabitado= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,Habitado);
-		_Habitado.setAdapter(AdaptadorHabitado);
+		/*AdaptadorHabitado= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,Habitado);
+		_Habitado.setAdapter(AdaptadorHabitado);*/
 		
 		AdaptadorEstadoItem1= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,EstadoItem1);
 		_EstadoItem1.setAdapter(AdaptadorEstadoItem1);
@@ -787,7 +787,7 @@ public class Desviacion extends Activity{
 				 }
 			 }
 		 });
-		CargarInfGuardada();
+		//CargarInfGuardada();
 	}
 	
 	
@@ -1032,7 +1032,7 @@ public class Desviacion extends Activity{
 							
 							new UpLoadDesviacion().execute();
 							Intent k;
-							k = new Intent(getApplicationContext(), Lista_trabajo.class);
+							k = new Intent(getApplicationContext(), FormListaTrabajo.class);
 							startActivity(k);
 			            }  
 			        });  
@@ -1058,7 +1058,7 @@ public class Desviacion extends Activity{
 		            	
 		            	finish();
 		            	Intent k;
-						k = new Intent(getApplicationContext(), Notificacion.class);
+						k = new Intent(getApplicationContext(), FormNotificacion.class);
 						k.putExtra("Solicitud", Solicitud);
 						startActivity(k);
 		            }  

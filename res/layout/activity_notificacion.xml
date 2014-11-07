@@ -6,309 +6,188 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".Notificacion" >
+    tools:context=".FormNotificacion" >
 
     <EditText
-        android:id="@+id/TxtNotificacionRevision"
-        android:layout_width="wrap_content"
+        android:id="@+id/NotificacionTxtRevision"
+        android:layout_width="190dp"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/LblNotificacionRevision"
-        android:layout_alignBottom="@+id/LblNotificacionRevision"
-        android:layout_toRightOf="@+id/LblNotificacionRevision"
-        android:ems="10"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
         android:inputType="text" >
 
         <requestFocus />
     </EditText>
 
-    <EditText
-        android:id="@+id/TxtNotificacionNombre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/LblNotificacionNombre"
-        android:layout_alignBottom="@+id/LblNotificacionNombre"
-        android:layout_alignLeft="@+id/TxtNotificacionRevision"
-        android:layout_alignRight="@+id/TxtNotificacionCodigo"
-        android:ems="10"
-        android:inputType="text" />
-
     <TextView
-        android:id="@+id/LblNotificacionSerie"
+        android:id="@+id/NotificacionLblRevision"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/LblNotificacionNombre"
-        android:layout_alignRight="@+id/LblNotificacionRevision"
-        android:layout_below="@+id/TxtNotificacionNombre"
-        android:layout_marginTop="21dp"
-        android:text="@string/LblNotificacionSerie"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <EditText
-        android:id="@+id/TxtNotificacionSerie"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/LblNotificacionSerie"
-        android:layout_alignBottom="@+id/LblNotificacionSerie"
-        android:layout_alignLeft="@+id/TxtNotificacionNombre"
-        android:ems="10"
-        android:inputType="text" />
-
-    <TextView
-        android:id="@+id/LblNotificacionCiclo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/TxtNotificacionSerie"
-        android:layout_alignLeft="@+id/LblNotificacionCodigo"
-        android:layout_alignRight="@+id/LblNotificacionCodigo"
-        android:text="@string/LblNotificacionCiclo"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <EditText
-        android:id="@+id/TxtNotificacionCiclo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/LblNotificacionCiclo"
-        android:layout_alignBottom="@+id/LblNotificacionCiclo"
-        android:layout_alignLeft="@+id/TxtNotificacionCodigo"
-        android:ems="10"
-        android:inputType="text" />
-
-    <TextView
-        android:id="@+id/LblNotificacionRevision"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/NotificacionTxtRevision"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="78dp"
-        android:layout_marginTop="19dp"
+        android:layout_alignTop="@+id/NotificacionTxtRevision"
+        android:layout_toLeftOf="@+id/NotificacionTxtRevision"
+        android:gravity="right|center_vertical"
         android:text="@string/LblNotificacionRevision"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
-        android:id="@+id/LblNotificacionNombre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/LblNotificacionRevision"
-        android:layout_alignRight="@+id/LblNotificacionRevision"
-        android:layout_below="@+id/TxtNotificacionCodigo"
-        android:layout_marginTop="16dp"
-        android:text="@string/LblNotificacionNombre"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
-        android:id="@+id/TxtNotificacionCodigo"
+        android:id="@+id/NotificacionTxtLectura"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/LblNotificacionCodigo"
-        android:layout_toRightOf="@+id/LblNotificacionCiclo"
-        android:ems="10"
-        android:inputType="text" />
-
-    <TextView
-        android:id="@+id/LblNotificacionVisita"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/LblNotificacionSerie"
-        android:layout_alignRight="@+id/LblNotificacionRevision"
-        android:layout_below="@+id/TxtNotificacionSerie"
-        android:layout_marginTop="17dp"
-        android:text="@string/LblNotificacionVisita"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
-        android:id="@+id/LblNotificacionUso"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/TxtNotificacionVisita"
-        android:layout_alignLeft="@+id/LblNotificacionCiclo"
-        android:layout_alignRight="@+id/LblNotificacionCiclo"
-        android:text="@string/LblNotificacionUso"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <EditText
-        android:id="@+id/TxtNotificacionLectura"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/LblNotificacionLectura"
-        android:layout_alignBottom="@+id/LblNotificacionLectura"
-        android:layout_alignLeft="@+id/TxtNotificacionVisita"
-        android:ems="10"
+        android:layout_alignLeft="@+id/NotificacionTxtRevision"
+        android:layout_alignRight="@+id/NotificacionTxtRevision"
+        android:layout_below="@+id/NotificacionTxtRevision"
         android:inputType="number" />
 
-    <TextView
-        android:id="@+id/LblNotificacionMedidor"
+    <EditText
+        android:id="@+id/NotificacionTxtMedidor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/TxtNotificacionLectura"
-        android:layout_alignBottom="@+id/TxtNotificacionLectura"
-        android:layout_alignLeft="@+id/LblNotificacionUso"
-        android:layout_toLeftOf="@+id/TxtNotificacionUso"
-        android:text="@string/LblNotificacionMedidor"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_alignLeft="@+id/NotificacionTxtLectura"
+        android:layout_alignRight="@+id/NotificacionTxtLectura"
+        android:layout_below="@+id/NotificacionTxtLectura"
+        android:inputType="text" />
 
     <EditText
-        android:id="@+id/TxtNotificacionMedidor"
+        android:id="@+id/NotificacionTxtPrecinto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/LblNotificacionMedidor"
-        android:layout_alignBottom="@+id/LblNotificacionMedidor"
-        android:layout_alignLeft="@+id/TxtNotificacionUso"
-        android:ems="10"
+        android:layout_alignLeft="@+id/NotificacionTxtMedidor"
+        android:layout_alignRight="@+id/NotificacionTxtMedidor"
+        android:layout_below="@+id/NotificacionTxtMedidor"
         android:inputType="text" />
 
     <TextView
-        android:id="@+id/LblNotificacionPrecinto"
+        android:id="@+id/NotificacionLblLectura"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/LblNotificacionLectura"
-        android:layout_alignRight="@+id/LblNotificacionLectura"
-        android:layout_below="@+id/TxtNotificacionLectura"
-        android:layout_marginTop="18dp"
-        android:text="@string/LblNotificacionPrecinto"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <EditText
-        android:id="@+id/TxtNotificacionPrecinto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/LblNotificacionPrecinto"
-        android:layout_alignBottom="@+id/LblNotificacionPrecinto"
-        android:layout_alignLeft="@+id/TxtNotificacionLectura"
-        android:ems="10"
-        android:inputType="text" />
+        android:layout_alignBottom="@+id/NotificacionTxtLectura"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/NotificacionLblRevision"
+        android:layout_toLeftOf="@+id/NotificacionTxtLectura"
+        android:gravity="right|center_vertical"
+        android:text="@string/LblNotificacionLectura"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
-        android:id="@+id/LblNotificacionObservacion"
+        android:id="@+id/NotificacionLblMedidor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/LblNotificacionPrecinto"
-        android:layout_alignRight="@+id/TxtNotificacionPrecinto"
-        android:layout_below="@+id/TxtNotificacionPrecinto"
-        android:layout_marginTop="18dp"
-        android:text="@string/LblNotificacionObservacion"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_above="@+id/NotificacionTxtPrecinto"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/NotificacionTxtMedidor"
+        android:layout_toLeftOf="@+id/NotificacionTxtMedidor"
+        android:gravity="right|center_vertical"
+        android:text="@string/NotificacionLblMedidor"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
-        android:id="@+id/LblNotificacionFecha"
+        android:id="@+id/NotificacionLblPrecinto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/TxtNotificacionPrecinto"
-        android:layout_alignBottom="@+id/TxtNotificacionPrecinto"
-        android:layout_alignLeft="@+id/LblNotificacionMedidor"
-        android:text="@string/LblNotificacionFecha"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_alignBottom="@+id/NotificacionTxtPrecinto"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/NotificacionTxtPrecinto"
+        android:layout_toLeftOf="@+id/NotificacionTxtPrecinto"
+        android:gravity="right|center_vertical"
+        android:text="@string/NotificacionLblPrecinto"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Spinner
+        android:id="@+id/NotificacionCmbMotivo"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@+id/NotificacionTxtPrecinto"
+        android:layout_toRightOf="@+id/NotificacionLblPrecinto" />
+
+    <TextView
+        android:id="@+id/NotificacionLblMotivo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/NotificacionCmbMotivo"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/NotificacionLblPrecinto"
+        android:layout_below="@+id/NotificacionLblPrecinto"
+        android:gravity="right|center_vertical"
+        android:text="@string/NotificacionLblMotivo"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/NotificacionLblFecha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/NotificacionTxtFecha"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/NotificacionLblMotivo"
+        android:layout_below="@+id/NotificacionLblMotivo"
+        android:gravity="right|center_vertical"
+        android:text="@string/NotificacionLblFecha"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/NotificacionBtnFecha"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/NotificacionTxtFecha"
+        android:layout_alignRight="@+id/NotificacionCmbMotivo"
+        android:layout_alignTop="@+id/NotificacionTxtFecha"
+        android:text="@string/NotificacionBtnFecha" />
 
     <EditText
-        android:id="@+id/TxtNotificacionFecha"
-        android:layout_width="wrap_content"
+        android:id="@+id/NotificacionTxtFecha"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/LblNotificacionObservacion"
-        android:layout_alignLeft="@+id/LblNotificacionFecha"
-        android:layout_alignRight="@+id/LblNotificacionFecha"
-        android:ems="10"
-        android:gravity="center_vertical|center_horizontal"
+        android:layout_below="@+id/NotificacionCmbMotivo"
+        android:layout_toLeftOf="@+id/NotificacionBtnFecha"
+        android:layout_toRightOf="@+id/NotificacionLblFecha"
         android:inputType="date" />
 
-    <TextView
-        android:id="@+id/LblNotificacionCodigo"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/TxtNotificacionRevision"
-        android:layout_alignBottom="@+id/TxtNotificacionRevision"
-        android:layout_marginLeft="102dp"
-        android:layout_toRightOf="@+id/TxtNotificacionRevision"
-        android:text="@string/LblNotificacionCodigo"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <EditText
-        android:id="@+id/TxtNotificacionVisita"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/LblNotificacionVisita"
-        android:layout_alignBottom="@+id/LblNotificacionVisita"
-        android:layout_toLeftOf="@+id/LblNotificacionCodigo"
-        android:ems="10"
-        android:inputType="number" />
-
-    <EditText
-        android:id="@+id/TxtNotificacionUso"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/LblNotificacionUso"
-        android:layout_alignBottom="@+id/LblNotificacionUso"
-        android:layout_alignLeft="@+id/TxtNotificacionCiclo"
-        android:ems="10"
-        android:inputType="text" />
-
-    <TextView
-        android:id="@+id/LblNotificacionLectura"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/LblNotificacionVisita"
-        android:layout_alignRight="@+id/LblNotificacionVisita"
-        android:layout_below="@+id/TxtNotificacionVisita"
-        android:layout_marginTop="27dp"
-        android:text="@string/LblNotificacionLectura"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
-        android:id="@+id/LblNotificacionJornada"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/LblNotificacionObservacion"
-        android:layout_alignRight="@+id/TxtNotificacionMedidor"
-        android:layout_alignTop="@+id/LblNotificacionFecha"
-        android:text="@string/LblNotificacionJornada"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
     <Spinner
-        android:id="@+id/CmbNotificacionJornada"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/TxtNotificacionFecha"
-        android:layout_alignLeft="@+id/LblNotificacionJornada"
-        android:layout_alignRight="@+id/LblNotificacionJornada"
-        android:layout_below="@+id/LblNotificacionJornada" />
-
-    <Spinner
-        android:id="@+id/CmbNotificacionMotivo"
+        android:id="@+id/NotificacionCmbJornada"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/LblNotificacionMotivo"
-        android:layout_alignRight="@+id/CmbNotificacionJornada"
-        android:layout_alignTop="@+id/LblNotificacionMotivo"
-        android:layout_toRightOf="@+id/LblNotificacionMotivo" />
+        android:layout_height="40dp"
+        android:layout_below="@+id/NotificacionLblFecha"
+        android:layout_toRightOf="@+id/NotificacionTxtFecha" />
 
     <TextView
-        android:id="@+id/LblNotificacionMotivo"
+        android:id="@+id/NotificacionLblJornada"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/BtnNotificacionFecha"
-        android:layout_alignLeft="@+id/TxtNotificacionFecha"
-        android:layout_below="@+id/LblNotificacionObservacion"
-        android:gravity="center_vertical"
-        android:text="@string/LblNotificacionMotivo"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_alignBottom="@+id/NotificacionCmbJornada"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/NotificacionTxtFecha"
+        android:layout_alignTop="@+id/NotificacionCmbJornada"
+        android:gravity="right|center_vertical"
+        android:text="@string/NotificacionLblJornada"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/NotificacionLblObservacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/NotificacionCmbJornada"
+        android:layout_below="@+id/NotificacionLblJornada"
+        android:text="@string/NotificacionLblObservacion"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
-        android:id="@+id/TxtNotificacionObservacion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/LblNotificacionObservacion"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/LblNotificacionObservacion"
-        android:layout_toLeftOf="@+id/LblNotificacionCodigo"
-        android:ems="10"
+        android:id="@+id/NotificacionTxtObservacion"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/NotificacionLblObservacion"
         android:inputType="textMultiLine" />
 
     <Button
-        android:id="@+id/BtnNotificacionFecha"
-        android:layout_width="wrap_content"
+        android:id="@+id/NotificacionBtnGuardar"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/TxtNotificacionObservacion"
-        android:layout_alignRight="@+id/CmbNotificacionJornada"
-        android:layout_marginRight="20dp"
-        android:gravity="center_vertical"
-        android:text="@string/BtnNotificacionFecha" />
+        android:layout_below="@+id/NotificacionTxtObservacion"
+        android:layout_centerHorizontal="true"
+        android:text="@string/NotificacionBtnGuardar" />
 
 </RelativeLayout>

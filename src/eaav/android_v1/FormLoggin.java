@@ -18,7 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Loggin extends Activity implements OnClickListener{
+public class FormLoggin extends Activity implements OnClickListener{
 	public static String 	NOMBRE_DATABASE	= "BD_EAAV";
 	public static String 	CARPETA_RAIZ 	= Environment.getExternalStorageDirectory()+File.separator+"EAAV";		//Ruta donde se encuentra la carpeta principal del programa
 	
@@ -39,9 +39,9 @@ public class Loggin extends Activity implements OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loggin);
         
-        this.FcnConfiguracion 	= new ClassConfiguracion(this, Loggin.CARPETA_RAIZ);
-        this.FcnUsuario 		= new ClassUsuario(this, Loggin.CARPETA_RAIZ);
-        this.ProgramadoCS		= new ConnectServer(this, Loggin.CARPETA_RAIZ);
+        this.FcnConfiguracion 	= new ClassConfiguracion(this, FormLoggin.CARPETA_RAIZ);
+        this.FcnUsuario 		= new ClassUsuario(this, FormLoggin.CARPETA_RAIZ);
+        this.ProgramadoCS		= new ConnectServer(this, FormLoggin.CARPETA_RAIZ);
           
         this._lblEquipo 	= (TextView) findViewById(R.id.LogginLblEquipo);
         this._lblVersion 	= (TextView) findViewById(R.id.LogginLblVersion);
@@ -87,9 +87,9 @@ public class Loggin extends Activity implements OnClickListener{
 		Intent k;
 		switch (item.getItemId()) {
 		case R.id.Parametros:
-			k = new Intent(this, Parametros.class);
+			k = new Intent(this, FormParametros.class);
 			k.putExtra("Nivel", Nivel);
-			k.putExtra("FolderAplicacion", Loggin.CARPETA_RAIZ);
+			k.putExtra("FolderAplicacion", FormLoggin.CARPETA_RAIZ);
 			startActivity(k);
 			return true;
 			
@@ -116,8 +116,8 @@ public class Loggin extends Activity implements OnClickListener{
 			return true;	
 	
 		case R.id.IniciarTrabajo:
-			k = new Intent(this, Lista_trabajo.class);
-			k.putExtra("FolderAplicacion", Loggin.CARPETA_RAIZ);
+			k = new Intent(this, FormListaTrabajo.class);
+			k.putExtra("FolderAplicacion", FormLoggin.CARPETA_RAIZ);
 			startActivity(k);
 			return true;
 			

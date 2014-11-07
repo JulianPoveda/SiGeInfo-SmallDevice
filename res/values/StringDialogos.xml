@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="di_Lbl_Mensaje">Mensaje</string>
+    <string name="di_Btn_Aceptar">Aceptar</string>
+    <string name="dp_btn_aceptar">Aceptar</string>
+    <string name="dp_btn_cancelar">Cancelar</string>
+    
+</resources>
