@@ -206,8 +206,7 @@ public class Desviacion extends Activity{
 		//Referencia a objetos
 		_Estrato 		= (Spinner) findViewById(R.id.GeneralCmbEstrato); 
 		_Tipo 			= (Spinner) findViewById(R.id.CmbDesviacionTipo); 
-		_Acueducto  	= (Spinner) findViewById(R.id.CmbDesviacionAcueducto); 
-		_Alcantarillado	= (Spinner) findViewById(R.id.CmbDesviacionAlcantarillado); 
+		//_Acueducto  	= (Spinner) findViewById(R.id.CmbDesviacionAcueducto); 
 		_Uso  			= (Spinner) findViewById(R.id.CmbDesviacionUso); 
 		/*_Estado 	 	= (Spinner) findViewById(R.id.CmbDesviacionEstado); 
 		_Habitado  		= (Spinner) findViewById(R.id.CmbDesviacionHabitado); */
@@ -251,7 +250,7 @@ public class Desviacion extends Activity{
 		_txtVisita		= (EditText) findViewById(R.id.TxtDesviacionVisita); */
 		_txtPrecinto	= (EditText) findViewById(R.id.GeneralTxtPrecinto); 
 		_txtUso			= (EditText) findViewById(R.id.TxtDesviacionUso);
-		_txtCual		= (EditText) findViewById(R.id.TxtDesviacionCual); 
+		//_txtCual		= (EditText) findViewById(R.id.TxtDesviacionCual); 
 		_txtArea		= (EditText) findViewById(R.id.TxtDesviacionArea);
 		_txtPisos		= (EditText) findViewById(R.id.TxtDesviacionPisos);
 		/*_txtActividad	= (EditText) findViewById(R.id.TxtDesviacionActividad);
@@ -260,7 +259,7 @@ public class Desviacion extends Activity{
 		_txtCedulaUsuario= (EditText) findViewById(R.id.TxtDesviacionCedulaUsuario); 
 		_txtTestigo		= (EditText) findViewById(R.id.TxtDesviacionNombreTestigo);
 		_txtCedulaTestigo= (EditText) findViewById(R.id.TxtDesviacionCedulaTestigo);*/ 
-		_txtOtro		= (EditText) findViewById(R.id.TxtVisitaTecnicaOtro);
+		//_txtOtro		= (EditText) findViewById(R.id.TxtVisitaTecnicaOtro);
 		_txtVisitaTecnicaCantidad	= (EditText) findViewById(R.id.TxtVisitaTecnicaCantidad);
 		
 		_txtVisitaTecnicaCapacidad = (EditText) findViewById(R.id.TxtVisitaTecnicaCapacidad);
@@ -277,9 +276,9 @@ public class Desviacion extends Activity{
 		_txtVisitaTecnicaObservacion = (EditText) findViewById(R.id.TxtInfTecnicaObservacion);
 		
 		_LblInfTecnicaCual 	= (TextView) findViewById(R.id.LblInfTecnicaCual);
-		_LblCual 			= (TextView) findViewById(R.id.LblDesviacionCual);
+		//_LblCual 			= (TextView) findViewById(R.id.LblDesviacionCual);
 		_LblAcueducto 		= (TextView) findViewById(R.id.GeneralLblServicioAcueducto);
-		_LblAlcantarillado 	= (TextView) findViewById(R.id.LblDesviacionAlcantarillado);
+		//_LblAlcantarillado 	= (TextView) findViewById(R.id.LblDesviacionAlcantarillado);
 		_item1	= (TextView) findViewById(R.id.LblVisitaTecnicaItem1);
 		_item2	= (TextView) findViewById(R.id.LblVisitaTecnicaItem2);
 		_item3	= (TextView) findViewById(R.id.LblVisitaTecnicaItem3);
@@ -310,11 +309,11 @@ public class Desviacion extends Activity{
 		AdaptadorTipo= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,Tipo);
 		_Tipo.setAdapter(AdaptadorTipo);
 		
-		AdaptadorAcueducto= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,Acueducto);
-		_Acueducto.setAdapter(AdaptadorAcueducto);
+		/*AdaptadorAcueducto= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,Acueducto);
+		_Acueducto.setAdapter(AdaptadorAcueducto);*/
 		
-		AdaptadorAlcantarillado= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,Alcantarillado);
-		_Alcantarillado.setAdapter(AdaptadorAlcantarillado);
+		/*AdaptadorAlcantarillado= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,Alcantarillado);
+		_Alcantarillado.setAdapter(AdaptadorAlcantarillado);*/
 		
 		AdaptadorUso= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,Uso);
 		_Uso.setAdapter(AdaptadorUso);
@@ -432,27 +431,27 @@ public class Desviacion extends Activity{
 		_Tipo.setOnItemSelectedListener(new OnItemSelectedListener(){
 			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id){
 				if(parentView.getItemAtPosition(position).toString().equals("Otros")){
-					_LblCual.setVisibility(View.VISIBLE);
-					_txtCual.setVisibility(View.VISIBLE);
+					//_LblCual.setVisibility(View.VISIBLE);
+					//_txtCual.setVisibility(View.VISIBLE);
 				}else{
-					_LblCual.setVisibility(View.INVISIBLE);
-					_txtCual.setVisibility(View.INVISIBLE);
+					//_LblCual.setVisibility(View.INVISIBLE);
+					//_txtCual.setVisibility(View.INVISIBLE);
 				}
 				//_txtCual.setText("");
 				
 				if(parentView.getItemAtPosition(position).toString().equals("Vivienda-Local Anexo")){
-					_LblAcueducto.setVisibility(View.VISIBLE);
-					_LblAlcantarillado.setVisibility(View.VISIBLE);
-					_Acueducto.setVisibility(View.VISIBLE);
-					_Alcantarillado.setVisibility(View.VISIBLE);
+					//_LblAcueducto.setVisibility(View.VISIBLE);
+					//_LblAlcantarillado.setVisibility(View.VISIBLE);
+					//_Acueducto.setVisibility(View.VISIBLE);
+					//_Alcantarillado.setVisibility(View.VISIBLE);
 				}else{
-					_LblAcueducto.setVisibility(View.INVISIBLE);
-					_LblAlcantarillado.setVisibility(View.INVISIBLE);
-					_Acueducto.setVisibility(View.INVISIBLE);
-					_Alcantarillado.setVisibility(View.INVISIBLE);
+					//_LblAcueducto.setVisibility(View.INVISIBLE);
+					//_LblAlcantarillado.setVisibility(View.INVISIBLE);
+					//_Acueducto.setVisibility(View.INVISIBLE);
+					//_Alcantarillado.setVisibility(View.INVISIBLE);
 				}
-				_Acueducto.setSelection(0);
-				_Alcantarillado.setSelection(0);					
+				//_Acueducto.setSelection(0);
+				//_Alcantarillado.setSelection(0);					
 			}
 
 			@Override
@@ -467,9 +466,9 @@ public class Desviacion extends Activity{
 		_Uso.setOnItemSelectedListener(new OnItemSelectedListener(){
 			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id){
 				if(parentView.getItemAtPosition(position).toString().equals("Residencial")){
-					_txtActividad.setText("Residencial");
+					//_txtActividad.setText("Residencial");
 				}else{
-					_txtActividad.setText("");
+					//_txtActividad.setText("");
 				}
 			}
 
@@ -581,7 +580,7 @@ public class Desviacion extends Activity{
 					
 				}
 				// _txtVisitaTecnicaCantidad.setText("");
-				_txtOtro.setText("");
+				//_txtOtro.setText("");
 			}
 
 			@Override

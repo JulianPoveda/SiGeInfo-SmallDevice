@@ -50,7 +50,7 @@
 
                         <EditText
                             android:id="@+id/GeneralTxtPrecinto"
-                            android:layout_width="75dp"
+                            android:layout_width="110dp"
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
                             android:layout_toRightOf="@+id/GeneralLblPrecinto"
@@ -112,7 +112,8 @@
                             android:layout_width="110dp"
                             android:layout_height="40dp"
                             android:layout_alignLeft="@+id/TxtDesviacionUso"
-                            android:layout_alignTop="@+id/LblDesviacionTipo" />
+                            android:layout_alignTop="@+id/LblDesviacionTipo"
+                            android:layout_toLeftOf="@+id/GeneralCmbOtros" />
 
                         <TextView
                             android:id="@+id/GeneralLblServicioAcueducto"
@@ -136,37 +137,13 @@
                             android:text="@string/LblDesviacionUso"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
 
-                        <TextView
-                            android:id="@+id/GeneralLblActividad"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/GeneralTxtPrecinto"
-                            android:layout_alignParentTop="true"
-                            android:layout_toRightOf="@+id/GeneralTxtPrecinto"
-                            android:gravity="left|center_vertical"
-                            android:paddingLeft="5dp"
-                            android:text="@string/GeneralLblActividad"
-                            android:textAppearance="?android:attr/textAppearanceSmall" />
-
                         <EditText
                             android:id="@+id/GeneralTxtActividad"
-                            android:layout_width="wrap_content"
+                            android:layout_width="110dp"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_alignParentTop="true"
-                            android:layout_toRightOf="@+id/GeneralLblActividad"
                             android:inputType="text" />
-
-                        <TextView
-                            android:id="@+id/GeneralLblEstado"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/GeneralLblEstrato"
-                            android:layout_alignTop="@+id/GeneralCmbEstrato"
-                            android:layout_toRightOf="@+id/GeneralCmbEstrato"
-                            android:gravity="right|center_vertical"
-                            android:text="@string/GeneralLblEstado"
-                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <Spinner
                             android:id="@+id/GeneralCmbEstado"
@@ -176,33 +153,14 @@
                             android:layout_alignTop="@+id/GeneralLblEstado"
                             android:layout_toRightOf="@+id/GeneralLblEstado" />
 
-                        <TextView
-                            android:id="@+id/GeneralLblNumeroPersonas"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/TxtDesviacionUso"
-                            android:layout_below="@+id/GeneralCmbEstado"
-                            android:layout_toRightOf="@+id/TxtDesviacionUso"
-                            android:gravity="right|center_vertical"
-                            android:text="@string/GeneralLblNumeroPersonas"
-                            android:textAppearance="?android:attr/textAppearanceSmall" />
-
                         <EditText
                             android:id="@+id/TxtDesviacionUso"
                             android:layout_width="90dp"
                             android:layout_height="wrap_content"
+                            android:layout_alignRight="@+id/GeneralLblEstado"
                             android:layout_below="@+id/GeneralLblEstrato"
                             android:layout_toRightOf="@+id/LblDesviacionUso"
                             android:inputType="text" />
-
-                        <EditText
-                            android:id="@+id/GeneralTxtNumeroPersonas"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignLeft="@+id/GeneralTxtActividad"
-                            android:layout_alignParentRight="true"
-                            android:layout_below="@+id/GeneralCmbEstado"
-                            android:inputType="number" />
 
                         <TextView
                             android:id="@+id/GeneralLblOtros"
@@ -214,15 +172,6 @@
                             android:gravity="right|center_vertical"
                             android:text="@string/GeneralLblCual"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
-
-                        <EditText
-                            android:id="@+id/GeneralCmbOtros"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_below="@+id/GeneralLblNumeroPersonas"
-                            android:layout_toRightOf="@+id/GeneralLblOtros"
-                            android:inputType="text" />
 
                         <Spinner
                             android:id="@+id/GeneralCmbServicioAcueducto"
@@ -299,6 +248,151 @@
                             android:layout_alignLeft="@+id/TxtDesviacionArea"
                             android:layout_alignParentRight="true"
                             android:layout_below="@+id/TxtDesviacionArea" />
+
+                        <EditText
+                            android:id="@+id/GeneralTxtCedulaUsuario"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignLeft="@+id/GeneralTxtNumeroPersonas"
+                            android:layout_alignParentRight="true"
+                            android:layout_below="@+id/CmbDesviacionUso"
+                            android:inputType="number" />
+
+                        <EditText
+                            android:id="@+id/GeneralTxtUsuario"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@+id/GeneralTxtCedulaUsuario"
+                            android:layout_alignBottom="@+id/GeneralTxtCedulaUsuario"
+                            android:layout_alignLeft="@+id/GeneralCmbEstrato"
+                            android:layout_alignRight="@+id/GeneralCmbServicioAcueducto"
+                            android:inputType="text" />
+
+                        <TextView
+                            android:id="@+id/GeneralLblUsuario"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/GeneralTxtUsuario"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignTop="@+id/GeneralTxtUsuario"
+                            android:layout_toLeftOf="@+id/GeneralTxtUsuario"
+                            android:gravity="center_vertical"
+                            android:text="@string/GeneralLblUsuario"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                        <TextView
+                            android:id="@+id/GeneralLblCedulaUsuario"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/GeneralTxtUsuario"
+                            android:layout_alignTop="@+id/GeneralTxtCedulaUsuario"
+                            android:layout_toLeftOf="@+id/GeneralTxtCedulaUsuario"
+                            android:layout_toRightOf="@+id/TxtDesviacionArea"
+                            android:text="@string/GeneralLblCedulaUsuario"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                        <EditText
+                            android:id="@+id/GeneralTxtCedulaTestigo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignLeft="@+id/GeneralTxtCedulaUsuario"
+                            android:layout_alignParentRight="true"
+                            android:layout_below="@+id/GeneralTxtCedulaUsuario"
+                            android:inputType="number" />
+
+                        <EditText
+                            android:id="@+id/GeneralTxtTestigo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@+id/GeneralTxtCedulaTestigo"
+                            android:layout_alignBottom="@+id/GeneralTxtCedulaTestigo"
+                            android:layout_alignLeft="@+id/GeneralTxtUsuario"
+                            android:layout_alignRight="@+id/GeneralTxtUsuario"
+                            android:inputType="text" />
+
+                        <TextView
+                            android:id="@+id/GeneralLblCedulaTestigo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/GeneralTxtTestigo"
+                            android:layout_alignRight="@+id/GeneralLblCedulaUsuario"
+                            android:layout_alignTop="@+id/GeneralTxtTestigo"
+                            android:layout_toRightOf="@+id/TxtDesviacionArea"
+                            android:text="@string/GeneralLblCedulaTestigo"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                        <TextView
+                            android:id="@+id/GeneralLblTestigo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/GeneralTxtTestigo"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignRight="@+id/GeneralLblUsuario"
+                            android:layout_alignTop="@+id/GeneralTxtTestigo"
+                            android:gravity="center_vertical"
+                            android:text="@string/GeneralLblTestigo"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                        <Button
+                            android:id="@+id/GeneralBtnGuardar"
+                            android:layout_width="160dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/GeneralTxtTestigo"
+                            android:layout_centerHorizontal="true"
+                            android:text="@string/GeneralBtnGuardar" />
+
+                        <TextView
+                            android:id="@+id/GeneralLblActividad"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/GeneralTxtActividad"
+                            android:layout_alignParentTop="true"
+                            android:layout_toLeftOf="@+id/GeneralTxtActividad"
+                            android:gravity="left|center_vertical"
+                            android:paddingLeft="5dp"
+                            android:text="@string/GeneralLblActividad"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                        <TextView
+                            android:id="@+id/GeneralLblEstado"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_above="@+id/TxtDesviacionUso"
+                            android:layout_below="@+id/GeneralTxtPrecinto"
+                            android:layout_toRightOf="@+id/GeneralCmbEstrato"
+                            android:gravity="center_vertical"
+                            android:text="@string/GeneralLblEstado"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                        <EditText
+                            android:id="@+id/GeneralTxtNumeroPersonas"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_above="@+id/LblDesviacionTipo"
+                            android:layout_alignLeft="@+id/GeneralTxtActividad"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignTop="@+id/TxtDesviacionUso"
+                            android:inputType="number" />
+
+                        <TextView
+                            android:id="@+id/GeneralLblNumeroPersonas"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/TxtDesviacionUso"
+                            android:layout_below="@+id/GeneralCmbEstrato"
+                            android:layout_toLeftOf="@+id/GeneralTxtNumeroPersonas"
+                            android:gravity="center_vertical"
+                            android:text="@string/GeneralLblNumeroPersonas"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                        <EditText
+                            android:id="@+id/GeneralCmbOtros"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignLeft="@+id/GeneralTxtNumeroPersonas"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignTop="@+id/GeneralLblOtros"
+                            android:inputType="text" />
 
                     </RelativeLayout>
 

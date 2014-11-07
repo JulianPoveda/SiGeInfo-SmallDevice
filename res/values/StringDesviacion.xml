@@ -9,5 +9,10 @@
     <string name="GeneralLblEstado">Estado</string>
     <string name="GeneralLblNumeroPersonas"># Personas</string>
     <string name="GeneralLblCual">Cual</string>
+    <string name="GeneralLblUsuario">Nombre Usuario</string>
+    <string name="GeneralLblCedulaUsuario">Cedula Usuario</string>
+    <string name="GeneralLblTestigo">Nombre Testigo</string>
+    <string name="GeneralLblCedulaTestigo">Cedula Testigo</string>
+    <string name="GeneralBtnGuardar">Guardar</string>
     
 </resources>
