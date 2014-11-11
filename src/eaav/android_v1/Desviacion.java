@@ -7,6 +7,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.MarshalBase64;
@@ -14,6 +16,8 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
+
+import personalizados.ExpandableListAdapter;
 
 import Miscelanea.DateTime;
 import Miscelanea.SQLite;
@@ -34,6 +38,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -144,6 +149,12 @@ public class Desviacion extends Activity{
 	private TextView 	_LblCual, _LblAcueducto, _LblAlcantarillado, _LblInfTecnicaCual, _item1, _item2, _item3;
 	private Button 		_BtnGuardarInfGeneral, _BtnGuardarInfTecnica, _BtnVisitaTecnicaInstalaciones, _BtnVisitaTecnicaGuardarElementos, _BtnGuardarDatosMedidor, _BtnVisitaTecnicaPruebaEstanqueidad, _BtnInfTecnicaObservacionSistema;
 	
+	
+	ExpandableListAdapter listAdapter;
+	ExpandableListView expListView;
+	List<String> listDataHeader;
+	HashMap<String, List<String>> listDataChild;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -152,6 +163,15 @@ public class Desviacion extends Activity{
 		//Captura de la solicitud seleccionada
 		Bundle bundle = getIntent().getExtras();
 		Solicitud	= bundle.getString("Solicitud");
+		expListView = (ExpandableListView) findViewById(R.id.VisitaExpListElementos);
+		 
+        // preparing list data
+        prepareListData();
+ 
+        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+ 
+        // setting list adapter
+        expListView.setAdapter(listAdapter);
 		
 		//SQL.abrir();
 		/*if(!SQL.ExisteRegistros("db_desviaciones", "revision='"+ Solicitud +"'")){			//Si no existe el registro en la tabla de notificaciones se crea
@@ -204,13 +224,13 @@ public class Desviacion extends Activity{
 		tabs.setCurrentTab(0);	
 		
 		//Referencia a objetos
-		_Estrato 		= (Spinner) findViewById(R.id.GeneralCmbEstrato); 
+		//_Estrato 		= (Spinner) findViewById(R.id.GeneralCmbEstrato); 
 		_Tipo 			= (Spinner) findViewById(R.id.CmbDesviacionTipo); 
 		//_Acueducto  	= (Spinner) findViewById(R.id.CmbDesviacionAcueducto); 
 		_Uso  			= (Spinner) findViewById(R.id.CmbDesviacionUso); 
 		/*_Estado 	 	= (Spinner) findViewById(R.id.CmbDesviacionEstado); 
 		_Habitado  		= (Spinner) findViewById(R.id.CmbDesviacionHabitado); */
-		_Elementos 		= (Spinner) findViewById(R.id.CmbVisitaTecnicaElemento); 
+		/*_Elementos 		= (Spinner) findViewById(R.id.CmbVisitaTecnicaElemento); 
 		_EstadoItem1	= (Spinner) findViewById(R.id.CmbVisitaTecnicaItem1);
 		_EstadoItem2	= (Spinner) findViewById(R.id.CmbVisitaTecnicaItem2);
 		_EstadoItem3	= (Spinner) findViewById(R.id.CmbVisitaTecnicaItem3);
@@ -227,7 +247,7 @@ public class Desviacion extends Activity{
 		_TanquesEstanqueidad	= (Spinner) findViewById(R.id.CmbVisitaTecnicaElementoPrueba);
 		_PruebasEstanqueidad	= (Spinner) findViewById(R.id.CmbVisitaTecnicaEstanqueidadResultado);
 		_CapacidadEstanqueidad	= (Spinner) findViewById(R.id.CmbVisitaTecnicaCapacidadMedida);
-		_FugaEstanqueidad		= (Spinner) findViewById(R.id.CmbVisitaTecnicaMedidaFuga);
+		_FugaEstanqueidad		= (Spinner) findViewById(R.id.CmbVisitaTecnicaMedidaFuga);*/
 		
 		_ClaseAcueducto		= (Spinner) findViewById(R.id.CmbInfTecnicaAcueducto);
 		_CamaraMedidor		= (Spinner) findViewById(R.id.CmbInfTecnicaCamaraMedidor);
@@ -260,10 +280,10 @@ public class Desviacion extends Activity{
 		_txtTestigo		= (EditText) findViewById(R.id.TxtDesviacionNombreTestigo);
 		_txtCedulaTestigo= (EditText) findViewById(R.id.TxtDesviacionCedulaTestigo);*/ 
 		//_txtOtro		= (EditText) findViewById(R.id.TxtVisitaTecnicaOtro);
-		_txtVisitaTecnicaCantidad	= (EditText) findViewById(R.id.TxtVisitaTecnicaCantidad);
+		/*_txtVisitaTecnicaCantidad	= (EditText) findViewById(R.id.TxtVisitaTecnicaCantidad);
 		
 		_txtVisitaTecnicaCapacidad = (EditText) findViewById(R.id.TxtVisitaTecnicaCapacidad);
-		_txtVisitaTecnicaFuga = (EditText) findViewById(R.id.TxtVisitaTecnicaFuga);
+		_txtVisitaTecnicaFuga = (EditText) findViewById(R.id.TxtVisitaTecnicaFuga);*/
 		
 		
 		_txtInfTecnicaCual = (EditText) findViewById(R.id.TxtInfTecnicaCual);
@@ -279,16 +299,16 @@ public class Desviacion extends Activity{
 		//_LblCual 			= (TextView) findViewById(R.id.LblDesviacionCual);
 		_LblAcueducto 		= (TextView) findViewById(R.id.GeneralLblServicioAcueducto);
 		//_LblAlcantarillado 	= (TextView) findViewById(R.id.LblDesviacionAlcantarillado);
-		_item1	= (TextView) findViewById(R.id.LblVisitaTecnicaItem1);
+		/*_item1	= (TextView) findViewById(R.id.LblVisitaTecnicaItem1);
 		_item2	= (TextView) findViewById(R.id.LblVisitaTecnicaItem2);
-		_item3	= (TextView) findViewById(R.id.LblVisitaTecnicaItem3);
+		_item3	= (TextView) findViewById(R.id.LblVisitaTecnicaItem3);*/
 		
 		//_BtnGuardarInfGeneral = (Button) findViewById(R.id.BtnGuardarInfGeneral);
 		_BtnGuardarInfTecnica = (Button) findViewById(R.id.BtnGuardarInfTecnica);
-		_BtnVisitaTecnicaInstalaciones = (Button) findViewById(R.id.BtnVisitaTecnicaInstalaciones);
+		/*_BtnVisitaTecnicaInstalaciones = (Button) findViewById(R.id.BtnVisitaTecnicaInstalaciones);
 		_BtnVisitaTecnicaGuardarElementos = (Button) findViewById(R.id.BtnVisitaTecnicaGuardarElementos);
 		_BtnGuardarDatosMedidor = (Button) findViewById(R.id.BtnGuardarDatosMedidor);
-		_BtnVisitaTecnicaPruebaEstanqueidad = (Button) findViewById(R.id.BtnVisitaTecnicaPruebaEstanqueidad);
+		_BtnVisitaTecnicaPruebaEstanqueidad = (Button) findViewById(R.id.BtnVisitaTecnicaPruebaEstanqueidad);*/
 		_BtnInfTecnicaObservacionSistema = (Button) findViewById(R.id.BtnInfTecnicaObservacion);
 		
 		//Deshabilitacion de los campos informativos
@@ -303,8 +323,8 @@ public class Desviacion extends Activity{
 		_txtUso.setEnabled(false);*/
 	
 		//Asociacion de adaptadores y objetos
-		AdaptadorEstrato 	= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,Estrato);
-		_Estrato.setAdapter(AdaptadorEstrato);
+		/*AdaptadorEstrato 	= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,Estrato);
+		_Estrato.setAdapter(AdaptadorEstrato);*/
 		
 		AdaptadorTipo= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,Tipo);
 		_Tipo.setAdapter(AdaptadorTipo);
@@ -324,19 +344,19 @@ public class Desviacion extends Activity{
 		/*AdaptadorHabitado= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,Habitado);
 		_Habitado.setAdapter(AdaptadorHabitado);*/
 		
-		AdaptadorEstadoItem1= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,EstadoItem1);
-		_EstadoItem1.setAdapter(AdaptadorEstadoItem1);
+		/*AdaptadorEstadoItem1= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,EstadoItem1);
+		_EstadoItem1.setAdapter(AdaptadorEstadoItem1);*/
 		
-		AdaptadorEstadoItem2= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,EstadoItem2);
+		/*AdaptadorEstadoItem2= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,EstadoItem2);
 		_EstadoItem2.setAdapter(AdaptadorEstadoItem2);
 
 		AdaptadorEstadoItem3= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,EstadoItem3);
 		_EstadoItem3.setAdapter(AdaptadorEstadoItem3);
 		
 		AdaptadorEstadoOtro= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,EstadoOtro);
-		_EstadoOtro.setAdapter(AdaptadorEstadoOtro);
+		_EstadoOtro.setAdapter(AdaptadorEstadoOtro);*/
 		
-		AdaptadorItemInstalaciones= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,ItemInstalaciones);
+		/*AdaptadorItemInstalaciones= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,ItemInstalaciones);
 		_ItemInstalacion.setAdapter(AdaptadorItemInstalaciones);
 		
 		AdaptadorRtaInstalaciones= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,RtaInstalaciones);
@@ -404,7 +424,7 @@ public class Desviacion extends Activity{
 				
 		AdaptadorElementos= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,Elementos);
 		AdaptadorElementos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		_Elementos.setAdapter(AdaptadorElementos);
+		_Elementos.setAdapter(AdaptadorElementos);*/
 		
 		_ClaseAcueducto.setOnItemSelectedListener(new OnItemSelectedListener(){
 			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id){
@@ -480,7 +500,7 @@ public class Desviacion extends Activity{
 		});
 		
 		
-		_Elementos.setOnItemSelectedListener(new OnItemSelectedListener(){
+		/*_Elementos.setOnItemSelectedListener(new OnItemSelectedListener(){
 			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id){
 				_txtVisitaTecnicaCantidad.setText("0");
 				_txtVisitaTecnicaCantidad.setEnabled(true);
@@ -588,7 +608,7 @@ public class Desviacion extends Activity{
 				// TODO Auto-generated method stub
 				
 			}
-		});
+		});*/
 		
 		
 		//Consulta de la informacion basica de la desviacion
@@ -739,7 +759,7 @@ public class Desviacion extends Activity{
 		});
 		
 		
-		_BtnVisitaTecnicaInstalaciones.setOnClickListener(new OnClickListener(){
+		/*_BtnVisitaTecnicaInstalaciones.setOnClickListener(new OnClickListener(){
 			@Override
             public void onClick(View v){
             	if(ValidarVisitaTecnicaInstalaciones()){
@@ -749,10 +769,10 @@ public class Desviacion extends Activity{
             		Toast.makeText(getApplicationContext(), "Error al guardar la prueba de hermeticidad.", Toast.LENGTH_SHORT).show(); 
             	}
             }
-		});
+		});*/
 		
 		
-		_BtnVisitaTecnicaGuardarElementos.setOnClickListener(new OnClickListener(){
+		/*_BtnVisitaTecnicaGuardarElementos.setOnClickListener(new OnClickListener(){
 			@Override
             public void onClick(View v){
             	if(ValidarVisitaTecnicaElementos()){
@@ -762,20 +782,20 @@ public class Desviacion extends Activity{
             		Toast.makeText(getApplicationContext(), "Error al guardar el elemento.", Toast.LENGTH_SHORT).show(); 
             	}
             }
-		});
+		});*/
 		
 		
-		_BtnGuardarDatosMedidor.setOnClickListener(new OnClickListener(){
+		/*_BtnGuardarDatosMedidor.setOnClickListener(new OnClickListener(){
 			@Override
             public void onClick(View v){
             	GuardarVisitaTecnicaDatosMedidor();
             	Toast.makeText(getApplicationContext(), "Datos del medidor guardados correctamente.", Toast.LENGTH_SHORT).show(); 
             }
-		});
+		});*/
 		
 		
 		//////////////////////////////////////
-		_BtnVisitaTecnicaPruebaEstanqueidad.setOnClickListener(new OnClickListener(){
+		/*_BtnVisitaTecnicaPruebaEstanqueidad.setOnClickListener(new OnClickListener(){
 			 @Override
 			 public void onClick(View v){
 				 if(ValidarVisitaTecnicaPruebaEstanqueidad()){
@@ -785,7 +805,7 @@ public class Desviacion extends Activity{
 					 Toast.makeText(getApplicationContext(), "Error al guardar la prueba de estanqueidad.", Toast.LENGTH_SHORT).show(); 
 				 }
 			 }
-		 });
+		 });*/
 		//CargarInfGuardada();
 	}
 	
@@ -825,6 +845,44 @@ public class Desviacion extends Activity{
 		return ValorRetorno;
 	}
 	
+	private void prepareListData() {
+        listDataHeader = new ArrayList<String>();
+        listDataChild = new HashMap<String, List<String>>();
+ 
+        // Adding child data
+        listDataHeader.add("Top 250");
+        listDataHeader.add("Now Showing");
+        listDataHeader.add("Coming Soon..");
+ 
+        // Adding child data
+        List<String> top250 = new ArrayList<String>();
+        top250.add("The Shawshank Redemption");
+        top250.add("The Godfather");
+        top250.add("The Godfather: Part II");
+        top250.add("Pulp Fiction");
+        top250.add("The Good, the Bad and the Ugly");
+        top250.add("The Dark Knight");
+        top250.add("12 Angry Men");
+ 
+        List<String> nowShowing = new ArrayList<String>();
+        nowShowing.add("The Conjuring");
+        nowShowing.add("Despicable Me 2");
+        nowShowing.add("Turbo");
+        nowShowing.add("Grown Ups 2");
+        nowShowing.add("Red 2");
+        nowShowing.add("The Wolverine");
+ 
+        List<String> comingSoon = new ArrayList<String>();
+        comingSoon.add("2 Guns");
+        comingSoon.add("The Smurfs 2");
+        comingSoon.add("The Spectacular Now");
+        comingSoon.add("The Canyons");
+        comingSoon.add("Europa Report");
+ 
+        listDataChild.put(listDataHeader.get(0), top250); // Header, Child data
+        listDataChild.put(listDataHeader.get(1), nowShowing);
+        listDataChild.put(listDataHeader.get(2), comingSoon);
+    }
 	
 	private void GuardarVisitaTecnicaElementos(){
 		//"Subterraneo","Lavaplatos","Cisterna","Ducha","Lavamanos","Lavadero","Tanque Elevado","Inst. Internas","Piscina"
@@ -1185,7 +1243,7 @@ public class Desviacion extends Activity{
 			_txtCedulaUsuario.setText(RtaCamposDesviacion.get(3));
 			_txtCedulaTestigo.setText(RtaCamposDesviacion.get(4));
 			_Tipo.setSelection(AdaptadorTipo.getPosition(tempString[0]));
-			_Estrato.setSelection(AdaptadorEstrato.getPosition(RtaCamposDesviacion.get(5)));
+			//_Estrato.setSelection(AdaptadorEstrato.getPosition(RtaCamposDesviacion.get(5)));
 			_txtArea.setText(RtaCamposDesviacion.get(6));
 			_txtPisos.setText(RtaCamposDesviacion.get(7));
 			_Uso.setSelection(AdaptadorUso.getPosition(RtaCamposDesviacion.get(8)));

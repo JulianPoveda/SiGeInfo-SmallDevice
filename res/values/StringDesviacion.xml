@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="GeneralLblServicioAcueducto">Serv Acue.</string>
-    <string name="GeneralLblServicioAlcantarillado">Serv Alcan.</string>
+    <string name="GeneralLblServicioAcueducto">Servicio Acue.</string>
+    <string name="GeneralLblServicioAlcantarillado">Servicio Alcan.</string>
     <string name="GeneralLblPersonasResidentes">No Pers Residentes</string>
     <string name="GeneralLblPrecinto">Precinto</string>
     <string name="GeneralLblActividad">Actividad</string>
