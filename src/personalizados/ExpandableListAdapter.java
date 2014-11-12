@@ -64,16 +64,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
 	public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 		String headerTitle = (String) getGroup(groupPosition);
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_group, null);
         }
  
-        TextView lblListHeader = (TextView) convertView
-                .findViewById(R.id.lblListHeader);
-        lblListHeader.setTypeface(null, Typeface.BOLD);
-        lblListHeader.setText(headerTitle);
- 
+        TextView lblTituloListHeader = (TextView) convertView.findViewById(R.id.LblTituloListHeader);
+        //TextView lblListHeader = (TextView) convertView.findViewById(R.id.LblTituloListHeader);
+        lblTituloListHeader.setTypeface(null, Typeface.BOLD);
+        lblTituloListHeader.setText(headerTitle); 
         return convertView;
 	}
 
@@ -86,9 +84,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
             convertView = infalInflater.inflate(R.layout.list_item, null);
         }
  
-        TextView txtListChild = (TextView) convertView
-                .findViewById(R.id.lblListItem);
- 
+        TextView txtListChild = (TextView) convertView.findViewById(R.id.lblListItem); 
         txtListChild.setText(childText);
         return convertView;
 	}
@@ -97,5 +93,4 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
 		 return true;
 	}
-
 }

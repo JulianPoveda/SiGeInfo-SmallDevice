@@ -42,58 +42,93 @@
                     android:orientation="horizontal" >
 
                     <TextView
-                        android:id="@+id/textView1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:id="@+id/VisitaLblElementos"
+                        android:layout_width="250dp"
+                        android:layout_height="35dp"
                         android:layout_alignParentLeft="true"
-                        android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
-                        android:text="Large Text"
-                        android:textAppearance="?android:attr/textAppearanceLarge" />
+                        android:gravity="center_vertical"
+                        android:text="@string/VisitaLblElementos"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
 
                     <ExpandableListView
                         android:id="@+id/VisitaExpListElementos"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_height="110dp"
                         android:layout_alignParentLeft="true"
-                        android:layout_below="@+id/textView1" >
+                        android:layout_below="@+id/VisitaLblElementos" >
                     </ExpandableListView>
 
                     <TextView
-                        android:id="@+id/textView2"
+                        android:id="@+id/VisitaLblDatosMedidor"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="35dp"
                         android:layout_alignParentLeft="true"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignRight="@+id/VisitaLblElementos"
                         android:layout_below="@+id/VisitaExpListElementos"
-                        android:text="Large Text"
-                        android:textAppearance="?android:attr/textAppearanceLarge" />
+                        android:gravity="center_vertical"
+                        android:text="@string/VisitaLblDatosMedidor"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
 
                     <ExpandableListView
                         android:id="@+id/expandableListView1"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_height="110dp"
                         android:layout_alignParentLeft="true"
-                        android:layout_below="@+id/textView2" >
+                        android:layout_below="@+id/VisitaLblDatosMedidor" >
                     </ExpandableListView>
 
                     <TextView
-                        android:id="@+id/textView3"
+                        android:id="@+id/VisitaLblPruebas"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="35dp"
                         android:layout_alignParentLeft="true"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignRight="@+id/VisitaLblDatosMedidor"
                         android:layout_below="@+id/expandableListView1"
-                        android:text="Large Text"
-                        android:textAppearance="?android:attr/textAppearanceLarge" />
+                        android:gravity="center_vertical"
+                        android:text="@string/VisitaLblPruebas"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
 
                     <ExpandableListView
                         android:id="@+id/expandableListView2"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_height="110dp"
                         android:layout_alignParentLeft="true"
-                        android:layout_below="@+id/textView3" >
+                        android:layout_below="@+id/VisitaLblPruebas" >
                     </ExpandableListView>
+
+                    <Button
+                        android:id="@+id/VisitaBtnGuardarElementos"
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/VisitaLblElementos"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/VisitaLblElementos"
+                        android:text="@string/VisitaBtnGuardarElementos" />
+
+                    <Button
+                        android:id="@+id/VisitaBtnGuardarDatosMedidor"
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/expandableListView1"
+                        android:layout_alignLeft="@+id/VisitaBtnGuardarElementos"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignTop="@+id/VisitaLblDatosMedidor"
+                        android:text="@string/VisitaBtnGuardarDatosMedidor" />
+
+                    <Button
+                        android:id="@+id/VisitaBtnGuardarPruebas"
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/VisitaLblPruebas"
+                        android:layout_alignLeft="@+id/VisitaBtnGuardarDatosMedidor"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignTop="@+id/VisitaLblPruebas"
+                        android:text="@string/VisitaBtnGuardarPruebas" />
 
                 </RelativeLayout>
 
