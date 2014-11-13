@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="GeneralLblRevision">Revision</string>
-    <string name="GeneralLblCodigo">Codigo</string>
-    <string name="GeneralLblSerie">Serie</string>
-    <string name="GeneralLblNombre">Nombre</string>
-    <string name="GeneralLblDireccion">Direccion</string>
-    <string name="GeneralLblMarca">Marca</string>
-    <string name="GeneralLblCiclo">Ciclo</string>
-    <string name="GeneralLblRuta">Ruta</string>
-    <string name="GeneralLblLectura">Lectura</string>
-    <string name="GeneralLblNovedad">Novedad</string>
+    <string name="GeneralLblServicioAcueducto">Serv. Acue.</string>
+    <string name="GeneralLblServicioAlcantarillado">Serv. Alcan.</string>
+    <string name="GeneralLblPersonasResidentes">No Pers Residentes</string>
+    <string name="GeneralLblPrecinto">Precinto</string>
+    <string name="GeneralLblActividad">Actividad</string>
+    <string name="GeneralLblEstrato">Estrato</string>
+    <string name="GeneralLblEstado">Estado</string>
+    <string name="GeneralLblNumeroPersonas"># Personas</string>
+    <string name="GeneralLblCual">Cual</string>
+    <string name="GeneralLblUsuario">Nombre Usuario</string>
+    <string name="GeneralLblCedulaUsuario">Cedula Usuario</string>
+    <string name="GeneralLblTestigo">Nombre Testigo</string>
+    <string name="GeneralLblCedulaTestigo">Cedula Testigo</string>
+    <string name="GeneralBtnGuardar">Guardar</string>
+    <string name="GeneralLblHabitado">Habitado Por</string>
     
 </resources>

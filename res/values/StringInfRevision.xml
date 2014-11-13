@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="RevisionLblRevision">Revision</string>
+    <string name="RevisionLblNombre">Nombre</string>
+    <string name="RevisionLblDireccion">Direccion</string>
+    <string name="RevisionLblCodigo">Codigo</string>
+    <string name="RevisionLblSerie">Serie</string>
+    <string name="RevisionLblMarca">Marca</string>
+    <string name="RevisionLblCiclo">Ciclo</string>
+    <string name="RevisionLblRuta">Ruta</string>
+    <string name="RevisionLblLectura">Lectura</string>
+    <string name="RevisionLblNovedad">Novedad</string>
+    
+</resources>

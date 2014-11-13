@@ -23,16 +23,16 @@ public class ModalInfGeneral extends Activity {
 		
 		this.FcnRevision = new ClassRevision(this, FormLoggin.CARPETA_RAIZ);
 		
-		this._txtRevision 	= (EditText) findViewById(R.id.GeneralTxtRevision);
-		this._txtCodigo 	= (EditText) findViewById(R.id.GeneralTxtCodigo);
-		this._txtSerie 		= (EditText) findViewById(R.id.GeneralTxtSerie);
-		this._txtNombre 	= (EditText) findViewById(R.id.GeneralTxtNombre);
-		this._txtDireccion 	= (EditText) findViewById(R.id.GeneralTxtDireccion);
-		this._txtMarca 		= (EditText) findViewById(R.id.GeneralTxtMarca);
-		this._txtCiclo 		= (EditText) findViewById(R.id.GeneralTxtCiclo);
-		this._txtRuta 		= (EditText) findViewById(R.id.GeneralTxtRuta);
-		this._txtLectura 	= (EditText) findViewById(R.id.GeneralTxtLectura);
-		this._txtNovedad 	= (EditText) findViewById(R.id.GeneralTxtNovedad);
+		this._txtRevision 	= (EditText) findViewById(R.id.RevisionTxtRevision);
+		this._txtCodigo 	= (EditText) findViewById(R.id.RevisionTxtCodigo);
+		this._txtSerie 		= (EditText) findViewById(R.id.RevisionTxtSerie);
+		this._txtNombre 	= (EditText) findViewById(R.id.RevisionTxtNombre);
+		this._txtDireccion 	= (EditText) findViewById(R.id.RevisionTxtDireccion);
+		this._txtMarca 		= (EditText) findViewById(R.id.RevisionTxtMarca);
+		this._txtCiclo 		= (EditText) findViewById(R.id.RevisionTxtCiclo);
+		this._txtRuta 		= (EditText) findViewById(R.id.RevisionTxtRuta);
+		this._txtLectura 	= (EditText) findViewById(R.id.RevisionTxtLectura);
+		this._txtNovedad 	= (EditText) findViewById(R.id.RevisionTxtNovedad);
 		
 		this._txtRevision.setText(_revision);
 		this._txtCodigo.setText(this.FcnRevision.getCodigo(_revision));

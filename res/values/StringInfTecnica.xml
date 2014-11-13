@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="TecnicaLblMedidor">Datos</string>
+    <string name="TecnicaLblBypass">Bypass</string>
+    <string name="TecnicaLblSegundoConcepto">Segundo Concepto</string>
+    <string name="TecnicaLblRespuesta">Respuesta</string>
+    <string name="TecnicaLblDatosMedidor">Medidor </string>
+    <string name="TecnicaBtnObservacion">Incluir Observacion</string>
+    <string name="TecnicaBtnGuardar">Guardar</string>
+    <string name="TecnicaBtnGuardarDatosMedidor">Guardar Datos</string>
+    <string name="TecnicaLblNumero">Numero</string>
+    <string name="TecnicaLblMarca">Marca</string>
+    <string name="TecnicaLblLectura">Lectura</string>
+    <string name="TecnicaLblDiametro">Diametro</string>
+    
+</resources>

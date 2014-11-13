@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="VisitaLblElementos">ELEMENTOS</string>
-    <string name="VisitaLblDatosMedidor">DATOS DEL MEDIDOR</string>
-    <string name="VisitaLblPruebas">PRUEBAS ESTANQUEIDAD</string>
-    <string name="VisitaBtnGuardarElementos">Guardar</string>
-    <string name="VisitaBtnGuardarDatosMedidor">Guardar</string>
-    <string name="VisitaBtnGuardarPruebas">Guardar</string>
+    <string name="VisitaLblClase">CLASE</string>
+    <string name="VisitaBtnGuardar">Guardar</string>
+    <string name="VisitaLblElemento">Elemento</string>
+    <string name="VisitaLblCantidad">Cantidad</string>
     
 </resources>

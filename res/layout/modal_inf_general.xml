@@ -5,127 +5,127 @@
     tools:context="${relativePackage}.${activityClass}" >
 
     <TextView
-        android:id="@+id/GeneralLblRevision"
+        android:id="@+id/RevisionLblRevision"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/GeneralTxtRevision"
+        android:layout_alignBottom="@+id/RevisionTxtRevision"
         android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/GeneralTxtRevision"
-        android:layout_toLeftOf="@+id/GeneralTxtRevision"
+        android:layout_alignTop="@+id/RevisionTxtRevision"
+        android:layout_toLeftOf="@+id/RevisionTxtRevision"
         android:gravity="right|center_vertical"
-        android:text="@string/GeneralLblRevision"
+        android:text="@string/RevisionLblRevision"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
-        android:id="@+id/GeneralTxtCodigo"
+        android:id="@+id/RevisionTxtCodigo"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:layout_alignLeft="@+id/GeneralTxtRevision"
+        android:layout_alignLeft="@+id/RevisionTxtRevision"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/GeneralTxtRevision"
+        android:layout_below="@+id/RevisionTxtRevision"
         android:inputType="text" >
 
         <requestFocus />
     </EditText>
 
     <EditText
-        android:id="@+id/GeneralTxtSerie"
+        android:id="@+id/RevisionTxtSerie"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:layout_alignLeft="@+id/GeneralTxtCodigo"
+        android:layout_alignLeft="@+id/RevisionTxtCodigo"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/GeneralTxtCodigo"
+        android:layout_below="@+id/RevisionTxtCodigo"
         android:inputType="text" />
 
     <TextView
-        android:id="@+id/GeneralLblNombre"
+        android:id="@+id/RevisionLblNombre"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/GeneralTxtSerie"
+        android:layout_below="@+id/RevisionTxtSerie"
         android:gravity="bottom|left"
-        android:text="@string/GeneralLblNombre"
+        android:text="@string/RevisionLblNombre"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
-        android:id="@+id/GeneralTxtNombre"
+        android:id="@+id/RevisionTxtNombre"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/GeneralLblNombre"
+        android:layout_below="@+id/RevisionLblNombre"
         android:inputType="text" />
 
     <TextView
-        android:id="@+id/GeneralLblDireccion"
+        android:id="@+id/RevisionLblDireccion"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/GeneralTxtNombre"
+        android:layout_below="@+id/RevisionTxtNombre"
         android:gravity="bottom|left"
-        android:text="@string/GeneralLblDireccion"
+        android:text="@string/RevisionLblDireccion"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
-        android:id="@+id/GeneralTxtDireccion"
+        android:id="@+id/RevisionTxtDireccion"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/GeneralLblDireccion"
+        android:layout_below="@+id/RevisionLblDireccion"
         android:inputType="text" />
 
     <EditText
-        android:id="@+id/GeneralTxtMarca"
+        android:id="@+id/RevisionTxtMarca"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:layout_alignLeft="@+id/GeneralTxtSerie"
+        android:layout_alignLeft="@+id/RevisionTxtSerie"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/GeneralTxtDireccion"
+        android:layout_below="@+id/RevisionTxtDireccion"
         android:inputType="text" />
 
     <EditText
-        android:id="@+id/GeneralTxtRuta"
+        android:id="@+id/RevisionTxtRuta"
         android:layout_width="80dp"
         android:layout_height="35dp"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/GeneralTxtMarca"
+        android:layout_below="@+id/RevisionTxtMarca"
         android:inputType="text" />
 
     <TextView
-        android:id="@+id/GeneralLblRuta"
+        android:id="@+id/RevisionLblRuta"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/GeneralTxtRuta"
-        android:layout_below="@+id/GeneralTxtMarca"
-        android:layout_toLeftOf="@+id/GeneralTxtRuta"
+        android:layout_alignBottom="@+id/RevisionTxtRuta"
+        android:layout_below="@+id/RevisionTxtMarca"
+        android:layout_toLeftOf="@+id/RevisionTxtRuta"
         android:gravity="right|center_vertical"
-        android:text="@string/GeneralLblRuta"
+        android:text="@string/RevisionLblRuta"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
-        android:id="@+id/GeneralLblCiclo"
+        android:id="@+id/RevisionLblCiclo"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/GeneralLblRuta"
+        android:layout_alignBottom="@+id/RevisionLblRuta"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/GeneralTxtMarca"
+        android:layout_below="@+id/RevisionTxtMarca"
         android:gravity="right|center_vertical"
-        android:text="@string/GeneralLblCiclo"
+        android:text="@string/RevisionLblCiclo"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
-        android:id="@+id/GeneralTxtCiclo"
+        android:id="@+id/RevisionTxtCiclo"
         android:layout_width="80dp"
         android:layout_height="35dp"
-        android:layout_alignTop="@+id/GeneralLblCiclo"
-        android:layout_toRightOf="@+id/GeneralLblCiclo"
+        android:layout_alignTop="@+id/RevisionLblCiclo"
+        android:layout_toRightOf="@+id/RevisionLblCiclo"
         android:inputType="text" />
 
     <EditText
-        android:id="@+id/GeneralTxtRevision"
+        android:id="@+id/RevisionTxtRevision"
         android:layout_width="210dp"
         android:layout_height="35dp"
         android:layout_alignParentRight="true"
@@ -133,81 +133,81 @@
         android:inputType="text" />
 
     <EditText
-        android:id="@+id/GeneralTxtLectura"
+        android:id="@+id/RevisionTxtLectura"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:layout_alignLeft="@+id/GeneralTxtMarca"
+        android:layout_alignLeft="@+id/RevisionTxtMarca"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/GeneralTxtRuta"
+        android:layout_below="@+id/RevisionTxtRuta"
         android:inputType="text" />
 
     <EditText
-        android:id="@+id/GeneralTxtNovedad"
+        android:id="@+id/RevisionTxtNovedad"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:layout_alignLeft="@+id/GeneralTxtLectura"
+        android:layout_alignLeft="@+id/RevisionTxtLectura"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/GeneralTxtLectura"
+        android:layout_below="@+id/RevisionTxtLectura"
         android:inputType="text" />
 
     <TextView
-        android:id="@+id/GeneralLblLectura"
+        android:id="@+id/RevisionLblLectura"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/GeneralTxtNovedad"
+        android:layout_above="@+id/RevisionTxtNovedad"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/GeneralLblCiclo"
-        android:layout_toLeftOf="@+id/GeneralTxtLectura"
+        android:layout_below="@+id/RevisionLblCiclo"
+        android:layout_toLeftOf="@+id/RevisionTxtLectura"
         android:gravity="right|center_vertical"
-        android:text="@string/GeneralLblLectura"
+        android:text="@string/RevisionLblLectura"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
-        android:id="@+id/GeneralLblNovedad"
+        android:id="@+id/RevisionLblNovedad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/GeneralTxtNovedad"
+        android:layout_alignBottom="@+id/RevisionTxtNovedad"
         android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/GeneralLblLectura"
-        android:layout_below="@+id/GeneralLblLectura"
+        android:layout_alignRight="@+id/RevisionLblLectura"
+        android:layout_below="@+id/RevisionLblLectura"
         android:gravity="right|center_vertical"
-        android:text="@string/GeneralLblNovedad"
+        android:text="@string/RevisionLblNovedad"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
-        android:id="@+id/GeneralLblCodigo"
+        android:id="@+id/RevisionLblCodigo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/GeneralTxtSerie"
+        android:layout_above="@+id/RevisionTxtSerie"
         android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/GeneralLblRevision"
-        android:layout_alignTop="@+id/GeneralTxtCodigo"
+        android:layout_alignRight="@+id/RevisionLblRevision"
+        android:layout_alignTop="@+id/RevisionTxtCodigo"
         android:gravity="right|center_vertical"
-        android:text="@string/GeneralLblCodigo"
+        android:text="@string/RevisionLblCodigo"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
-        android:id="@+id/GeneralLblSerie"
+        android:id="@+id/RevisionLblSerie"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/GeneralLblNombre"
+        android:layout_above="@+id/RevisionLblNombre"
         android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/GeneralLblCodigo"
-        android:layout_below="@+id/GeneralLblCodigo"
+        android:layout_alignRight="@+id/RevisionLblCodigo"
+        android:layout_below="@+id/RevisionLblCodigo"
         android:gravity="right|center_vertical"
-        android:text="@string/GeneralLblSerie"
+        android:text="@string/RevisionLblSerie"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
-        android:id="@+id/GeneralLblMarca"
+        android:id="@+id/RevisionLblMarca"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/GeneralLblCiclo"
+        android:layout_above="@+id/RevisionLblCiclo"
         android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/GeneralLblLectura"
-        android:layout_below="@+id/GeneralTxtDireccion"
+        android:layout_alignRight="@+id/RevisionLblLectura"
+        android:layout_below="@+id/RevisionTxtDireccion"
         android:gravity="right|center_vertical"
-        android:text="@string/GeneralLblMarca"
+        android:text="@string/RevisionLblMarca"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>
