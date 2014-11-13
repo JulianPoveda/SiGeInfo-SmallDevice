@@ -4,37 +4,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <EditText
-        android:id="@+id/TxtCantidadListHeader"
-        android:layout_width="70dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:ems="10"
-        android:inputType="number" >
-
-        <requestFocus />
-    </EditText>
-
-    <TextView
-        android:id="@+id/LblCantidadListHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/TxtCantidadListHeader"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/TxtCantidadListHeader"
-        android:gravity="right|center_vertical"
-        android:text="Medium Text"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
     <TextView
         android:id="@+id/LblTituloListHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/LblCantidadListHeader"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/LblCantidadListHeader"
         android:gravity="center_vertical"
         android:text="Medium Text"
         android:textAppearance="?android:attr/textAppearanceMedium" />
