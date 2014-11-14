@@ -12,5 +12,11 @@
     <string name="TecnicaLblMarca">Marca</string>
     <string name="TecnicaLblLectura">Lectura</string>
     <string name="TecnicaLblDiametro">Diametro</string>
+    <string name="TecnicaLblAcueducto">Acueducto</string>
+    <string name="TecnicaLblEscape">Escape</string>
+    <string name="TecnicaLblServicioDirecto">Servicio Directo</string>
+    <string name="TecnicaLblCamaraMedidor">Camara Medidor</string>
+    <string name="TecnicaLblEstadoCamara">Estado</string>
+    <string name="TecnicaLblOtro"/>
     
 </resources>

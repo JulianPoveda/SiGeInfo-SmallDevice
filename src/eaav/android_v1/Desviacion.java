@@ -18,6 +18,11 @@ import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import personalizados.AdaptadorListaTrabajo;
+import personalizados.AdaptadorVisitaTecnica;
+import personalizados.InformacionItemsVisitaTecnica;
+import personalizados.InformacionSolicitudes;
+
 import clases.ClassDesviacion;
 import clases.ClassRevision;
 
@@ -41,6 +46,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -48,7 +54,7 @@ import android.widget.Toast;
 
 
 public class Desviacion extends Activity implements OnClickListener, OnItemSelectedListener{
-
+	static int 				INGRESO_ACUEDUCTO_OTRO= 1;
 
 	private Intent 			ModalInputSingle;
 	private Intent 			ModalInformacionSolicitud;
@@ -85,8 +91,25 @@ public class Desviacion extends Activity implements OnClickListener, OnItemSelec
 	String[] strAlcantarillado 	= {"","Si","No"};
 	String[] strUso 			= {"","Oficial","Residencial","Comercial","Especial","Industrial","Provisional"};
 	
+	/*String's Adaptadores Informacion Tecnica*/
+	String[] strClaseAcueducto 		= {"","EAAV","Pozo Profundo","Aljibe","J.A.C.","Otro"};
+	String[] strEscapeMedidor 		= {"","No Tiene","En El Medidor","Antes del Medidor","Despues del Medidor"};
+	String[] strServicioDirecto 	= {"","Si","No"};
+	String[] strBypass 				= {"","Si","No"};
+	String[] strCamaraMedidor 		= {"","Grande","Pequena","No Tiene"};
+	String[] strEstadoCamaraMedidor	= {"","Buena","Regular","Mala","No Aplica"};
+	String[] strRespuestaDesviacion	= {"","Normal por consumo","Fuga o daño interno","Posible fraude encontrado","Equipo de medida dañado o robado","Error de lectura"};
+	String[] strSegundoConcepto 	= {"","Si","No"};
+	String[] strMedidor				= {"","Individual","Totalizador"};
+	String[] strDiametro			= {"","1/2","3/4","1","1-1/2","2"};
 	
-	String[] Elementos = {"Subterraneo","Lavaplatos","Cisterna","Ducha","Lavamanos","Lavadero","Tanque Elevado","Inst. Internas","Piscina"};
+	/*String´s Adaptadores Informacion Visita Tecnica*/
+	ArrayList<String> strClase;//		= {"","Elementos","Estanqueidad","Instalaciones","Medidor"};
+	ArrayList<String> strSubClase;
+	
+	
+	
+	
 	String[] EstadoItem1 = {"Bueno","Malo","N/A"};
 	String[] EstadoItem2 = {"Bueno","Malo","N/A"};
 	String[] EstadoItem3 = {"Bueno","Malo","N/A"};
@@ -103,16 +126,6 @@ public class Desviacion extends Activity implements OnClickListener, OnItemSelec
 	String[] PruebaEstanqueidad = {"","No Se Realizo", "Buena", "Mala"};
 	String[] CapacidadEstanqueidad = {"Lts","Mts3"};
 	String[] FugaEstanqueidad = {"Lts/min","Mts3/min"};
-	String[] ClaseAcueducto = {"","EAAV","Pozo Profundo","Aljibe","J.A.C.","Otro"};
-	String[] CamaraMedidor = {"","Grande","Pequena","No Tiene"};
-	String[] EstadoCamaraMedidor = {"","Buena","Regular","Mala","No Aplica"};
-	String[] EscapeMedidor = {"","No Tiene","En El Medidor","Antes del Medidor","Despues del Medidor"};
-	String[] ServicioDirecto = {"","Si","No"};
-	String[] Bypass = {"","Si","No"};
-	String[] DiametroIndividual = {"","1/2","3/4","1","1-1/2","2"};
-	String[] DiametroTotalizador = {"","1/2","3/4","1","1-1/2","2"};
-	String[] SegundoConcepto ={"","Si","No"};
-	String[] RespuestaDesviacion ={"","Normal por consumo","Fuga o daño interno","Posible fraude encontrado","Equipo de medida danado o robado","Error de lectura"};
 	
 	
 	/*Adaptadores Informacion General*/
@@ -125,8 +138,26 @@ public class Desviacion extends Activity implements OnClickListener, OnItemSelec
 	ArrayAdapter<String> AdaptadorUso;
 	
 	
+	/*Adaptadores Informacion Tecnica*/
+	ArrayAdapter<String> AdaptadorClaseAcueducto;
+	ArrayAdapter<String> AdaptadorEscapeMedidor;
+	ArrayAdapter<String> AdaptadorServicioDirecto;
+	ArrayAdapter<String> AdaptadorBypass;
+	ArrayAdapter<String> AdaptadorCamaraMedidor;
+	ArrayAdapter<String> AdaptadorEstadoCamaraMedidor;
+	ArrayAdapter<String> AdaptadorRespuestaDesviacion;
+	ArrayAdapter<String> AdaptadorSegundoConcepto;
+	ArrayAdapter<String> AdaptadorMedidor;
+	ArrayAdapter<String> AdaptadorDiametro;
 	
-	ArrayAdapter<String> AdaptadorElementos;
+	
+	
+	/*Adaptadores Informacion Visita Tecnica*/
+	ArrayAdapter<String> AdaptadorClase; 	
+	ArrayAdapter<String> AdaptadorSubclase;
+		
+	
+	/*ArrayAdapter<String> AdaptadorElementos;
 	ArrayAdapter<String> AdaptadorEstadoItem1;
 	ArrayAdapter<String> AdaptadorEstadoItem2;
 	ArrayAdapter<String> AdaptadorEstadoItem3;
@@ -142,24 +173,34 @@ public class Desviacion extends Activity implements OnClickListener, OnItemSelec
 	ArrayAdapter<String> AdaptadorTanquesEstanqueidad;
 	ArrayAdapter<String> AdaptadorPruebaEstanqueidad;
 	ArrayAdapter<String> AdaptadorCapacidadEstanqueidad;
-	ArrayAdapter<String> AdaptadorFugaEstanqueidad;
+	ArrayAdapter<String> AdaptadorFugaEstanqueidad;*/
 	
-	ArrayAdapter<String> AdaptadorClaseAcueducto;
-	ArrayAdapter<String> AdaptadorCamaraMedidor;
-	ArrayAdapter<String> AdaptadorEstadoCamaraMedidor;
-	ArrayAdapter<String> AdaptadorEscapeMedidor;
-	ArrayAdapter<String> AdaptadorServicioDirecto;
-	ArrayAdapter<String> AdaptadorBypass;
-	ArrayAdapter<String> AdaptadorDiametroIndividual;
-	ArrayAdapter<String> AdaptadorDiametroTotalizador;
-	ArrayAdapter<String> AdaptadorSegundoConcepto;
-	ArrayAdapter<String> AdaptadorRespuestaDesviacion;
 	
-	/**Objetos de la pestaña Informacion General**/
+	
+	/*Objetos de la pestaña Informacion General*/
 	private TextView	_lblServicioAcueducto, _lblServicioAlcantarillado, _lblCual;
 	private EditText 	_txtPrecinto, _txtActividad, _txtPersonas, _txtCual, _txtArea, _txtPisos,  _txtNombreUsuario, _txtCedulaUsuario, _txtNombreTestigo, _txtCedulaTestigo;
 	private Spinner		_cmbEstrato, _cmbEstado, _cmbTipo, _cmbHabitado, _cmbAcueducto, _cmbAlcantarillado, _cmbUso;
 	private Button		_btnGuardarGeneral;
+	
+	
+	/*Objetos de la pestaña Informacion Tecnica*/
+	private TextView	_lblOtro;
+	private EditText	_txtObservacion,_txtNumero, _txtMarca, _txtLectura;
+	private Spinner		_cmbClaseAcueducto, _cmbEscapeMedidor, _cmbServicioDirecto, _cmbBypass, _cmbCamaraMedidor, _cmbEstadoCamara, _cmbRespuesta, _cmbSegundoConcepto, _cmbMedidor, _cmbDiametro;
+	private Button		_btnGuardarTecnica, _btnGuardarDatosMedidor, _btnObservacion;
+	
+	
+	/*Objetos de la pestaña de Visita Tecnica*/
+	private EditText	_txtCantidad;
+	private Spinner		_cmbClase, _cmbSubClase;
+	private ListView	_lstItems;
+	private Button		_btnGuardarVisita;
+	
+	private AdaptadorVisitaTecnica myAdaptadorVisitaTecnica;
+	private ArrayList<InformacionItemsVisitaTecnica> ArrayVisitaTecnica = new ArrayList<InformacionItemsVisitaTecnica>();
+	
+	
 	
 	/*private EditText 	_txtInfTecnicaCual, _txtNumero, _txtMarca, _txtLectura, _txtVisitaTecnicaObservacion, _txtVisitaTecnicaCapacidad, _txtVisitaTecnicaFuga;
 	private EditText 	_txtVisitaTecnicaCantidad;
@@ -209,12 +250,12 @@ public class Desviacion extends Activity implements OnClickListener, OnItemSelec
 		tabs.addTab(spec);		
 		
 		spec=tabs.newTabSpec("inf_visita_tecnica");
-		spec.setContent(R.id.VisitaBtnGuardar);
+		spec.setContent(R.id.InfVisita);
 		spec.setIndicator("Informacion Vista Tecnica");
 		tabs.addTab(spec);
 		tabs.setCurrentTab(0);	
 		
-		/**Referencia a objetos de la pestaña Informacion General**/
+		/*Referencia a objetos de la pestaña Informacion General*/
 		_lblServicioAcueducto		= (TextView) findViewById(R.id.GeneralLblServicioAcueducto);
 		_lblServicioAlcantarillado	= (TextView) findViewById(R.id.GeneralLblServicioAlcantarillado);
 		_lblCual					= (TextView) findViewById(R.id.GeneralLblCual);
@@ -239,6 +280,38 @@ public class Desviacion extends Activity implements OnClickListener, OnItemSelec
 		_cmbUso				= (Spinner) findViewById(R.id.GeneralCmbUso);
 		
 		_btnGuardarGeneral	= (Button) findViewById(R.id.GeneralBtnGuardar);
+		
+		
+		/*Referencia a objetos de informacion tecnica*/
+		_lblOtro			= (TextView) findViewById(R.id.TecnicaLblOtro);
+		_txtObservacion		= (EditText) findViewById(R.id.TecnicaTxtObservacion);
+		_txtNumero			= (EditText) findViewById(R.id.TecnicaTxtNumero);
+		_txtMarca			= (EditText) findViewById(R.id.TecnicaTxtMarca); 
+		_txtLectura			= (EditText) findViewById(R.id.TecnicaTxtLectura);
+		
+		_cmbClaseAcueducto	= (Spinner) findViewById(R.id.TecnicaCmbAcueducto);
+		_cmbEscapeMedidor	= (Spinner) findViewById(R.id.TecnicaCmbEscape);
+		_cmbServicioDirecto	= (Spinner) findViewById(R.id.TecnicaCmbServicioDirecto); 
+		_cmbBypass			= (Spinner) findViewById(R.id.TecnicaCmbBypass);
+		_cmbCamaraMedidor	= (Spinner) findViewById(R.id.TecnicaCmbCamaraMedidor);
+		_cmbEstadoCamara	= (Spinner) findViewById(R.id.TecnicaCmbEstadoCamara); 
+		_cmbRespuesta		= (Spinner) findViewById(R.id.TecnicaCmbRespuesta);
+		_cmbSegundoConcepto	= (Spinner) findViewById(R.id.TecnicaCmbSegundoConcepto);
+		_cmbMedidor			= (Spinner)	findViewById(R.id.TecnicaCmbDatosMedidor);
+		_cmbDiametro		= (Spinner) findViewById(R.id.TecnicaCmbDiametro);
+		
+		_btnGuardarTecnica		= (Button) findViewById(R.id.TecnicaBtnGuardar); 
+		_btnGuardarDatosMedidor	= (Button) findViewById(R.id.TecnicaBtnGuardarDatosMedidor);
+		_btnObservacion			= (Button) findViewById(R.id.TecnicaBtnObservacion);
+		
+		
+		/*Referencia a objetos Visita Tecnica*/
+		_txtCantidad		= (EditText) findViewById(R.id.VisitaTxtCantidad);
+		_cmbClase 			= (Spinner) findViewById(R.id.VisitaCmbClase);
+		_cmbSubClase		= (Spinner) findViewById(R.id.VisitaCmbSubclase);
+		_btnGuardarVisita	= (Button) findViewById(R.id.VisitaBtnGuardar);
+		
+		
 		
 		//Referencia a objetos
 		//_Estrato 		= (Spinner) findViewById(R.id.GeneralCmbEstrato); 
@@ -357,8 +430,46 @@ public class Desviacion extends Activity implements OnClickListener, OnItemSelec
 		_cmbUso.setAdapter(AdaptadorUso);
 		
 		
+		/*Asociacion de adaptadores y objetos Informacion Tecnica*/
+		AdaptadorClaseAcueducto= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,strClaseAcueducto);
+		_cmbClaseAcueducto.setAdapter(AdaptadorClaseAcueducto);
+		
+		AdaptadorEscapeMedidor= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,strEscapeMedidor);
+		_cmbEscapeMedidor.setAdapter(AdaptadorEscapeMedidor);
+		
+		AdaptadorServicioDirecto= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,strServicioDirecto);
+		_cmbServicioDirecto.setAdapter(AdaptadorServicioDirecto);
+		
+		AdaptadorBypass= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,strBypass);
+		_cmbBypass.setAdapter(AdaptadorBypass);
+		
+		AdaptadorCamaraMedidor= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,strCamaraMedidor);
+		_cmbCamaraMedidor.setAdapter(AdaptadorCamaraMedidor);
+		
+		AdaptadorEstadoCamaraMedidor= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,strEstadoCamaraMedidor);
+		_cmbEstadoCamara.setAdapter(AdaptadorEstadoCamaraMedidor);
+		
+		AdaptadorRespuestaDesviacion= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,strRespuestaDesviacion);
+		_cmbRespuesta.setAdapter(AdaptadorRespuestaDesviacion);
+		
+		AdaptadorSegundoConcepto= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,strSegundoConcepto);
+		_cmbSegundoConcepto.setAdapter(AdaptadorSegundoConcepto);
+		
+		AdaptadorMedidor= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,strMedidor);
+		_cmbMedidor.setAdapter(AdaptadorMedidor);
+		
+		AdaptadorDiametro= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,strDiametro);
+		_cmbDiametro.setAdapter(AdaptadorDiametro);
 		
 		
+		/*Asociacion de adaptadores y objetos Informacion Visita Tecnica*/
+		this.strClase = this.FcnDesviacion.getClaseItems();
+		AdaptadorClase = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,this.strClase);
+		_cmbClase.setAdapter(AdaptadorClase);
+		
+		this.strSubClase = this.FcnDesviacion.getSubClaseItems(_cmbClase.getSelectedItem().toString());
+		AdaptadorSubclase = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,this.strSubClase);
+		_cmbSubClase.setAdapter(AdaptadorSubclase);		
 		
 		/*AdaptadorEstadoItem1= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,EstadoItem1);
 		_EstadoItem1.setAdapter(AdaptadorEstadoItem1);*/
@@ -408,44 +519,31 @@ public class Desviacion extends Activity implements OnClickListener, OnItemSelec
 		AdaptadorFugaEstanqueidad= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,FugaEstanqueidad);
 		_FugaEstanqueidad.setAdapter(AdaptadorFugaEstanqueidad);
 		
-		AdaptadorClaseAcueducto= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,ClaseAcueducto);
-		_ClaseAcueducto.setAdapter(AdaptadorClaseAcueducto);
 		
-		AdaptadorCamaraMedidor= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,CamaraMedidor);
-		_CamaraMedidor.setAdapter(AdaptadorCamaraMedidor);
-		
-		AdaptadorEstadoCamaraMedidor= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,EstadoCamaraMedidor);
-		_EstadoCamaraMedidor.setAdapter(AdaptadorEstadoCamaraMedidor);
-		
-		AdaptadorEscapeMedidor= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,EscapeMedidor);
-		_EscapeMedidor.setAdapter(AdaptadorEscapeMedidor);
-		
-		AdaptadorServicioDirecto= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,ServicioDirecto);
-		_ServicioDirecto.setAdapter(AdaptadorServicioDirecto);
-		
-		AdaptadorBypass= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,Bypass);
-		_Bypass.setAdapter(AdaptadorBypass);
-		
-		AdaptadorDiametroIndividual= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,DiametroIndividual);
-		_DiametroIndividual.setAdapter(AdaptadorDiametroIndividual);
 		
 		AdaptadorDiametroTotalizador= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,DiametroTotalizador);
 		_DiametroTotalizador.setAdapter(AdaptadorDiametroTotalizador);
 
-		AdaptadorSegundoConcepto= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,SegundoConcepto);
-		_SegundoConcepto.setAdapter(AdaptadorSegundoConcepto);
-		
-		AdaptadorRespuestaDesviacion= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,RespuestaDesviacion);
-		_RespuestaDesviacion.setAdapter(AdaptadorRespuestaDesviacion);
-				
 		AdaptadorElementos= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,Elementos);
 		AdaptadorElementos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		_Elementos.setAdapter(AdaptadorElementos);*/
 			
+		/*Listener Informacion General*/
 		_cmbUso.setOnItemSelectedListener(this);
 		_cmbTipo.setOnItemSelectedListener(this);
 		_btnGuardarGeneral.setOnClickListener(this);
 		
+		/*Listener Informacion Tecnica*/
+		_cmbClaseAcueducto.setOnItemSelectedListener(this);
+		_cmbMedidor.setOnItemSelectedListener(this);
+		_btnGuardarTecnica.setOnClickListener(this);
+		_btnGuardarDatosMedidor.setOnClickListener(this);
+		_btnObservacion.setOnClickListener(this);
+		
+		
+		/*Listener Informacion Visita Tecnica*/
+		_cmbClase.setOnItemSelectedListener(this);
+		_cmbSubClase.setOnItemSelectedListener(this);
 		//////////////////////////////////////
 		/**/
 		//CargarInfGuardada();
@@ -912,7 +1010,28 @@ public class Desviacion extends Activity implements OnClickListener, OnItemSelec
 					}else{
 						this.FcnDesviacion.setTipo(this.Revision, _cmbTipo.getSelectedItem().toString());		
 					}		
-					Toast.makeText(this, "Datos generales guardados correctamente.", Toast.LENGTH_SHORT).show(); 
+					Toast.makeText(this, "Datos informacion general guardados correctamente.", Toast.LENGTH_SHORT).show(); 
+					break;
+					
+				case R.id.TecnicaBtnObservacion:					
+	            	_txtObservacion.setText(this.FcnDesviacion.getObservacion(this.Revision));
+					break;
+					
+				case R.id.TecnicaBtnGuardarDatosMedidor:
+					this.FcnDesviacion.setDatosMedidor(this.Revision, _cmbMedidor.getSelectedItem().toString(), _txtNumero.getText().toString(), _txtMarca.getText().toString(), _txtLectura.getText().toString(), _cmbDiametro.getSelectedItem().toString());
+					break;
+					
+				case R.id.TecnicaBtnGuardar:
+					this.FcnDesviacion.setAcueducto(this.Revision, this._cmbClaseAcueducto.getSelectedItem().toString()+"@"+this._lblOtro.getText().toString());
+					this.FcnDesviacion.setEscapeCamaraMedidor(this.Revision, this._cmbEscapeMedidor.getSelectedItem().toString());
+					this.FcnDesviacion.setServicioDirecto(this.Revision, this._cmbServicioDirecto.getSelectedItem().toString());
+					this.FcnDesviacion.setBypass(this.Revision, this._cmbBypass.getSelectedItem().toString());
+					this.FcnDesviacion.setCamaraMedidor(this.Revision, this._cmbCamaraMedidor.getSelectedItem().toString());
+					this.FcnDesviacion.setEstadoCamaraMedidor(this.Revision, this._cmbEstadoCamara.getSelectedItem().toString());
+					this.FcnDesviacion.setSegundoConcepto(this.Revision, this._cmbSegundoConcepto.getSelectedItem().toString());
+					this.FcnDesviacion.setRespuestaDesviacion(this.Revision, this._cmbRespuesta.getSelectedItem().toString());
+					this.FcnDesviacion.setDiagnostico(this.Revision, this._txtObservacion.getText().toString());
+					Toast.makeText(this, "Datos informacion tecnica guardados correctamente.", Toast.LENGTH_SHORT).show(); 
 					break;
 			}
 			
@@ -1086,6 +1205,36 @@ public class Desviacion extends Activity implements OnClickListener, OnItemSelec
 						_txtActividad.setEnabled(true);
 					}
 					break;
+				
+				case R.id.TecnicaCmbAcueducto:
+					if(this._cmbClaseAcueducto.getSelectedItem().toString().equals("Otro")){
+						this.ModalInputSingle.putExtra("titulo","INGRESE ACUEDUCTO");
+						this.ModalInputSingle.putExtra("lbl1", "OTRO:");
+						this.ModalInputSingle.putExtra("txt1", "");
+						startActivityForResult(this.ModalInputSingle, INGRESO_ACUEDUCTO_OTRO);
+					}
+					break;
+					
+				case R.id.VisitaCmbClase:
+					this.strSubClase = this.FcnDesviacion.getSubClaseItems(this._cmbClase.getSelectedItem().toString());
+					AdaptadorSubclase = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,this.strSubClase);
+					_cmbSubClase.setAdapter(AdaptadorSubclase);	
+					AdaptadorSubclase.notifyDataSetChanged();
+					break;
+					
+				case R.id.VisitaCmbSubclase:
+					ArrayVisitaTecnica.clear();
+					ArrayList<String> opciones = new ArrayList<String>();
+					opciones.add("");
+					opciones.add("Opcion 1");
+					opciones.add("Opcion 2");
+					//this._tempTabla = this.FcnRevision.getRevisiones();
+					//for(int i=0;i<this._tempTabla.size();i++){
+					//	this._tempRegistro = this._tempTabla.get(i);
+					this.ArrayVisitaTecnica.add(new InformacionItemsVisitaTecnica("prueba",opciones));
+					//}
+					this.myAdaptadorVisitaTecnica.notifyDataSetChanged();
+					break;
 			}
 			
 						
@@ -1219,7 +1368,7 @@ public class Desviacion extends Activity implements OnClickListener, OnItemSelec
 		});*/
 		}
 
-
+		
 
 		@Override
 		public void onNothingSelected(AdapterView<?> parent) {
@@ -1227,6 +1376,15 @@ public class Desviacion extends Activity implements OnClickListener, OnItemSelec
 			
 		}
 		
+		@Override
+	    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+			if(resultCode == RESULT_OK && requestCode == INGRESO_ACUEDUCTO_OTRO && data.getExtras().getBoolean("accion")){
+				this._lblOtro.setText(data.getExtras().getString("txt1"));
+			}else{
+				this._lblOtro.setText("");
+				this._cmbClaseAcueducto.setSelection(AdaptadorClaseAcueducto.getPosition(""));
+			}
+	    }
 		
 		private class UpLoadDesviacion extends AsyncTask<Void,Void,Void>{
 			String path=	Environment.getExternalStorageDirectory() + File.separator + "EAAV" + File.separator + "ArchivoPrueba.txt";

@@ -2,7 +2,11 @@
 <resources>
     <string name="VisitaLblClase">CLASE</string>
     <string name="VisitaBtnGuardar">Guardar</string>
-    <string name="VisitaLblElemento">Elemento</string>
+    <string name="VisitaLblSubclase">Subclase</string>
     <string name="VisitaLblCantidad">Cantidad</string>
+    <string name="VisitaLblItem1">Item1</string>
+    <string name="VisitaLblItem2">Item2</string>
+    <string name="VisitaLblItem3">Item3</string>
+    <string name="VisitaLblItem4">Item4</string>
     
 </resources>
