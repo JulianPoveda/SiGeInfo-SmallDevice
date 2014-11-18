@@ -377,7 +377,7 @@ public class ConnectServer {
     	    int bufferLength = 0; 
     	    
     		try {    			
-    			url = new URL("http://"+_servidor+":"+_puerto+"/"+_pagina+"?Proceso=Descargue&PDA="+_pda);
+    			url = new URL(_servidor+":"+_puerto+"/"+_pagina+"/ServerToPDA.php?Proceso=Descargue&PDA="+_pda);
 				urlConnection = (HttpURLConnection) url.openConnection();
     			urlConnection.setRequestMethod("GET");
     			urlConnection.setDoOutput(true);

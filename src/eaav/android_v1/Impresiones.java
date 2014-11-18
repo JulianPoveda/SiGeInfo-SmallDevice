@@ -43,7 +43,7 @@ public class Impresiones {
 		this.FcnSQL	= new SQLite(this.context, FormLoggin.CARPETA_RAIZ, FormLoggin.NOMBRE_DATABASE);
 		String periodo_ini = this.FcnSQL.StrSelectShieldWhere("db_solicitudes", "periodo_ini", "revision = '" + Solicitud + "'");
 		String periodo_fin = this.FcnSQL.StrSelectShieldWhere("db_solicitudes", "periodo_fin", "revision = '" + Solicitud + "'");
-		String factura = this.FcnSQL.StrSelectShieldWhere("db_solicitudes", "factura", "revision = '" + Solicitud + "'");
+		Double factura = this.FcnSQL.DoubleSelectShieldWhere("db_solicitudes", "factura", "revision = '" + Solicitud + "'");
 		String NumVisita = "";
 		String CamposGeneral = "";
 		String Nombre= "";
@@ -142,7 +142,7 @@ public class Impresiones {
 		this.FcnSQL	= new SQLite(this.context, FormLoggin.CARPETA_RAIZ, FormLoggin.NOMBRE_DATABASE);
 		String periodo_ini = this.FcnSQL.StrSelectShieldWhere("db_solicitudes", "periodo_ini", "revision = '" + Solicitud + "'");
 		String periodo_fin = this.FcnSQL.StrSelectShieldWhere("db_solicitudes", "periodo_fin", "revision = '" + Solicitud + "'");
-		String factura = this.FcnSQL.StrSelectShieldWhere("db_solicitudes", "factura", "revision = '" + Solicitud + "'");
+		Double factura = this.FcnSQL.DoubleSelectShieldWhere("db_solicitudes", "factura", "revision = '" + Solicitud + "'");
 		
 		String CamposGeneral = "";
 		String Direccion = "";
