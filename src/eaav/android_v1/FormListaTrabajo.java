@@ -62,7 +62,7 @@ public class FormListaTrabajo extends Activity {
 		this.ModalInformacionSolicitud	= new Intent(this, ModalInfGeneral.class);
 		this.ModalInputSingle			= new Intent(this, ModalInputSingle.class);		
 		this.FormNotificacion			= new Intent(this, FormNotificacion.class);
-		this.FormDesviacion				= new Intent(this, Desviacion.class);
+		this.FormDesviacion				= new Intent(this, FormDesviacion.class);
 		
 		this.FcnRevision = new ClassRevision(this, this.FolderAplicacion);
 		

@@ -4,26 +4,28 @@ import java.util.ArrayList;
 
 import Miscelanea.DateTime;
 import Miscelanea.SQLite;
+import Miscelanea.Utilidades;
 import android.content.ContentValues;
 import android.content.Context;
 import android.widget.Toast;
 import eaav.android_v1.FormLoggin;
 
 public class ClassDesviacion {
+	private Utilidades	FcnUtilidades;
 	private DateTime 	FcnDateTime ;
 	private SQLite 		FcnSQL;
 	private Context 	_ctxDesviacion;
 	private String 		_folderAplicacion;
 	
-	private ArrayList<ContentValues>	_tempTabla 		= new ArrayList<ContentValues>();
 	private ContentValues 				_tempRegistro 	= new ContentValues();
-	
+	private ContentValues 				_tempRegistro1 	= new ContentValues();
 
 	
 	public ClassDesviacion(Context _ctx, String _folder){
 		this._ctxDesviacion		= _ctx;
 		this._folderAplicacion	= _folder;
 		this.FcnDateTime		= new DateTime();
+		this.FcnUtilidades		= new Utilidades();
 		this.FcnSQL				= new SQLite(this._ctxDesviacion, this._folderAplicacion, FormLoggin.NOMBRE_DATABASE);
 	}
 	
@@ -39,6 +41,16 @@ public class ClassDesviacion {
 		this._tempRegistro.put("fecha", this.FcnDateTime.GetFecha());
 		this._tempRegistro.put("hora", this.FcnDateTime.GetHora());
 		this.FcnSQL.InsertRegistro("db_desviaciones", this._tempRegistro);
+	}
+	
+	public void eliminarDesviacion(String _revision){
+		this.FcnSQL.DeleteRegistro("db_desviaciones", "revision='"+_revision+"'");
+	}
+	
+	public void setFechaCierre(String _revision){
+		this._tempRegistro.clear();
+		this._tempRegistro.put("horacierre", FcnDateTime.GetHora());
+		this.FcnSQL.UpdateRegistro("db_desviaciones", this._tempRegistro, "revision='"+_revision+"'");
 	}
 	
 	
@@ -245,33 +257,70 @@ public class ClassDesviacion {
 	}
 	
 	
-	public void getActividad(String _revision){
-		
+	public String getActividad(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "actividad", "revision='"+_revision+"'");
 	}
 	
+	public String getAcueducto(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "acueducto", "revision='"+_revision+"'");
+	}
 	
 	public void getEstrato(String _revision){
 		
 	}
 	
+	public String getSegundoConcepto(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "segundoconcepto", "revision='"+_revision+"'");
+	}
 	
-	public void getEstado(String _revision){
-		
+	public String getRespuestaDesviacion(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "respuestadesviacion", "revision='"+_revision+"'");
+	}
+	
+	public String getEstado(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "estado", "revision='"+_revision+"'");
 	}
 	
 	public String getHabitado(String _revision){
 		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "habitado", "revision='"+_revision+"'");
 	}
 	
-	public int getPersonas(String _revision){
-		return this.FcnSQL.IntSelectShieldWhere("db_desviaciones", "residentes", "revision='"+_revision+"'");
+	public String getPersonas(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "residentes", "revision='"+_revision+"'");
+	}
+	
+	public String getObservacion(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "diagnostico", "revision='"+_revision+"'");
 	}
 	
 	
-	public void getTipo(String _revision){
-		
+	public String getTipo(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "tipo", "revision='"+_revision+"'");
 	}
 	
+	public String getServicioDirecto(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "serviciodirecto", "revision='"+_revision+"'");
+	}
+	
+	public String getBypass(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "bypass", "revision='"+_revision+"'");
+	}
+	
+	public String getSerieMedidor(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "serieindividual", "revision='"+_revision+"'");
+	}
+	
+	public String getMarcaMedidor(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "marcaindividual", "revision='"+_revision+"'");
+	}
+	
+	public String getLecturaMedidor(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "lecturaindividual", "revision='"+_revision+"'");
+	}
+	
+	public String getDiametroMedidor(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "diametroindividual", "revision='"+_revision+"'");
+	}
 	
 	public void getServicioAcueducto(String _revision){
 		
@@ -283,13 +332,13 @@ public class ClassDesviacion {
 	}
 	
 	
-	public void getArea(String _revision){
-		
+	public String getArea(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "area", "revision='"+_revision+"'");
 	}
 	
 	
-	public int getPisos(String _revision){
-		return this.FcnSQL.IntSelectShieldWhere("db_desviaciones", "pisos", "revision='"+_revision+"'");	
+	public String getPisos(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "pisos", "revision='"+_revision+"'");	
 	}
 	
 	
@@ -297,6 +346,17 @@ public class ClassDesviacion {
 		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "uso", "revision='"+_revision+"'");	
 	}
 	
+	public String getRegistroPaso(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "medidorregpaso", "revision='"+_revision+"'");	
+	}
+	
+	public String getRegistroAntifraude(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "medidorregantifraude", "revision='"+_revision+"'");	
+	}
+	
+	/*public String getMedidorDestruido(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "medidordestruido", "revision='"+_revision+"'");	
+	}*/
 	
 	public String getNombreUsuario(String _revision){
 		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "nombreusuario", "revision='"+_revision+"'");		
@@ -308,25 +368,69 @@ public class ClassDesviacion {
 	}
 	
 	
-	public void getNombreTestigo(String _revision){
-		
+	public String getNombreTestigo(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "nombretestigo", "revision='"+_revision+"'");	
 	}
 	
 	
-	public void getCedulaTestigo(String _revision){
-		
+	public String getCedulaTestigo(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "cedulatestigo", "revision='"+_revision+"'");
 	}
 	
 	
 	public String getCamaraMedidor(String _revision){
 		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "camaramedidor", "revision='"+_revision+"'");
 	}
-	
+		
 	public String getEstadoCamaraMedidor(String _revision){
 		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "estadocamara", "revision='"+_revision+"'");
 	}
 	
-	public String getObservacion(String _revision){
+	public String getEscapeCamara(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "escapecamara", "revision='"+_revision+"'");
+	}
+	
+	public String getMedidorDestruido(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "medidorinvertido", "revision='"+_revision+"'");
+	}
+	
+	public String getMedidorInvertido(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "medidordestruido", "revision='"+_revision+"'");
+	}
+	
+	public String getMedidorIlegible(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "medidorilegible", "revision='"+_revision+"'");
+	}
+	
+	public String getMedidorPrecintoRoto(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "medidorprecintoroto", "revision='"+_revision+"'");
+	}
+	
+	public String getHermeticidadRegInternos(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "hermeticidadreginternos", "revision='"+_revision+"'");
+	}
+	
+	public String getHermeticidadEquipoMedida(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "hermeticidadequipomedida", "revision='"+_revision+"'");
+	}
+	
+	public String getHermeticidadFugas(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "hermeticidadfugas", "revision='"+_revision+"'");
+	}
+	
+	public String getHermeticidadFugaImperceptible(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "hermeticidadfugaimperceptible", "revision='"+_revision+"'");
+	}
+	
+	public String getHermeticidadFugaVisible(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "hermeticidadfugavisible", "revision='"+_revision+"'");
+	}
+	
+	public String getInstalacionesHidraulicas(String _revision){
+		return this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "estadointernas", "revision='"+_revision+"'");
+	}
+	
+	public String generarObservacion(String _revision){
 		String _observacion = "";
 		_observacion = 	"Se realiza visita tecnica en presencia de " + getNombreUsuario(_revision) + ",identificado (a) con cedula " + getCedulaUsuario(_revision) + ", quien no " +
     					"hace uso del derecho que le otorga el art. 12 de la resolucion CRA 413 de 2006 de estar asesorado de un tecnico particular a su costo, predio de " + getPisos(_revision) + " pisos, habitado por " + getHabitado(_revision) + ", numero de habitantes " + getPersonas(_revision) + ", de uso " + getUso(_revision);
@@ -343,39 +447,245 @@ public class ClassDesviacion {
     		_observacion += ", predio sin cajilla ";
     	}
     	
-    	/*if(_RtaDestruido.getSelectedItem().toString().equals("No")&&(_RtaVidrioIlegible.getSelectedItem().toString().equals("No"))){
-    		ObservacionSistema += " y medidor visualmente en buen estado.";
+    	if(getMedidorDestruido(_revision).toString().equals("No")&&(getMedidorIlegible(_revision).equals("No"))){
+    		_observacion += " y medidor visualmente en buen estado.";
     	}else{
-    		ObservacionSistema += " y medidor visualmente en mal estado.";
+    		_observacion += " y medidor visualmente en mal estado.";
     	}
     	
-    	//SQL.abrir();
-		//SQL.SelectData(	RtaCamposDesviacion, 												//Se consulta la informacion basica
-		//				"db_desviaciones", 
-		//				"hermeticidadreginternos,hermeticidadequipomedida,hermeticidadfugas,hermeticidadfugaimperceptible,hermeticidadfugavisible,estadointernas",
-		//				"revision = '" + Solicitud + "'");
-		//SQL.cerrar();
-    	
-		if(RtaCamposDesviacion.get(0).equals("Si")&&(RtaCamposDesviacion.get(1).equals("Si"))){
-			ObservacionSistema += " Se realizaron pruebas de hermeticidad encontrandose ";
-			if((RtaCamposDesviacion.get(3).equals("No"))&&(RtaCamposDesviacion.get(4).equals("No"))){
-				ObservacionSistema += "conforme ";
+		if(getHermeticidadRegInternos(_revision).equals("Si")&&(getHermeticidadEquipoMedida(_revision).equals("Si"))){
+			_observacion += " Se realizaron pruebas de hermeticidad encontrandose ";
+			if(getHermeticidadFugaImperceptible(_revision).equals("No") && getHermeticidadFugaVisible(_revision).equals("No")){
+				_observacion += "conforme ";
 			}else{
-				ObservacionSistema += "no conforme, ";
+				_observacion += "no conforme, ";
 			}	
 		}
     	
-    	ObservacionSistema += "instalaciones hidraulicas en ";
-    	if(RtaCamposDesviacion.get(5).indexOf("Malo")==-1){
-    		ObservacionSistema += "buen estado.";
+		_observacion += "instalaciones hidraulicas en ";
+    	if(getInstalacionesHidraulicas(_revision).equals("Bueno")){
+    		_observacion += "buen estado.";
     	}else{
-    		ObservacionSistema += "mal estado.";
-    	}*/
-    	//Verificar el estado de las instalaciones internas
-		return _observacion;
+    		_observacion += "mal estado.";
+    	}
+    	return _observacion;
+	}
+	
+	public void registrarDatosMedidor(String _revision, String _registroPaso, String _registroAntifraude, String _destruido, String _invertido, String _ilegible, String _precintoRoto){
+		this._tempRegistro.clear();
+		this._tempRegistro.put("medidorregpaso", _registroPaso);
+		this._tempRegistro.put("medidorregantifraude", _registroAntifraude);
+		this._tempRegistro.put("medidordestruido", _destruido);
+		this._tempRegistro.put("medidorinvertido", _invertido);
+		this._tempRegistro.put("medidorilegible", _ilegible);
+		this._tempRegistro.put("medidorprecintoroto", _precintoRoto);	
+		if(this.FcnSQL.UpdateRegistro("db_desviaciones", this._tempRegistro, "revision='"+_revision+"'")){
+			Toast.makeText(this._ctxDesviacion,"Datos de inspeccion al medidor guardados correctamente.", Toast.LENGTH_LONG).show();
+		}else{
+			Toast.makeText(this._ctxDesviacion,"Error al registrar los datos de inspeccion al medidor.", Toast.LENGTH_LONG).show();
+		}
 	}
 	
 	
+	//funcion para validar las instalaciones
+	private boolean validarVisitaTecnicaInstalaciones(String _regInternos, String _equipoMedida, String _revisionFugas, String _fugaImperceptible, String _fugaVisible){
+		boolean ValorRetorno = false;
+		if(_regInternos.isEmpty()||_equipoMedida.isEmpty()||_revisionFugas.isEmpty()||_fugaImperceptible.isEmpty()||_fugaVisible.isEmpty()){
+			ValorRetorno = false;
+		}else{
+			ValorRetorno = true;
+		}
+		return ValorRetorno;
+	}
+		
+	public void registrarInstalaciones(String _revision, String _regInternos, String _equipoMedida, String _revisionFugas, String _fugaImperceptible, String _fugaVisible){
+		if(this.validarVisitaTecnicaInstalaciones(_regInternos, _equipoMedida, _revisionFugas, _fugaImperceptible, _fugaVisible)){
+			this._tempRegistro.clear();
+			this._tempRegistro.put("hermeticidadreginternos", _regInternos);
+			this._tempRegistro.put("hermeticidadequipomedida", _equipoMedida);
+			this._tempRegistro.put("hermeticidadfugas", _revisionFugas);
+			this._tempRegistro.put("hermeticidadfugaimperceptible", _fugaImperceptible);
+			this._tempRegistro.put("hermeticidadfugavisible", _fugaVisible);
+			if(this.FcnSQL.UpdateRegistro("db_desviaciones", this._tempRegistro, "revision='"+_revision+"'")){
+				Toast.makeText(this._ctxDesviacion,"Datos de instalaciones guardados correctamente.", Toast.LENGTH_LONG).show();
+			}else{
+				Toast.makeText(this._ctxDesviacion,"Error al registrar los datos de instalaciones.", Toast.LENGTH_LONG).show();
+			}
+		}else{
+			Toast.makeText(this._ctxDesviacion,"No ha seleccionado datos validos.", Toast.LENGTH_LONG).show();
+		}
+		
+	}
+	
+	
+	public ContentValues getDatosDesviacion(String _revision){
+		this._tempRegistro = this.FcnSQL.SelectDataRegistro("db_desviaciones", 
+															"tipo,nombreusuario,nombretestigo,cedulausuario,cedulatestigo,estrato,area,pisos,uso,actividad,residentes,estado,habitado," +
+															"acueducto,camaramedidor,escapecamara,estadocamara,serviciodirecto,bypass,serieindividual,marcaindividual,lecturaindividual," +
+															"diametroindividual,serietotalizador,marcatotalizador,lecturatotalizador,diametrototalizador,segundoconcepto,respuestadesviacion," +
+															"diagnostico,precinto,medidorregpaso,medidorregantifraude,medidordestruido,medidorinvertido,medidorilegible,medidorprecintoroto",
+															"revision = '" + _revision + "'");
+		return this._tempRegistro;
+	}
+	
+	public ContentValues getDatosMedidor(String _revision,String _tipoMedidor){
+		this._tempRegistro.clear();
+		if(_tipoMedidor.equals("Individual")){
+			this._tempRegistro.put("Numero", this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "serieindividual", "revision = '" + _revision + "'"));
+			this._tempRegistro.put("Marca", this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "marcaindividual", "revision = '" + _revision + "'"));
+			this._tempRegistro.put("Lectura", this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "lecturaindividual", "revision = '" + _revision + "'"));
+			this._tempRegistro.put("Diametro", this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "diametroindividual", "revision = '" + _revision + "'"));	
+		}else if(_tipoMedidor.equals("Totalizador")){
+			this._tempRegistro.put("Numero", this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "serietotalizador", "revision = '" + _revision + "'"));
+			this._tempRegistro.put("Marca", this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "marcatotalizador", "revision = '" + _revision + "'"));
+			this._tempRegistro.put("Lectura", this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "lecturatotalizador", "revision = '" + _revision + "'"));
+			this._tempRegistro.put("Diametro", this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "diametrototalizador", "revision = '" + _revision + "'"));
+		}		
+		return this._tempRegistro;
+	}
+	
+	
+	public ContentValues getDatosInstalaciones(String _revision){
+		this._tempRegistro.clear();
+		this._tempRegistro.put("RegistrosInternos", this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "hermeticidadreginternos", "revision = '" + _revision + "'"));
+		this._tempRegistro.put("VerificacionEquipo", this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "hermeticidadequipomedida", "revision = '" + _revision + "'"));
+		this._tempRegistro.put("RevisionFugas", this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "hermeticidadfugas", "revision = '" + _revision + "'"));
+		this._tempRegistro.put("FugaImperceptible", this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "hermeticidadfugaimperceptible", "revision = '" + _revision + "'"));	
+		this._tempRegistro.put("FugaVisible", this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "hermeticidadfugavisible", "revision = '" + _revision + "'"));	
+		return this._tempRegistro;
+	}
+	
+	public ContentValues getDatosMedidor(String _revision){
+		this._tempRegistro.clear();
+		this._tempRegistro.put("RegistroPaso", this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "medidorregpaso", "revision = '" + _revision + "'"));
+		this._tempRegistro.put("RegistroAntifraude", this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "medidorregantifraude", "revision = '" + _revision + "'"));
+		this._tempRegistro.put("Destruido", this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "medidordestruido", "revision = '" + _revision + "'"));
+		this._tempRegistro.put("Invertido", this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "medidorinvertido", "revision = '" + _revision + "'"));	
+		this._tempRegistro.put("Ilegible", this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "medidorilegible", "revision = '" + _revision + "'"));	
+		this._tempRegistro.put("Precinto", this.FcnSQL.StrSelectShieldWhere("db_desviaciones", "medidorprecintoroto", "revision = '" + _revision + "'"));	
+		return this._tempRegistro;
+	}
+	
+	
+	public ContentValues getDatosPruebasEstanqueidad(String _revision, String _tanque){
+		this._tempRegistro1.clear();
+		if(_tanque.equals("Tanque Subterraneo")){
+			this._tempRegistro = this.FcnSQL.SelectDataRegistro("db_desviaciones", 
+																"estanqueidadressubterraneo as res, estanqueidadcapsubterraneo as cap,estanqueidadfugasubterrano as fug", 
+																"revision = '" + _revision + "'");
+		}else if(_tanque.equals("Tanque Elevado")){
+			this._tempRegistro = this.FcnSQL.SelectDataRegistro("db_desviaciones", 
+																"estanqueidadreselevado as res, estanqueidadcapelevado as cap, estanqueidadfugaelevado as fug", 
+																"revision = '" + _revision + "'");
+		}else if(_tanque.equals("Tanque Lavadero")){
+			this._tempRegistro = this.FcnSQL.SelectDataRegistro("db_desviaciones", 
+																"estanqueidadreslavadero as res, estanqueidadcaplavadero as cap, estanqueidadfugalavadero as fug", 
+																"revision = '" + _revision + "'");
+		}
+		
+		String[] myString = this._tempRegistro.getAsString("cap").split(" ");
+		this._tempRegistro1.put("Resultado",this._tempRegistro.getAsString("res"));
+		if(myString.length>1){
+			this._tempRegistro1.put("Capacidad",myString[0]);
+			this._tempRegistro1.put("UnidadesCapacidad",myString[1]);
+		}else{
+			this._tempRegistro1.put("Capacidad","");
+			this._tempRegistro1.put("UnidadesCapacidad","");
+		}
+		myString = this._tempRegistro.getAsString("fug").split(" ");
+		if(myString.length>1){
+			this._tempRegistro1.put("Fuga",myString[0]);
+			this._tempRegistro1.put("UnidadesFuga",myString[1]);
+		}else{
+			this._tempRegistro1.put("Fuga","");
+			this._tempRegistro1.put("UnidadesFuga","");
+		}
+		
+		return this._tempRegistro1;
+	}
+	
+	private boolean validarVisitaTecnicaElementos(String _cantidad){
+		boolean ValorRetorno= false;
+		if(_cantidad.length()==0){
+			ValorRetorno = false;
+		}else{
+			ValorRetorno = true;
+		}
+		return ValorRetorno;
+	}
+	
+	public void registrarElementos(String _revision, String _elemento, String _cantidad, String _item1, String _item2, String _item3, String _data1, String _data2, String _data3){
+		this._tempRegistro.clear();
+		if(this.validarVisitaTecnicaElementos(_cantidad)){
+			if(_elemento.equals("Cisterna")){
+				this._tempRegistro.put("cisterna", _cantidad);
+				this._tempRegistro.put("itemcisterna", _item1+"-"+_item2+"-"+_item3);
+				this._tempRegistro.put("estadocisterna", _data1+"-"+_data2+"-"+_data3);
+			}else if(_elemento.equals("Ducha")){
+				this._tempRegistro.put("ducha", _cantidad);
+				this._tempRegistro.put("itemducha", _item1);
+				this._tempRegistro.put("estadoducha", _data1);
+			}else if(_elemento.equals("Instalaciones Internas")){
+				this._tempRegistro.put("internas", _cantidad);
+				this._tempRegistro.put("iteminternas", _item1+"-"+_item2);
+				this._tempRegistro.put("estadointernas", _data1+"-"+_data2);
+			}else if(_elemento.equals("Lavadero")){
+				this._tempRegistro.put("lavaderos", _cantidad);
+				this._tempRegistro.put("itemlavadero", _item1);
+				this._tempRegistro.put("estadolavadero", _data1);
+			}else if(_elemento.equals("Lavamanos")){
+				this._tempRegistro.put("lavamanos", _cantidad);
+				this._tempRegistro.put("itemlavamanos", _item1);
+				this._tempRegistro.put("estadolavamanos", _data1);
+			}else if(_elemento.equals("Lavaplatos")){
+				this._tempRegistro.put("lavaplatos", _cantidad);
+				this._tempRegistro.put("itemlavaplatos", _item1);
+				this._tempRegistro.put("estadolavaplatos", _data1);
+			}else if(_elemento.equals("Piscina")){
+				this._tempRegistro.put("piscina", _cantidad);
+				this._tempRegistro.put("itempiscina", _item1+"-"+_item2+"-"+_item3);
+				this._tempRegistro.put("estadopiscina", _data1+"-"+_data2+"-"+_data3);			
+			}else if(_elemento.equals("Subterraneo")){
+				this._tempRegistro.put("subterraneos", _cantidad);
+				this._tempRegistro.put("itemsubterraneos", _item1);
+				this._tempRegistro.put("estadosubterraneos", _data1);
+			}else if(_elemento.equals("Tanque Elevado")){
+				this._tempRegistro.put("elevados", _cantidad);
+				this._tempRegistro.put("itemelevado", _item1);
+				this._tempRegistro.put("estadoelevado", _data1);
+			}
+			if(this.FcnSQL.UpdateRegistro("db_desviaciones", this._tempRegistro, "revision='"+_revision+"'")){
+				Toast.makeText(this._ctxDesviacion,"Datos de elemento "+_elemento+" guardados correctamente.", Toast.LENGTH_LONG).show();
+			}else{
+				Toast.makeText(this._ctxDesviacion,"Error al registrar del elemento "+_elemento+".", Toast.LENGTH_LONG).show();
+			}
+		}else{
+			Toast.makeText(this._ctxDesviacion,"No ha ingresado una cantidad valida.", Toast.LENGTH_LONG).show();
+		}
+	}
+	
+	
+	public void registrarPruebasEstanqueidad(String _revision, String _tanque, String _resultado, String _capacidad, String _uniCapacidad, String _fuga, String _uniFuga){
+		this._tempRegistro.clear();
+		if(_tanque.equals("Tanque Subterraneo")){
+			this._tempRegistro.put("estanqueidadressubterraneo", _resultado);
+			this._tempRegistro.put("estanqueidadcapsubterraneo", _capacidad+" "+_uniCapacidad);
+			this._tempRegistro.put("estanqueidadfugasubterrano", _fuga+" "+_uniFuga);
+		}else if(_tanque.equals("Tanque Elevado")){
+			this._tempRegistro.put("estanqueidadreselevado", _resultado);
+			this._tempRegistro.put("estanqueidadcapelevado", _capacidad+" "+_uniCapacidad);
+			this._tempRegistro.put("estanqueidadfugaelevado", _fuga+" "+_uniFuga);
+		}else if(_tanque.equals("Tanque Lavadero")){
+			this._tempRegistro.put("estanqueidadreslavadero", _resultado);
+			this._tempRegistro.put("estanqueidadcaplavadero", _capacidad+" "+_uniCapacidad);
+			this._tempRegistro.put("estanqueidadfugalavadero", _fuga+" "+_uniFuga);
+		}
+		if(this.FcnSQL.UpdateRegistro("db_desviaciones", this._tempRegistro, "revision='"+_revision+"'")){
+			Toast.makeText(this._ctxDesviacion,"Datos de pruebas de hermeticidad al "+_tanque+" guardados correctamente.", Toast.LENGTH_LONG).show();
+		}else{
+			Toast.makeText(this._ctxDesviacion,"Error al registrar las pruebas de hermiticidad al "+_tanque+".", Toast.LENGTH_LONG).show();
+		}
+	}
 	
 	
 	public ArrayList<String> getClaseItems(){
@@ -414,5 +724,51 @@ public class ClassDesviacion {
 			_subItems.add("Medidor");
 		}				
 		return _subItems;
+	}
+	
+	public ArrayList<String> getOpciones(String _itemSubclase){
+		ArrayList<String> _opciones = new ArrayList<String>();
+		_opciones.clear();
+		if(_itemSubclase.equals("BuenoMaloNoAplica")){
+			_opciones.add("Bueno");
+			_opciones.add("Malo");
+			_opciones.add("N/A");
+		}if(_itemSubclase.equals("BuenoMaloNoTiene")){
+			_opciones.add("Bueno");
+			_opciones.add("Malo");
+			_opciones.add("No Tiene");
+		}else if(_itemSubclase.equals("SiNo")){
+			_opciones.add("");
+			_opciones.add("Si");
+			_opciones.add("No");
+		}else if(_itemSubclase.equals("SiNoNoAplica")){
+			_opciones.add("");
+			_opciones.add("Si");
+			_opciones.add("No");
+			_opciones.add("N/A");
+		}else if(_itemSubclase.equals("SiNoNoTiene")){
+			_opciones.add("");
+			_opciones.add("Si");
+			_opciones.add("No");
+			_opciones.add("No Tiene");
+		}else if(_itemSubclase.equals("BuenaMalaNoSeRealizo")){
+			_opciones.add("");
+			_opciones.add("No Se Realizo");
+			_opciones.add("Buena");
+			_opciones.add("Mala");
+		}else if(_itemSubclase.equals("Capacidad")){
+			_opciones = this.FcnUtilidades.getRangeAdapter(0, 5000, 25);
+		}else if(_itemSubclase.equals("Fuga")){
+			_opciones = this.FcnUtilidades.getRangeAdapter(0, 10, 0.10);
+		}else if(_itemSubclase.equals("UnidadesCapacidad")){
+			_opciones.add("Lts");
+			_opciones.add("Mts3");
+		}else if(_itemSubclase.equals("UnidadesFuga")){
+			_opciones.add("Lts/min");
+			_opciones.add("Mts3/min");
+		}else if(_itemSubclase.equals("Vacio")){
+			_opciones.add("");
+		}				
+		return _opciones;
 	}
 }

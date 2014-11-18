@@ -21,6 +21,8 @@ public class ClassNotificacion {
 		this.FcnSQL				= new SQLite(this._ctxNotificacion, this._folderAplicacion, FormLoggin.NOMBRE_DATABASE);
 	}
 	
+	
+	
 	public String getFechaNotificacion(String _revision){
 		return this.FcnSQL.StrSelectShieldWhere("db_notificaciones", "fecha_notificacion", "revision='"+_revision+"'");
 	}
@@ -69,6 +71,10 @@ public class ClassNotificacion {
 		}else{
 			Toast.makeText(this._ctxNotificacion,"Error crear el registro de notificacion para la revision "+_revision, Toast.LENGTH_SHORT).show();
 		}
+	}
+	
+	public void eliminarNotificacion(String _revision){
+		this.FcnSQL.DeleteRegistro("db_notificaciones", "revision='"+_revision+"'");
 	}
 	
 	public void setFechaNotificacion(String _revision, String _fecha){

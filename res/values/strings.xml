@@ -145,5 +145,6 @@
     <string name="title_activity_modal_input_single"></string>
     <string name="title_activity_modal_informacion">ModalInformacion</string>
     <string name="title_activity_modal_date">SELECCIONE FECHA</string>
+    <string name="title_activity_modal_confirmacion">Confirmacion</string>
 
 </resources>

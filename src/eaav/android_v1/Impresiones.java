@@ -1,16 +1,24 @@
 package eaav.android_v1;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import Miscelanea.Bluetooth;
 import Miscelanea.SQLite;
+import android.content.ContentValues;
 import android.content.Context;
 import android.widget.Toast;
 
 public class Impresiones {
-	private Context context;
-	private Bluetooth MnBt;
-	private ArrayList<String>  CamposImpresion= new ArrayList<String>();	
+	private Context 	context;
+	private Bluetooth 	MnBt;
+	private SQLite 		FcnSQL;
+	
+	private ContentValues _tempRegistro = new ContentValues();
+	DecimalFormat FormatoSinDecima = new DecimalFormat("0");
+	
+	
+	//private ArrayList<String>  CamposImpresion= new ArrayList<String>();	
 	private String Impresora = null;
 	private String InfToPrinter= null;
 	private int WidthLabel;
@@ -32,26 +40,26 @@ public class Impresiones {
 	
 	public void FormatoNotificacion(String TipoImpresion, String Solicitud, String NombreUsuario, String TipoUsuario){
 		MnBt = new Bluetooth(this.context);
-		//SQLite ImpSQL = new SQLite(this.context);
-		//String periodo_ini = ImpSQL.SelectShieldWhere("db_solicitudes", "periodo_ini", "revision = '" + Solicitud + "'");
-		//String periodo_fin = ImpSQL.SelectShieldWhere("db_solicitudes", "periodo_fin", "revision = '" + Solicitud + "'");
-		//String factura = ImpSQL.SelectShieldWhere("db_solicitudes", "factura", "revision = '" + Solicitud + "'");
+		this.FcnSQL	= new SQLite(this.context, FormLoggin.CARPETA_RAIZ, FormLoggin.NOMBRE_DATABASE);
+		String periodo_ini = this.FcnSQL.StrSelectShieldWhere("db_solicitudes", "periodo_ini", "revision = '" + Solicitud + "'");
+		String periodo_fin = this.FcnSQL.StrSelectShieldWhere("db_solicitudes", "periodo_fin", "revision = '" + Solicitud + "'");
+		String factura = this.FcnSQL.StrSelectShieldWhere("db_solicitudes", "factura", "revision = '" + Solicitud + "'");
 		String NumVisita = "";
 		String CamposGeneral = "";
 		String Nombre= "";
 		String Direccion = "";
 		InfToPrinter = "";
 		
-		//CamposGeneral = ImpSQL.SelectShieldWhere("db_solicitudes", "id_serial", "revision = '" + Solicitud + "'");
-		//Impresora = ImpSQL.SelectShieldWhere("db_parametros", "valor", "item = 'impresora'");
-	    /*ImpSQL.SelectData(	CamposImpresion, 
-							"db_notificaciones", 
-							"revision,codigo,nombre,direccion,serie,ciclo,promedio,visita,lectura,medidor,precinto,observacion,fecha_visita,hora_visita,motivo,fecha_notificacion,jornada_notificacion", 
-							"revision = '" + Solicitud + "'");*/
+		CamposGeneral 	= this.FcnSQL.StrSelectShieldWhere("db_solicitudes", "id_serial", "revision = '" + Solicitud + "'");
+		Impresora 		= this.FcnSQL.StrSelectShieldWhere("db_parametros", "valor", "item = 'impresora'");
+		
+		this._tempRegistro = this.FcnSQL.SelectDataRegistro("db_notificaciones", 
+															"revision,codigo,nombre,direccion,serie,ciclo,promedio,visita,lectura,medidor,precinto,observacion,fecha_visita,hora_visita,motivo,fecha_notificacion,jornada_notificacion", 
+															"revision = '" + Solicitud + "'");
 		   
-	    if (CamposImpresion != null){
-	    	Nombre = CamposImpresion.get(2).toString();
-	        Direccion = CamposImpresion.get(3).toString();
+	    if (this._tempRegistro.size()>0){
+	    	Nombre = this._tempRegistro.getAsString("nombre");
+	        Direccion = this._tempRegistro.getAsString("direccion");
 	        
 	        if (Nombre.length() > 35){
 	            Nombre = Nombre.substring(0, 35);
@@ -69,56 +77,55 @@ public class Impresiones {
 	        InfToPrinter = WrTitulo(InfToPrinter, "VISITA TECNICA", 0, 1.2);
 	        InfToPrinter = WrTitulo(InfToPrinter, "PROCESO DE FACTURACION", 0, 1.2);
 	        InfToPrinter = WrTitulo(InfToPrinter, "NOVEDAD DE VISITA TECNICA DE CRITICA", 0, 2);
-	        InfToPrinter = WrLabel(InfToPrinter, "Acta No:", "N" + CamposImpresion.get(0).toString() + "-" + CamposGeneral + "-" + CamposImpresion.get(7).toString(), 3, 0, 1);
-	        //String.format("%.7f", var)
-	        //InfToPrinter = WrLabel(InfToPrinter, "Factura Investigacion: ", String.format("%.0f", factura), 3, 0, 1);
-	        //InfToPrinter = WrLabel(InfToPrinter, "Periodo Investigacion:", periodo_ini, 3, 0, 0);
-	        //InfToPrinter = WrLabel(InfToPrinter, " a ", periodo_fin, 365, 0, 1.5);
+	        InfToPrinter = WrLabel(InfToPrinter, "Acta No:", "N" + this._tempRegistro.getAsString("revision") + "-" + CamposGeneral + "-" + this._tempRegistro.getAsString("visita"), 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Factura Investigacion: ", FormatoSinDecima.format(factura), 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Periodo Investigacion:", periodo_ini, 3, 0, 0);
+	        InfToPrinter = WrLabel(InfToPrinter, " a ", periodo_fin, 365, 0, 1.5);
 	        
-	        InfToPrinter = WrLabel(InfToPrinter, "Fecha:  ", CamposImpresion.get(12).toString(), 3, 0, 0);
-	        InfToPrinter = WrLabel(InfToPrinter, "Hora: ", CamposImpresion.get(13).toString(), 250, 0, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "Codigo: ", CamposImpresion.get(1).toString(), 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Fecha:  ", this._tempRegistro.getAsString("fecha_visita"), 3, 0, 0);
+	        InfToPrinter = WrLabel(InfToPrinter, "Hora: ", this._tempRegistro.getAsString("hora_visita"), 250, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Codigo: ", this._tempRegistro.getAsString("codigo"), 3, 0, 1);
 	        InfToPrinter = WrLabel(InfToPrinter, "Senor:     ", Nombre, 3, 0, 1);
 	        InfToPrinter = WrLabel(InfToPrinter, "Direccion: ", "", 3, 0, 1);
 	        InfToPrinter = JustInformation(InfToPrinter, Direccion, 3, 0, 2);
 	
-	        if (CamposImpresion.get(7).toString().equals("1")){
+	        if (this._tempRegistro.getAsString("visita").equals("1")){
 	        	NumVisita = "por primera vez";
-	        }else if(CamposImpresion.get(7).toString().equals("2")){
+	        }else if(this._tempRegistro.getAsString("visita").equals("2")){
 	        	NumVisita = "por segunda vez";
 		    }else{
 		    	NumVisita = "por segunda vez";
 		    }
 	        
-	        InfToPrinter = JustInformation(InfToPrinter,"En el dia de hoy estuvimos visitando su predio "+NumVisita+", con el fin de realizar revision y practicar las pruebas tecnicas con motivo a la investigacion del incremento del consumo de agua (Art. 149 Ley 142 de 1994). Las cuales no se realizaron por motivo: "+CamposImpresion.get(14).toString().toUpperCase(), 3, 0, 1);
+	        InfToPrinter = JustInformation(InfToPrinter,"En el dia de hoy estuvimos visitando su predio "+NumVisita+", con el fin de realizar revision y practicar las pruebas tecnicas con motivo a la investigacion del incremento del consumo de agua (Art. 149 Ley 142 de 1994). Las cuales no se realizaron por motivo: "+this._tempRegistro.getAsString("motivo").toUpperCase(), 3, 0, 1);
 	        
-	        if (CamposImpresion.get(16).toString().equals("am")){
-	        	 InfToPrinter = WrTitulo(InfToPrinter, "TENIENDO EN CUENTA LO ANTERIOR, SE REQUIERE ESTAR PRESENTE EL DIA " + CamposImpresion.get(15).toString() + " EN HORAS DE LA MANANA..", 1, 1);
+	        if (this._tempRegistro.getAsString("jornada_notificacion").equals("am")){
+	        	 InfToPrinter = WrTitulo(InfToPrinter, "TENIENDO EN CUENTA LO ANTERIOR, SE REQUIERE ESTAR PRESENTE EL DIA " + this._tempRegistro.getAsString("fecha_notificacion") + " EN HORAS DE LA MANANA..", 1, 1);
 	        }else{
-	        	InfToPrinter = WrTitulo(InfToPrinter, "TENIENDO EN CUENTA LO ANTERIOR, SE REQUIERE ESTAR PRESENTE EL DIA " + CamposImpresion.get(15).toString() + " EN HORAS DE LA TARDE.", 1, 1);
+	        	InfToPrinter = WrTitulo(InfToPrinter, "TENIENDO EN CUENTA LO ANTERIOR, SE REQUIERE ESTAR PRESENTE EL DIA " + this._tempRegistro.getAsString("fecha_notificacion") + " EN HORAS DE LA TARDE.", 1, 1);
 		    }
 	
 	        InfToPrinter = JustInformation(InfToPrinter, "Recuerde que es obligatorio que atiendan la visita en la fecha y jornada indicada anteriormente, de no ser asi, la empresa podra suspender el servicio de acueducto a lo establecido en el articulo 26 numeral 26.13 del decreto 302 del 2000.", 3, 1, 1);
 	        InfToPrinter = JustInformation(InfToPrinter, "Si presenta dificultad, dentro de las 24 horas siguientes confirmar al numero telefonico 6724308 para concertar una nueva visita.", 3, 1, 1);	
 	        InfToPrinter = JustInformation(InfToPrinter, "De conformidad con el articulo 12 de la resolucion CRA 413 de 2006, usted puede solicitar a su costo, la asesoria de un tecnico particular para que la acompane durante la visita, en la revision de medidor y de las instalaciones internas. No obstante, puede renunciar a esta asesoria, de lo cual se dejara constancia. Esta visita debe ser atendida por un mayor de edad.", 3, 1, 1);	
 	        InfToPrinter = WrSubTitulo(InfToPrinter, "Observacion.", 3, 1, 1);
-	        InfToPrinter = JustInformation(InfToPrinter, CamposImpresion.get(11) .toString(), 3, 0, 2);
-	        InfToPrinter = WrLabel(InfToPrinter, "Lectura Actual:", CamposImpresion.get(8).toString(), 3, 0, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "No del Medidor:", CamposImpresion.get(9).toString(), 3, 0, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "Precinto:", CamposImpresion.get(10).toString(), 3, 0, 2);
+	        InfToPrinter = JustInformation(InfToPrinter, this._tempRegistro.getAsString("observacion"), 3, 0, 2);
+	        InfToPrinter = WrLabel(InfToPrinter, "Lectura Actual:", this._tempRegistro.getAsString("lectura"), 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "No del Medidor:", this._tempRegistro.getAsString("medidor"), 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Precinto:", this._tempRegistro.getAsString("precinto"), 3, 0, 2);
 	        
 	        
 	        InfToPrinter = WrRectangle(InfToPrinter, 3, getCurrentLine(), 550, getCurrentLine() + 100, 1, 0);
             InfToPrinter = WrLabel(InfToPrinter, "Firma "+TipoUsuario, NombreUsuario, 3, 0, 3);
             
 	        	        
-	        //String Tecnico 	= ImpSQL.SelectShieldWhere("db_parametros", "valor", "item = 'nombre_tecnico'");
-	        //String Cedula 	= ImpSQL.SelectShieldWhere("db_parametros", "valor", "item = 'cedula_tecnico'");
+	        String Tecnico 	= this.FcnSQL.StrSelectShieldWhere("db_parametros", "valor", "item = 'nombre_tecnico'");
+	        String Cedula 	= this.FcnSQL.StrSelectShieldWhere("db_parametros", "valor", "item = 'cedula_tecnico'");
 	        InfToPrinter = JustInformation(InfToPrinter, "Declaro bajo la gravedad de juramento que los datos aqui consignados son veraces, fueron verificados y obdecen al estado actual del predio.", 3, 0, 1);        
 	        
 	        InfToPrinter = WrRectangle(InfToPrinter, 3, getCurrentLine(), 550, getCurrentLine() + 100, 1, 0);
-	        //InfToPrinter = WrLabel(InfToPrinter, "Nombre del Operario:", Tecnico, 3, 0, 1);
-	        //InfToPrinter = WrLabel(InfToPrinter, "CC: ", Cedula, 3, 0, 2);
+	        InfToPrinter = WrLabel(InfToPrinter, "Nombre del Operario:", Tecnico, 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "CC: ", Cedula, 3, 0, 2);
 	        InfToPrinter = WrLabel(InfToPrinter, TipoImpresion, "", 3, 0, 1);
 	        InfToPrinter = WrTitulo(InfToPrinter, "CONSORCIO AGUAS DEL LLANO.", 0, 1);
 	        InfToPrinter = WrTitulo(InfToPrinter, "Contratista de la Empresa de Acueducto y Alcantarillado de Villavicencio E.S.P.", 0, 1);
@@ -132,34 +139,56 @@ public class Impresiones {
 	
 	public void FormatoDesviacion(String TipoImpresion, String Solicitud){
 		MnBt = new Bluetooth(this.context);
-		/*SQLite ImpSQL = new SQLite(this.context);
-		String periodo_ini = ImpSQL.SelectShieldWhere("db_solicitudes", "periodo_ini", "revision = '" + Solicitud + "'");
-		String periodo_fin = ImpSQL.SelectShieldWhere("db_solicitudes", "periodo_fin", "revision = '" + Solicitud + "'");
-		String factura = ImpSQL.SelectShieldWhere("db_solicitudes", "factura", "revision = '" + Solicitud + "'");
+		this.FcnSQL	= new SQLite(this.context, FormLoggin.CARPETA_RAIZ, FormLoggin.NOMBRE_DATABASE);
+		String periodo_ini = this.FcnSQL.StrSelectShieldWhere("db_solicitudes", "periodo_ini", "revision = '" + Solicitud + "'");
+		String periodo_fin = this.FcnSQL.StrSelectShieldWhere("db_solicitudes", "periodo_fin", "revision = '" + Solicitud + "'");
+		String factura = this.FcnSQL.StrSelectShieldWhere("db_solicitudes", "factura", "revision = '" + Solicitud + "'");
 		
 		String CamposGeneral = "";
 		String Direccion = "";
 		String tempEstrato = "sin identificar";
 		InfToPrinter = "";
 		
-		CamposGeneral = ImpSQL.SelectShieldWhere("db_solicitudes", "id_serial", "revision = '" + Solicitud + "'");
-		Impresora = ImpSQL.SelectShieldWhere("db_parametros", "valor", "item = 'impresora'");
-	    ImpSQL.SelectData(	CamposImpresion, 
+		CamposGeneral = this.FcnSQL.StrSelectShieldWhere("db_solicitudes", "id_serial", "revision = '" + Solicitud + "'");
+		Impresora = this.FcnSQL.StrSelectShieldWhere("db_parametros", "valor", "item = 'impresora'");
+	    /*this.FcnSQL.SelectData(	CamposImpresion, 
 							"db_desviaciones", 
 							"revision,codigo,nombre,direccion,serie,ciclo,promedio,visita,fecha,hora,tipo,area,pisos,actividad,uso,residentes,habitado,estado,acueducto,camaramedidor,estadocamara,escapecamara,serieindividual,marcaindividual,diametroindividual,lecturaindividual,serietotalizador,marcatotalizador,diametrototalizador,lecturatotalizador,subterraneos,itemsubterraneos,estadosubterraneos,lavaplatos,itemlavaplatos,estadolavaplatos,lavaderos,itemlavadero,estadolavadero,elevados,itemelevado,estadoelevado,internas,iteminternas,estadointernas,piscinas,itempiscina,estadopiscina,medidorregpaso,medidorregantifraude,medidordestruido,medidorinvertido,medidorilegible,medidorprecintoroto,hermeticidadreginternos,hermeticidadequipomedida,estanqueidadreselevado,estanqueidadcapelevado,estanqueidadfugaelevado,estanqueidadreslavadero,estanqueidadcaplavadero,estanqueidadfugalavadero,estanqueidadressubterraneo,estanqueidadcapsubterraneo,estanqueidadfugasubterrano,hermeticidadfugaimperceptible,hermeticidadfugas,hermeticidadfugavisible,diagnostico,estrato,precinto,serviciodirecto,bypass,nombreusuario,cedulausuario,nombretestigo,cedulatestigo,cisterna,itemcisterna,estadocisterna,ducha,itemducha,estadoducha,lavamanos,itemlavamanos,estadolavamanos,servicioacueducto,servicioalcantarillado,segundoconcepto,respuestadesviacion",
-							"revision = '" + Solicitud + "'");
+							"revision = '" + Solicitud + "'");*/
+		
+		this._tempRegistro = this.FcnSQL.SelectDataRegistro("db_desviaciones", 
+															"revision,			codigo,				nombre,				direccion,			serie," +
+															"ciclo,				promedio,			visita,				fecha,				hora," +
+															"tipo,				area,				pisos,				actividad,			uso," +
+															"residentes,		habitado,			estado,				acueducto,			camaramedidor," +
+															"estadocamara,		escapecamara,		serieindividual,	marcaindividual,	diametroindividual," +
+															"lecturaindividual,	serietotalizador,	marcatotalizador,	diametrototalizador,lecturatotalizador," +
+															"subterraneos,		itemsubterraneos,	estadosubterraneos,	lavaplatos,			itemlavaplatos," +
+															"estadolavaplatos,	lavaderos,			itemlavadero,		estadolavadero,		elevados," +
+															"itemelevado,		estadoelevado,		internas,			iteminternas,		estadointernas," +
+															"piscinas,			itempiscina,		estadopiscina,		medidorregpaso,		medidorregantifraude," +
+															"medidordestruido,	medidorinvertido,	medidorilegible,	medidorprecintoroto,hermeticidadreginternos," +
+															"hermeticidadequipomedida,		estanqueidadreselevado,		estanqueidadcapelevado,		estanqueidadfugaelevado,	estanqueidadreslavadero," +
+															"estanqueidadcaplavadero,		estanqueidadfugalavadero,	estanqueidadressubterraneo,	estanqueidadcapsubterraneo,	estanqueidadfugasubterrano," +
+															"hermeticidadfugaimperceptible,	hermeticidadfugas,			hermeticidadfugavisible,	diagnostico,				estrato," +
+															"precinto,			serviciodirecto,	bypass,				nombreusuario,		cedulausuario," +
+															"nombretestigo,		cedulatestigo,		cisterna,			itemcisterna,		estadocisterna," +
+															"ducha,				itemducha,			estadoducha,		lavamanos,			itemlavamanos," +
+															"estadolavamanos,	servicioacueducto,	servicioalcantarillado,segundoconcepto,respuestadesviacion",
+															"revision = '" + Solicitud + "'");
+							
 	   
 	    String AllItems[];
 	    String AllEstado[];
 
-	    if (CamposImpresion != null){
-	    	Direccion = CamposImpresion.get(3);
-	    	String FechaVisita[] = CamposImpresion.get(8).split("-");
+	    if (this._tempRegistro.size()>0){
+	    	Direccion = this._tempRegistro.getAsString("direccion");
+	    	String FechaVisita[] = this._tempRegistro.getAsString("fecha").split("-");
 	        String Precinto = "No tiene";
 	        double dobleColumna = 0;
 	    	
-	        if (CamposImpresion.get(70).toString().length()!=0){
-	        	Precinto = CamposImpresion.get(70).toString();
+	        if (!this._tempRegistro.getAsString("precinto").isEmpty()){
+	        	Precinto = this._tempRegistro.getAsString("precinto");
 	        }
 	        
 	        String InfToPrinter = "";
@@ -171,134 +200,134 @@ public class Impresiones {
 	        InfToPrinter = WrTitulo(InfToPrinter, "PROCESO DE FACTURACION", 0, 1.2);
 	        InfToPrinter = WrTitulo(InfToPrinter, "INFORME DE VISITA TECNICA DE CRITICA", 0, 2);
 		
-	        InfToPrinter = WrLabel(InfToPrinter, "No Revision: ", CamposImpresion.get(0).toString(), 3, 0, 0);
-	        InfToPrinter = WrLabel(InfToPrinter, "Codigo: ", CamposImpresion.get(1).toString(), 270, 0, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "Ciclo: ", CamposImpresion.get(5).toString(), 3, 0, 0);
-	        InfToPrinter = WrLabel(InfToPrinter, "Acta No: ", "D" + CamposImpresion.get(0).toString() + "-" + CamposGeneral, 270, 0, 2);
-	        InfToPrinter = WrLabel(InfToPrinter, "Factura Investigacion: ", factura, 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "No Revision: ", this._tempRegistro.getAsString("revision"), 3, 0, 0);
+	        InfToPrinter = WrLabel(InfToPrinter, "Codigo: ", this._tempRegistro.getAsString("codigo"), 270, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Ciclo: ", this._tempRegistro.getAsString("ciclo"), 3, 0, 0);
+	        InfToPrinter = WrLabel(InfToPrinter, "Acta No: ", "D" + this._tempRegistro.getAsString("revision") + "-" + CamposGeneral, 270, 0, 2);
+	        InfToPrinter = WrLabel(InfToPrinter, "Factura Investigacion: ", FormatoSinDecima.format(factura), 3, 0, 1);
 	        InfToPrinter = WrLabel(InfToPrinter, "Periodo Investigacion:", periodo_ini, 3, 0, 0);
 	        InfToPrinter = WrLabel(InfToPrinter, " a ", periodo_fin, 365, 0, 1.5);
 	
-	        InfToPrinter = WrLabel(InfToPrinter, "Fecha:    ", CamposImpresion.get(8).toString(), 3, 0, 0);
-	        InfToPrinter = WrLabel(InfToPrinter, "Hora: ", CamposImpresion.get(9).toString(), 270, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Fecha:    ", this._tempRegistro.getAsString("fecha"), 3, 0, 0);
+	        InfToPrinter = WrLabel(InfToPrinter, "Hora: ", this._tempRegistro.getAsString("hora"), 270, 0, 1);
 	        InfToPrinter = WrLabel(InfToPrinter, "Precinto: ", Precinto, 3, 0, 1.5);
 	
-	        if(CamposImpresion.get(69).length()!=0){
-	        	tempEstrato = CamposImpresion.get(69);
+	        if(!this._tempRegistro.getAsString("estrato").isEmpty()){
+	        	tempEstrato = this._tempRegistro.getAsString("estrato");
 	        }
 	        
 	        if (Precinto.equals("No tiene")){
-	            InfToPrinter = JustInformation(InfToPrinter, "Hoy dia " + FechaVisita[0] + " del mes " + FechaVisita[1] + " de " + FechaVisita[2] + " a las " + CamposImpresion.get(9).toString() + " se realizo la visita al inmueble ubicado en la direccion " + Direccion + ", de estrato " + tempEstrato + ", nombre del suscriptor " + CamposImpresion.get(2).toString() + "." + Precinto, 3, 0, 1);
+	            InfToPrinter = JustInformation(InfToPrinter, "Hoy dia " + FechaVisita[0] + " del mes " + FechaVisita[1] + " de " + FechaVisita[2] + " a las " + this._tempRegistro.getAsString("hora") + " se realizo la visita al inmueble ubicado en la direccion " + Direccion + ", de estrato " + tempEstrato + ", nombre del suscriptor " + this._tempRegistro.getAsString("nombre") + "." + Precinto, 3, 0, 1);
 	        }else{
-	        	InfToPrinter = JustInformation(InfToPrinter, "Hoy dia " + FechaVisita[0] + " del mes " + FechaVisita[1] + " de " + FechaVisita[2] + " a las " + CamposImpresion.get(9).toString() + " se realizo la visita al inmueble ubicado en la direccion " + Direccion + ", de estrato " + tempEstrato + ", nombre del suscriptor " + CamposImpresion.get(2).toString() + ", en cuyo medidor se encuentra instalado el precinto " + Precinto, 3, 0, 1);
+	        	InfToPrinter = JustInformation(InfToPrinter, "Hoy dia " + FechaVisita[0] + " del mes " + FechaVisita[1] + " de " + FechaVisita[2] + " a las " + this._tempRegistro.getAsString("hora") + " se realizo la visita al inmueble ubicado en la direccion " + Direccion + ", de estrato " + tempEstrato + ", nombre del suscriptor " + this._tempRegistro.getAsString("nombre") + ", en cuyo medidor se encuentra instalado el precinto " + Precinto, 3, 0, 1);
 	        }
 	        InfToPrinter = WrLabel(InfToPrinter, "Telefono:", "____________________", 3, 0, 1.5);
 	    	
 	
-	        if (CamposImpresion.get(73).toString() != ""){
-	            InfToPrinter = JustInformation(InfToPrinter, "El senor(a) " + CamposImpresion.get(73).toString() + ", identificado con CC. " + CamposImpresion.get(74).toString() + ", manifiesta no hacer uso del derecho que le otorga la resolucion CRA 413 de 2006. Esta visita debe ser atendida por un mayor de edad.", 3, 1, 1);
+	        if (!this._tempRegistro.getAsString("nombreusuario").isEmpty()){
+	            InfToPrinter = JustInformation(InfToPrinter, "El senor(a) " + this._tempRegistro.getAsString("nombreusuario") + ", identificado con CC. " + this._tempRegistro.getAsString("cedulausuario") + ", manifiesta no hacer uso del derecho que le otorga la resolucion CRA 413 de 2006. Esta visita debe ser atendida por un mayor de edad.", 3, 1, 1);
 	        }
 	        
 	        InfToPrinter = WrSubTitulo(InfToPrinter, "CARACTERISTICAS DEL INMUEBLE", 3, 1, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "Tipo:", CamposImpresion.get(10).toString(), 3, 0, 0);
+	        InfToPrinter = WrLabel(InfToPrinter, "Tipo:", this._tempRegistro.getAsString("tipo"), 3, 0, 0);
 	
-	        InfToPrinter = WrLabel(InfToPrinter, "Pisos:    ", CamposImpresion.get(12).toString(), 273, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Pisos:    ", this._tempRegistro.getAsString("pisos"), 273, 0, 1);
 	
-	        InfToPrinter = WrLabel(InfToPrinter, "Area:", CamposImpresion.get(11).toString() + " Mts2", 3, 0, 0);
+	        InfToPrinter = WrLabel(InfToPrinter, "Area:",this._tempRegistro.getAsString("area") + " Mts2", 3, 0, 0);
 	
-	        InfToPrinter = WrLabel(InfToPrinter, "Actividad:", CamposImpresion.get(13).toString(), 273, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Actividad:", this._tempRegistro.getAsString("actividad"), 273, 0, 1);
 	
-	        InfToPrinter = WrLabel(InfToPrinter, "Uso:                    ", CamposImpresion.get(14).toString(), 3, 0, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "No Personas Residentes: ", CamposImpresion.get(15).toString(), 3, 0, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "Estado Inmueble:        ", CamposImpresion.get(17).toString(), 3, 0, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "Habitado Por:           ", CamposImpresion.get(16).toString(), 3, 0, 1);	
+	        InfToPrinter = WrLabel(InfToPrinter, "Uso:                    ", this._tempRegistro.getAsString("uso"), 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "No Personas Residentes: ", this._tempRegistro.getAsString("residentes"), 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Estado Inmueble:        ", this._tempRegistro.getAsString("estado"), 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Habitado Por:           ", this._tempRegistro.getAsString("habitado"), 3, 0, 1);	
 	
 	        InfToPrinter = WrSubTitulo(InfToPrinter, "INFORMACION TECNICA", 3, 1, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "Servicio de Acueducto Administrado Por: ", CamposImpresion.get(18).toString(), 3, 0, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "Escape:           ", CamposImpresion.get(21).toString(), 3, 0, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "Servicio Directo: ", CamposImpresion.get(71).toString(), 3, 0, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "Bypass:           ", CamposImpresion.get(72).toString(), 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Servicio de Acueducto Administrado Por: ", this._tempRegistro.getAsString("acueducto"), 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Escape:           ", this._tempRegistro.getAsString("escapecamara"), 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Servicio Directo: ", this._tempRegistro.getAsString("serviciodirecto"), 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Bypass:           ", this._tempRegistro.getAsString("bypass"), 3, 0, 1);
 	
 	        InfToPrinter = WrSubTitulo(InfToPrinter, "Camara Medidor y/o Nicho: ", 3, 1, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "Tamano: ", CamposImpresion.get(19).toString(), 3, 0, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "Estado: ", CamposImpresion.get(20).toString(), 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Tamano: ", this._tempRegistro.getAsString("camaramedidor"), 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Estado: ", this._tempRegistro.getAsString("estadocamara"), 3, 0, 1);
 	
 	        dobleColumna = getCurrentLine();
 	
 	        InfToPrinter = WrSubTitulo(InfToPrinter, "Medidor Individual", 3, 1, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "N�: ", CamposImpresion.get(22).toString(), 3, 0, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "Marca: ", CamposImpresion.get(23).toString(), 3, 0, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "Diametro: ", CamposImpresion.get(24).toString() + " pulg.", 3, 0, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "Lectura: ", CamposImpresion.get(25).toString(), 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "No: ", this._tempRegistro.getAsString("serieindividual"), 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Marca: ", this._tempRegistro.getAsString("marcaindividual"), 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Diametro: ", this._tempRegistro.getAsString("diametroindividual") + " pulg.", 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Lectura: ", this._tempRegistro.getAsString("lecturaindividual"), 3, 0, 1);
 	
 	        setCurrentLine(dobleColumna);
 	
 	        InfToPrinter = WrSubTitulo(InfToPrinter, "Medidor Totalizador", 270, 1, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "N�: ", CamposImpresion.get(26).toString(), 270, 0, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "Marca: ", CamposImpresion.get(27).toString(), 270, 0, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "Diametro: ", CamposImpresion.get(28).toString() + " pulg.", 270, 0, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "Lectura: ", CamposImpresion.get(29).toString(), 270, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "No: ", this._tempRegistro.getAsString("serietotalizador"), 270, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Marca: ", this._tempRegistro.getAsString("marcatotalizador"), 270, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Diametro: ", this._tempRegistro.getAsString("diametrototalizador") + " pulg.", 270, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Lectura: ", this._tempRegistro.getAsString("lecturatotalizador"), 270, 0, 1);
 	
 	        InfToPrinter = WrSubTitulo(InfToPrinter, "INFORMACION VISITA TECNICA", 3, 1, 1);
 	
-	        if(!CamposImpresion.get(30).equals("0")){
+	        if(!this._tempRegistro.getAsString("subterraneos").equals("0")){
 	        	InfToPrinter = WrSubTitulo(InfToPrinter, "Tanque Subterraneo", 3, 1, 0);
-		        InfToPrinter = WrLabel(InfToPrinter, "Cantidad: ", CamposImpresion.get(30).toString(), 270, 0, 1);
+		        InfToPrinter = WrLabel(InfToPrinter, "Cantidad: ", this._tempRegistro.getAsString("subterraneos"), 270, 0, 1);
 		
-		        AllItems = CamposImpresion.get(31).toString().split("-");
-		        AllEstado = CamposImpresion.get(32).toString().split("-");
+		        AllItems = this._tempRegistro.getAsString("itemsubterraneos").split("-");
+		        AllEstado = this._tempRegistro.getAsString("estadosubterraneos").split("-");
 		        for (int i = 0;i<AllItems.length;i++){
 		            InfToPrinter = WrLabel(InfToPrinter, AllItems[i] + ": ", AllEstado[i], 3, 0, 1);
 		        }
 	        }
 	        
-	        if(!CamposImpresion.get(33).equals("0")){
+	        if(!this._tempRegistro.getAsString("lavaplatos").equals("0")){
 		        InfToPrinter = WrSubTitulo(InfToPrinter, "Lavaplatos", 3, 1, 0);
-		        InfToPrinter = WrLabel(InfToPrinter, "Cantidad: ", CamposImpresion.get(33).toString(), 270, 0, 1);
+		        InfToPrinter = WrLabel(InfToPrinter, "Cantidad: ", this._tempRegistro.getAsString("lavaplatos"), 270, 0, 1);
 		
-		        AllItems = CamposImpresion.get(34).toString().split("-");
-		        AllEstado = CamposImpresion.get(35).toString().split("-");
+		        AllItems = this._tempRegistro.getAsString("itemlavaplatos").split("-");
+		        AllEstado = this._tempRegistro.getAsString("estadolavaplatos").split("-");
 		        for (int i = 0;i<AllItems.length;i++){
 		            InfToPrinter = WrLabel(InfToPrinter, AllItems[i] + ": ", AllEstado[i], 3, 0, 1);
 		        }
 	        }
 	
-	        if(!CamposImpresion.get(77).equals("0")){
+	        if(!this._tempRegistro.getAsString("cisterna").equals("0")){
 		        InfToPrinter = WrSubTitulo(InfToPrinter, "UNIDAD SANITARIA", 3, 1, 1);
 		        InfToPrinter = WrSubTitulo(InfToPrinter, "Cisternas", 3, 1, 0);
-		        InfToPrinter = WrLabel(InfToPrinter, "Cantidad: ", CamposImpresion.get(77).toString(), 270, 0, 1);
-		        AllItems = CamposImpresion.get(78).toString().split("-");
-		        AllEstado = CamposImpresion.get(79).toString().split("-");
+		        InfToPrinter = WrLabel(InfToPrinter, "Cantidad: ", this._tempRegistro.getAsString("cisterna"), 270, 0, 1);
+		        AllItems = this._tempRegistro.getAsString("itemcisterna").split("-");
+		        AllEstado = this._tempRegistro.getAsString("estadocisterna").split("-");
 		        for (int i = 0;i<AllItems.length;i++){
 		            InfToPrinter = WrLabel(InfToPrinter, AllItems[i] + ": ", AllEstado[i], 3, 0, 1);
 		        }
 	        }
 	
-	        if(!CamposImpresion.get(80).equals("0")){
+	        if(!this._tempRegistro.getAsString("ducha").equals("0")){
 		        InfToPrinter = WrSubTitulo(InfToPrinter, "Duchas", 3, 1, 0);
-		        InfToPrinter = WrLabel(InfToPrinter, "Cantidad: ", CamposImpresion.get(80), 270, 0, 1);
-		        AllItems = CamposImpresion.get(81).toString().split("-");
-		        AllEstado = CamposImpresion.get(82).toString().split("-");
+		        InfToPrinter = WrLabel(InfToPrinter, "Cantidad: ", this._tempRegistro.getAsString("ducha"), 270, 0, 1);
+		        AllItems = this._tempRegistro.getAsString("itemducha").split("-");
+		        AllEstado = this._tempRegistro.getAsString("estadoducha").split("-");
 		        for (int i = 0;i<AllItems.length;i++){
 		            InfToPrinter = WrLabel(InfToPrinter, AllItems[i] + ": ", AllEstado[i], 3, 0, 1);
 		        }
 	        }
 	
-	        if(!CamposImpresion.get(83).equals("0")){
+	        if(!this._tempRegistro.getAsString("lavamanos").equals("0")){
 	        	InfToPrinter = WrSubTitulo(InfToPrinter, "Lavamanos", 10, 1, 0);
-		        InfToPrinter = WrLabel(InfToPrinter, "Cantidad: ", CamposImpresion.get(83).toString(), 270, 0, 1);
-		        AllItems = CamposImpresion.get(84).toString().split("-");
-		        AllEstado = CamposImpresion.get(85).toString().split("-");
+		        InfToPrinter = WrLabel(InfToPrinter, "Cantidad: ", this._tempRegistro.getAsString("lavamanos"), 270, 0, 1);
+		        AllItems = this._tempRegistro.getAsString("itemlavamanos").split("-");
+		        AllEstado = this._tempRegistro.getAsString("estadolavamanos").split("-");
 		        for (int i = 0;i<AllItems.length;i++){
 		            InfToPrinter = WrLabel(InfToPrinter, AllItems[i] + ": ", AllEstado[i], 3, 0, 1);
 		        }
 	        }
 	        
-	        if(!CamposImpresion.get(36).equals("0")){
+	        if(!this._tempRegistro.getAsString("lavaderos").equals("0")){
 		        InfToPrinter = WrSubTitulo(InfToPrinter, "Tanque Lavadero", 3, 1, 0);
-		        InfToPrinter = WrLabel(InfToPrinter, "Cantidad: ", CamposImpresion.get(36).toString(), 270, 0, 1);
-		        AllItems = CamposImpresion.get(37).toString().split("-");
-		        AllEstado = CamposImpresion.get(38).toString().split("-");
+		        InfToPrinter = WrLabel(InfToPrinter, "Cantidad: ", this._tempRegistro.getAsString("lavaderos"), 270, 0, 1);
+		        AllItems = this._tempRegistro.getAsString("itemlavadero").toString().split("-");
+		        AllEstado = this._tempRegistro.getAsString("estadolavadero").split("-");
 		        for (int i = 0;i<AllItems.length;i++){
 		            InfToPrinter = WrLabel(InfToPrinter, AllItems[i] + ": ", AllEstado[i], 3, 0, 1);
 		        }
@@ -306,50 +335,50 @@ public class Impresiones {
 	
 	
 	        //'setCurrentLine(dobleColumna)
-	        if(!CamposImpresion.get(39).equals("0")){
+	        if(!this._tempRegistro.getAsString("elevados").equals("0")){
 		        InfToPrinter = WrSubTitulo(InfToPrinter, "Tanque Elevado", 3, 1, 0);
-		        InfToPrinter = WrLabel(InfToPrinter, "Cantidad: ", CamposImpresion.get(39).toString(), 270, 0, 1);
-		        AllItems = CamposImpresion.get(40).toString().split("-");
-		        AllEstado = CamposImpresion.get(41).toString().split("-");
+		        InfToPrinter = WrLabel(InfToPrinter, "Cantidad: ", this._tempRegistro.getAsString("elevados"), 270, 0, 1);
+		        AllItems = this._tempRegistro.getAsString("itemelevado").split("-");
+		        AllEstado = this._tempRegistro.getAsString("estadoelevado").split("-");
 		        for (int i = 0;i<AllItems.length;i++){
 		            InfToPrinter = WrLabel(InfToPrinter, AllItems[i] + ": ", AllEstado[i], 3, 0, 1);
 		        }
 	        }
 	
 	
-	        if(!CamposImpresion.get(42).equals("0")){
+	        if(!this._tempRegistro.getAsString("internas").equals("0")){
 	        	InfToPrinter = WrSubTitulo(InfToPrinter, "Instalaciones Hidraulicas Internas", 3, 1, 1);
-		        AllItems = CamposImpresion.get(43).toString().split("-");
-		        AllEstado = CamposImpresion.get(44).toString().split("-");
+		        AllItems = this._tempRegistro.getAsString("iteminternas").split("-");
+		        AllEstado = this._tempRegistro.getAsString("estadointernas").split("-");
 		        for (int i = 0;i<AllItems.length;i++){
 		            InfToPrinter = WrLabel(InfToPrinter, AllItems[i] + ": ", AllEstado[i], 3, 0, 1);
 		        }
 	        }
 	
-	        if(!CamposImpresion.get(45).equals("0")){
+	        if(!this._tempRegistro.getAsString("piscinas").equals("0")){
 		        InfToPrinter = WrSubTitulo(InfToPrinter, "Piscina", 3, 1, 0);
-		        InfToPrinter = WrLabel(InfToPrinter, "Cantidad: ", CamposImpresion.get(45).toString(), 270, 0, 1);		
-		        AllItems = CamposImpresion.get(46).toString().split("-");
-		        AllEstado = CamposImpresion.get(47).toString().split("-");
+		        InfToPrinter = WrLabel(InfToPrinter, "Cantidad: ", this._tempRegistro.getAsString("piscinas"), 270, 0, 1);		
+		        AllItems = this._tempRegistro.getAsString("itempiscina").split("-");
+		        AllEstado = this._tempRegistro.getAsString("estadopiscina").split("-");
 		        for (int i = 0;i<AllItems.length;i++){
 		            InfToPrinter = WrLabel(InfToPrinter, AllItems[i] + ": ", AllEstado[i], 3, 0, 1);
 		        }
 	        }
 	
 	        InfToPrinter = WrSubTitulo(InfToPrinter, "Medidor", 3, 1, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "Registro de Paso:        ", CamposImpresion.get(48).toString(), 3, 0, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "Registro Antifraude:     ", CamposImpresion.get(49).toString(), 3, 0, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "Destruido:               ", CamposImpresion.get(50).toString(), 3, 0, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "Invertido:               ", CamposImpresion.get(51).toString(), 3, 0, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "Vidrio Ilegible:         ", CamposImpresion.get(52).toString(), 3, 0, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "Precinto Seguridad Roto: ", CamposImpresion.get(53).toString(), 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Registro de Paso:        ", this._tempRegistro.getAsString("medidorregpaso"), 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Registro Antifraude:     ", this._tempRegistro.getAsString("medidorregantifraude"), 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Destruido:               ", this._tempRegistro.getAsString("medidordestruido"), 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Invertido:               ", this._tempRegistro.getAsString("medidorinvertido"), 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Vidrio Ilegible:         ", this._tempRegistro.getAsString("medidorilegible"), 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Precinto Seguridad Roto: ", this._tempRegistro.getAsString("medidorprecintoroto"), 3, 0, 1);
 	
 	        InfToPrinter = WrSubTitulo(InfToPrinter, "Prueba Hermeticidad Inst. Hidraulicas Internas", 3, 1, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "Cierre de Registros Internos:  ", CamposImpresion.get(54).toString(), 3, 0, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "Verificacion Equipo de Medida: ", CamposImpresion.get(55).toString(), 3, 0, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "Revision de Fugas:             ", CamposImpresion.get(66).toString(), 3, 0, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "Fuga Imperceptible:            ", CamposImpresion.get(65).toString(), 3, 0, 1);
-	        InfToPrinter = WrLabel(InfToPrinter, "Fuga Visible:                  ", CamposImpresion.get(67).toString(), 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Cierre de Registros Internos:  ", this._tempRegistro.getAsString("hermeticidadreginternos"), 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Verificacion Equipo de Medida: ", this._tempRegistro.getAsString("hermeticidadequipomedida"), 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Revision de Fugas:             ", this._tempRegistro.getAsString("hermeticidadfugas"), 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Fuga Imperceptible:            ", this._tempRegistro.getAsString("hermeticidadfugaimperceptible"), 3, 0, 1);
+	        InfToPrinter = WrLabel(InfToPrinter, "Fuga Visible:                  ", this._tempRegistro.getAsString("hermeticidadfugavisible"), 3, 0, 1);
 	
 	        InfToPrinter = WrSubTitulo(InfToPrinter, "PRUEBA DE ESTANQUEIDAD TANQUES", 3, 1, 1);
 	        InfToPrinter = WrLabel(InfToPrinter, "Item/Tanque ", "", 3, 0, 0);
@@ -358,14 +387,14 @@ public class Impresiones {
 	        InfToPrinter = WrLabel(InfToPrinter, "Magnitud Fuga", "", 415, 0, 1);
 	        
 	        AllItems = new String[3];
-	        if (CamposImpresion.get(62).toString().equals("No Se Realizo")){
+	        if (this._tempRegistro.getAsString("estanqueidadressubterraneo").equals("No Se Realizo")){
 	        	AllItems[0] = "N/A";
 	        	AllItems[1] = "N/A";
 	        	AllItems[2] = "N/A";
 	        }else{
-	        	AllItems[0] = CamposImpresion.get(62).toString();
-                AllItems[1] = CamposImpresion.get(63).toString();
-                AllItems[2] = CamposImpresion.get(64).toString();
+	        	AllItems[0] = this._tempRegistro.getAsString("estanqueidadressubterraneo");
+                AllItems[1] = this._tempRegistro.getAsString("estanqueidadcapsubterraneo");
+                AllItems[2] = this._tempRegistro.getAsString("estanqueidadfugasubterrano");
 	        }
 	        
 	        InfToPrinter = WrLabel(InfToPrinter, "Subterraneo", "", 3, 0, 0);
@@ -373,14 +402,14 @@ public class Impresiones {
 	        InfToPrinter = WrSubTitulo(InfToPrinter, AllItems[1], 280, 0, 0);
 	        InfToPrinter = WrSubTitulo(InfToPrinter, AllItems[2], 415, 0, 1);
 	
-	        if (CamposImpresion.get(56).toString().equals("No Se Realizo")){
+	        if (this._tempRegistro.getAsString("estanqueidadreselevado").equals("No Se Realizo")){
 	        	AllItems[0] = "N/A";
 	        	AllItems[1] = "N/A";
 	        	AllItems[2] = "N/A";
 	        }else{
-	        	AllItems[0] = CamposImpresion.get(56).toString();
-                AllItems[1] = CamposImpresion.get(57).toString();
-                AllItems[2] = CamposImpresion.get(58).toString();
+	        	AllItems[0] = this._tempRegistro.getAsString("estanqueidadreselevado");
+                AllItems[1] = this._tempRegistro.getAsString("estanqueidadcapelevado");
+                AllItems[2] = this._tempRegistro.getAsString("estanqueidadfugaelevado");
 	        }
 	        
 	        InfToPrinter = WrLabel(InfToPrinter, "Elevado", "", 3, 0, 0);
@@ -388,14 +417,14 @@ public class Impresiones {
 	        InfToPrinter = WrSubTitulo(InfToPrinter, AllItems[1], 280, 0, 0);
 	        InfToPrinter = WrSubTitulo(InfToPrinter, AllItems[2], 415, 0, 1);
 	
-	        if (CamposImpresion.get(59).toString().equals("No Se Realizo")){
+	        if (this._tempRegistro.getAsString("estanqueidadreslavadero").equals("No Se Realizo")){
 	        	AllItems[0] = "N/A";
 	        	AllItems[1] = "N/A";
 	        	AllItems[2] = "N/A";
 	        }else{
-	        	AllItems[0] = CamposImpresion.get(59).toString();
-                AllItems[1] = CamposImpresion.get(60).toString();
-                AllItems[2] = CamposImpresion.get(61).toString();
+	        	AllItems[0] = this._tempRegistro.getAsString("estanqueidadreslavadero");
+                AllItems[1] = this._tempRegistro.getAsString("estanqueidadcaplavadero");
+                AllItems[2] = this._tempRegistro.getAsString("estanqueidadfugalavadero");
 	        }
 	        
 	        InfToPrinter = WrLabel(InfToPrinter, "Lavadero", "", 3, 0, 0);
@@ -404,24 +433,24 @@ public class Impresiones {
 	        InfToPrinter = WrSubTitulo(InfToPrinter, AllItems[2], 415, 0, 1);
 	
 	        InfToPrinter = WrSubTitulo(InfToPrinter, "Diagnostico Tecnico", 3, 1, 1);
-	        InfToPrinter = JustInformation(InfToPrinter, CamposImpresion.get(68).toString(), 3, 0, 2);
+	        InfToPrinter = JustInformation(InfToPrinter, this._tempRegistro.getAsString("diagnostico"), 3, 0, 2);
 	
-	        if(CamposImpresion.get(73).toString().length()!=0){
+	        if(!this._tempRegistro.getAsString("nombreusuario").isEmpty()){
 	            InfToPrinter = WrRectangle(InfToPrinter, 3, getCurrentLine(), 550, getCurrentLine() + 100, 1, 0);
-	            InfToPrinter = WrLabel(InfToPrinter, "Firma Cliente: ", CamposImpresion.get(73).toString(), 3, 0, 1);
-	            InfToPrinter = WrLabel(InfToPrinter, "CC.", CamposImpresion.get(74).toString(), 3, 0, 3);
+	            InfToPrinter = WrLabel(InfToPrinter, "Firma Cliente: ", this._tempRegistro.getAsString("nombreusuario"), 3, 0, 1);
+	            InfToPrinter = WrLabel(InfToPrinter, "CC.", this._tempRegistro.getAsString("cedulausuario"), 3, 0, 3);
 	        }else{
 	            InfToPrinter = WrTitulo(InfToPrinter, "Se deja copia bajo puerta", 1.5, 1.5);
 	        }
 	
-	        if(CamposImpresion.get(75).toString().length()!=0){
+	        if(!this._tempRegistro.getAsString("nombretestigo").isEmpty()){
 	            InfToPrinter = WrRectangle(InfToPrinter, 3, getCurrentLine(), 550, getCurrentLine() + 100, 1, 0);
-	            InfToPrinter = WrLabel(InfToPrinter, "Firma Testigo y/o Interventor: ", CamposImpresion.get(75).toString(), 3, 0, 1);
-	            InfToPrinter = WrLabel(InfToPrinter, "CC.", CamposImpresion.get(76).toString(), 3, 0, 3);
+	            InfToPrinter = WrLabel(InfToPrinter, "Firma Testigo y/o Interventor: ", this._tempRegistro.getAsString("nombretestigo"), 3, 0, 1);
+	            InfToPrinter = WrLabel(InfToPrinter, "CC.", this._tempRegistro.getAsString("cedulatestigo"), 3, 0, 3);
 	        }
 	
-	        String Tecnico 	= ImpSQL.SelectShieldWhere("db_parametros", "valor", "item = 'nombre_tecnico'");
-	        String Cedula 	= ImpSQL.SelectShieldWhere("db_parametros", "valor", "item = 'cedula_tecnico'");
+	        String Tecnico 	= this.FcnSQL.StrSelectShieldWhere("db_parametros", "valor", "item = 'nombre_tecnico'");
+	        String Cedula 	= this.FcnSQL.StrSelectShieldWhere("db_parametros", "valor", "item = 'cedula_tecnico'");
 	
 	        InfToPrinter = JustInformation(InfToPrinter, "Declaro bajo la gravedad de juramento que los datos aqui consignados son veraces, fueron verificados y obdecen al estado actual del predio.", 3, 0, 1);
 	        
@@ -436,7 +465,7 @@ public class Impresiones {
 	        MnBt.IntentPrint(Impresora,InfToPrinter);
 	    }else{
 			Toast.makeText(this.context, "No existen registros de la revision, no olvide guardar los datos antes de imprimir.", Toast.LENGTH_LONG).show();   		
-	    }*/
+	    }
 	}
 	
 	

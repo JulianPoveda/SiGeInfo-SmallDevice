@@ -1,5 +1,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/DesviacionImprimir" android:title="Imprimir">
+    <item android:id="@+id/menu_ver_informacion" android:title="Ver Informacion"></item><item android:id="@+id/DesviacionImprimir" android:title="Imprimir">
         <menu>
             <item android:id="@+id/ImpOriginal" android:title="Original" />
             <item android:id="@+id/ImpUsuario" android:title="Usuario" />
@@ -7,6 +7,8 @@
         </menu>
     </item><item android:id="@+id/DesviacionTerminar" android:title="Terminar"></item>
     <item android:id="@+id/DesviacionSwapNotificacion" android:title="Iniciar Como Notificacion"></item>
+    
+    <item android:id="@+id/menu_ver_solicitudes" android:title="Ver Lista Solicitudes"></item>
     
 
 </menu>

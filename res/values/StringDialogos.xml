@@ -4,5 +4,8 @@
     <string name="di_Btn_Aceptar">Aceptar</string>
     <string name="dp_btn_aceptar">Aceptar</string>
     <string name="dp_btn_cancelar">Cancelar</string>
+    <string name="dc_btn_cancelar">Cancelar</string>
+    <string name="dc_btn_aceptar">Aceptar</string>
+    <string name="dc_lbl_mensaje">Mensaje</string>
     
 </resources>

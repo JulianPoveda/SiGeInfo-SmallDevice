@@ -24,8 +24,6 @@ public class SQLite {
 		this._ctxSQL 		= ctx;
 		SQLite._folderSQL 	= RutaBD;
 		SQLite._nameBD		= NombreBD;
-		
-		//SQLite.N_BD = RutaBD + File.separator + NombreBD;		
 	}
 	
 	

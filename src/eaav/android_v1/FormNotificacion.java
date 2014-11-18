@@ -1,5 +1,6 @@
 package eaav.android_v1;
 
+import modal.ModalConfirmacion;
 import modal.ModalDate;
 import modal.ModalInfGeneral;
 import modal.ModalInputSingle;
@@ -27,7 +28,9 @@ public class FormNotificacion extends Activity implements OnItemSelectedListener
 	static int 				INFORMACION_GENERAL 	= 1;
 	static int 				INGRESO_NOMBRE_USUARIO	= 2;
 	static int 				DATE_PICKER				= 3;
+	static int 				CONFIRMACION_CAMBIO_ACTA= 4;
 	
+	private Intent			ModalConfirmacion;
 	private Intent			ModalDate;
 	private Intent 			ModalInputSingle;
 	private Intent 			ModalInformacionSolicitud;
@@ -66,6 +69,7 @@ public class FormNotificacion extends Activity implements OnItemSelectedListener
 		this.Revision			= bundle.getString("Solicitud");
 		this.FolderAplicacion	= bundle.getString("FolderAplicacion");
 
+		this.ModalConfirmacion			= new Intent(this, ModalConfirmacion.class);
 		this.ModalDate					= new Intent(this, ModalDate.class);
 		this.ModalInputSingle			= new Intent(this, ModalInputSingle.class);
 		this.ModalInformacionSolicitud	= new Intent(this, ModalInfGeneral.class);		
@@ -142,27 +146,22 @@ public class FormNotificacion extends Activity implements OnItemSelectedListener
 		case R.id.mnu_ver_informacion:
 			this.ModalInformacionSolicitud.putExtra("Revision", this.Revision);
     		startActivityForResult(this.ModalInformacionSolicitud, INFORMACION_GENERAL);
-			return true;
-			
+			return true;			
 		case R.id.ImpOriginal:
 			if(verificarDatosNotificacion()){
 				Imp.FormatoNotificacion("Original", this.Revision, this.StrNombreUsuario, this.StrTipoUsuario);
 			}
-			return true;
-			
+			return true;			
 		case R.id.ImpUsuario:
 			if(verificarDatosNotificacion()){
 				Imp.FormatoNotificacion("Usuario", this.Revision, this.StrNombreUsuario, this.StrTipoUsuario);
 			}
-			return true;
-			
+			return true;			
 		case R.id.ImpCopia:
 			if(verificarDatosNotificacion()){
 				Imp.FormatoNotificacion("Copia", this.Revision, this.StrNombreUsuario, this.StrTipoUsuario);
 			}
-			return true;
-			
-			
+			return true;			
 		case R.id.mnu_terminar_notificacion:
 			if(this.verificarDatosNotificacion()){
 				this.guardarDatosNotificacion();
@@ -170,34 +169,11 @@ public class FormNotificacion extends Activity implements OnItemSelectedListener
 				this.MenuEnabled = true;
 				Toast.makeText(getApplicationContext(),"Datos guardados correctamente.", Toast.LENGTH_SHORT).show();		
 			}
-			return true;
-		
-		
+			return true;		
 		case R.id.mnu_notificacion_swap_desviacion:
-			/*AlertDialog.Builder dialogo2 = new AlertDialog.Builder(this);  
-	        dialogo2.setTitle("Cambio de Acta.");  
-	        dialogo2.setMessage("Confirma cancelar la notificacion e iniciar como desviacion?.");            
-	        dialogo2.setCancelable(false);  
-	        dialogo2.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {  
-	            public void onClick(DialogInterface dialogo1, int id) {  
-	            	//SQL.BorraRegistro("db_notificaciones", "revision ='"+Solicitud+"'");
-	            	
-	            	finish();
-	            	Intent k;
-					k = new Intent(getApplicationContext(), Desviacion.class);
-					//k.putExtra("Solicitud", Solicitud);
-					startActivity(k);
-	            }  
-	        });  
-	        dialogo2.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {  
-	            public void onClick(DialogInterface dialogo1, int id) {  
-	                //cancelar();
-	            }  
-	        });          
-	        dialogo2.show();*/ 
+			this.ModalConfirmacion.putExtra("informacion", "Confirma cancelar la notificacion. ?");
+			startActivityForResult(this.ModalConfirmacion, CONFIRMACION_CAMBIO_ACTA);
 			return true;
-			
-			
 		case R.id.mnu_solicitudes:
 			finish();
 			this.FormSolicitudes.putExtra("FolderAplicacion",this.FolderAplicacion);
@@ -293,6 +269,14 @@ public class FormNotificacion extends Activity implements OnItemSelectedListener
 		}else if(resultCode == RESULT_OK && requestCode == INGRESO_NOMBRE_USUARIO && !data.getExtras().getBoolean("accion")){
 			_cmbMotivoNotificacion.setSelection(AdapMotivoNotificacion.getPosition("..."));
 			Toast.makeText(getApplicationContext(),"No ha ingresado un nombre valido.", Toast.LENGTH_SHORT).show();
-		}		
+		}else if(resultCode == RESULT_OK && requestCode == CONFIRMACION_CAMBIO_ACTA && data.getExtras().getBoolean("accion")){
+			this.FcnRevision.setEstadoRevision(this.Revision, 0);
+			this.FcnNotificacion.eliminarNotificacion(this.Revision);
+			finish();
+			this.FormSolicitudes.putExtra("FolderAplicacion", this.FolderAplicacion);
+			startActivity(FormSolicitudes);
+		}
+		
+		
     }	
 }

@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".Desviacion" >
+    tools:context=".FormDesviacion" >
 
     <TabHost
         android:id="@android:id/tabhost"
@@ -181,6 +181,44 @@
                         android:layout_below="@+id/VisitaLblItem3"
                         android:gravity="right|center_vertical"
                         android:text="@string/VisitaLblItem4"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <Spinner
+                        android:id="@+id/VisitaCmbItem5"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_alignLeft="@+id/VisitaCmbItem4"
+                        android:layout_below="@+id/VisitaCmbItem4" />
+
+                    <TextView
+                        android:id="@+id/VisitaLblItem5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/VisitaCmbItem5"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignRight="@+id/VisitaLblItem4"
+                        android:layout_below="@+id/VisitaLblItem4"
+                        android:gravity="right|center_vertical"
+                        android:text="@string/VisitaLblItem5"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <Spinner
+                        android:id="@+id/VisitaCmbItem6"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_alignLeft="@+id/VisitaCmbItem5"
+                        android:layout_below="@+id/VisitaCmbItem5" />
+
+                    <TextView
+                        android:id="@+id/VisitaLblItem6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/VisitaCmbItem6"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignRight="@+id/VisitaLblItem5"
+                        android:layout_below="@+id/VisitaLblItem5"
+                        android:gravity="right|center_vertical"
+                        android:text="@string/VisitaLblItem6"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 </RelativeLayout>

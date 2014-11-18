@@ -45,7 +45,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".Desviacion"
+            android:name=".FormDesviacion"
             android:label="@string/title_activity_desviacion"
             android:screenOrientation="portrait" >
         </activity>
@@ -71,7 +71,12 @@
         </activity>
         <activity
             android:name="modal.ModalDate"
-            android:label="@string/title_activity_modal_date" 
+            android:label="@string/title_activity_modal_date"
+            android:theme="@android:style/Theme.Dialog" >
+        </activity>
+        <activity
+            android:name="modal.ModalConfirmacion"
+            android:label="@string/title_activity_modal_confirmacion" 
             android:theme="@android:style/Theme.Dialog" >
         </activity>
     </application>
