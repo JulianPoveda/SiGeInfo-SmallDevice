@@ -3,6 +3,5 @@
     
     
     <item android:id="@+id/mnu_apertura" android:title="Apertura de Revision"></item>
-    <item android:id="@+id/mnu_terminar" android:title="Terminar Revision"></item>
 
 </menu>

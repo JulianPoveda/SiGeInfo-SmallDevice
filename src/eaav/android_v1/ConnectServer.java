@@ -8,7 +8,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.ListIterator;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.MarshalBase64;
@@ -33,17 +32,29 @@ public class ConnectServer {
 	private Context ConnectServerContext;
 	private String 	DirectorioConexionServer;
 	
+	private 		ClassConfiguracion FcnConfiguracion;
+		
 	//nusoap
-	private static String URL		= "http://190.93.133.127:8080/EAAV-Desviaciones/ServerPDA/WS_EAAV_Desviaciones.php?wsdl";
-	private static String NAMESPACE = "http://190.93.133.127:8080/EAAV-Desviaciones/ServerPDA";
-	
+	public String 		URL;			
+	private String 		NAMESPACE; 	
+	private String 		_servidor;
+	private String 		_puerto;
+	private String 		_pagina;
+	private String 		_web_service;
+	private String 		_pda;
 		
 		
 	public ConnectServer(Context context, String Directorio){
 		this.ConnectServerContext 		= context;
 		this.DirectorioConexionServer 	= Directorio;
-		//this.FcnSQL 		= new SQLite(this.ConnectServerContext, this.DirectorioConexionServer, Loggin.NOMBRE_DATABASE);
-		//this.FcnArchivos 	= new Archivos(this.ConnectServerContext,this.DirectorioConexionServer,10);
+		this.FcnConfiguracion			= new ClassConfiguracion(this.ConnectServerContext, FormLoggin.CARPETA_RAIZ);
+		_servidor 	= this.FcnConfiguracion.getServidor();
+		_puerto 	= this.FcnConfiguracion.getPuerto();
+		_pagina 	= this.FcnConfiguracion.getServicio();
+		_web_service= this.FcnConfiguracion.getWebService();
+		_pda 		= this.FcnConfiguracion.getEquipo();		
+		this.URL 		= this._servidor+":"+this._puerto+"/"+this._pagina+"/"+this._web_service;
+		this.NAMESPACE 	= this._servidor+":"+this._puerto+"/"+this._pagina;
 	}
 	
 	
@@ -61,20 +72,18 @@ public class ConnectServer {
 		new DownLoadTrabajoProgramado(this.ConnectServerContext, this.DirectorioConexionServer).execute();
 	}
 	
-	/*public void DescargarNotificaciones(){
-		new UpLoadAllNotificaciones(this.ConnectServerContext).execute();
-	}*/
-	
 		
 	
 	//clase para enviar de forma asincrona las desviaciones
 	private class UpLoadTrabajoRealizado extends AsyncTask<Void,Void,SoapPrimitive>{
 		//Variables para contexto de mensajes a visualizar y conexion a la base de datos
-		private Context CtxTrabajoRealizado;
-		private SQLite RealizadoSQL;
-		private Archivos RealizadoArch;
-		private Dialogos MensajeDialog; 	
-		SoapPrimitive response = null;
+		private Context 	CtxTrabajoRealizado;
+		private SQLite 		RealizadoSQL;
+		private Archivos 	RealizadoArch;
+		private Dialogos 	MensajeDialog; 	
+		SoapPrimitive 		response = null;
+		private ArrayList<ContentValues> 	_tempTabla = new ArrayList<ContentValues>();
+		private ContentValues 				_tempRegistro= new ContentValues();
 		    	
 		//Variables con la informacion del web service
 		private static final String METHOD_NAME	= "RevisionesRealizadas";
@@ -87,8 +96,8 @@ public class ConnectServer {
 		private UpLoadTrabajoRealizado(Context context, String DirectorioArchivo){
     		this.CtxTrabajoRealizado = context;
     		this.DirectorioCarga 	= DirectorioArchivo;
-    		this.RealizadoSQL 		= new SQLite(this.CtxTrabajoRealizado, this.DirectorioCarga, "BdEAAV_Android");
-    		//this.RealizadoArch 		= new Archivos(this.CtxTrabajoRealizado, this.DirectorioCarga);
+    		this.RealizadoSQL 		= new SQLite(this.CtxTrabajoRealizado, FormLoggin.CARPETA_RAIZ, FormLoggin.NOMBRE_DATABASE);
+    		this.RealizadoArch 		= new Archivos(this.CtxTrabajoRealizado, this.DirectorioCarga,10);
     		MensajeDialog 			= new Dialogos(this.CtxTrabajoRealizado);
 		}
 		
@@ -96,100 +105,165 @@ public class ConnectServer {
     		int NumNotificadas= 0;
     		int NumTerminadas= 0;
     		String CadenaArchivo = "";    		
-    		ArrayList<ArrayList<String>> InfSendRevision;
-    		InfSendRevision = new ArrayList<ArrayList<String>>();
+    		//ArrayList<ArrayList<String>> InfSendRevision;
+    		//InfSendRevision = new ArrayList<ArrayList<String>>();
     		
-    		/*InfSendRevision = RealizadoSQL.SelectDataKeyValue(	"db_notificaciones",
-																"fecha_notificacion,revision,codigo,nombre,direccion,serie,ciclo,promedio,visita,lectura,medidor,precinto,observacion,fecha_visita,motivo,jornada_notificacion,hora_visita",
-																"revision IS NOT NULL");*/
-			
-			ListIterator<ArrayList<String>> iCiclo = InfSendRevision.listIterator();
-			while(iCiclo.hasNext()){
-				ArrayList<String> Registro = iCiclo.next();				
-				CadenaArchivo +="N|"+Registro.get(0)+"|"+Registro.get(1)+"|"+Registro.get(2)+"|"+
-								Registro.get(3)+"|"+Registro.get(4)+"|"+Registro.get(5)+"|"+
-								Registro.get(6)+"|"+Registro.get(7)+"|"+Registro.get(8)+"|"+
-								Registro.get(9)+"|"+Registro.get(10)+"|"+Registro.get(11)+"|"+
-								Registro.get(12)+"|"+Registro.get(13)+"|"+Registro.get(14)+"|"+
-								Registro.get(15)+"|"+Registro.get(16)+"|&";
-				NumNotificadas += 1;
+    		this._tempTabla = this.RealizadoSQL.SelectData(	"db_notificaciones", 
+    														"fecha_notificacion,revision,codigo,nombre,direccion,serie,ciclo,promedio,visita,lectura,medidor,precinto,observacion,fecha_visita,motivo,jornada_notificacion,hora_visita",
+															"revision IS NOT NULL");
+    		
+    		NumNotificadas = this._tempTabla.size();
+    		
+			for(int i=0;i<this._tempTabla.size();i++){
+				this._tempRegistro = this._tempTabla.get(i);
+				CadenaArchivo+="N|"+this._tempRegistro.getAsString("fecha_notificacion")+"|"+
+									this._tempRegistro.getAsString("revision")+"|"+
+									this._tempRegistro.getAsString("codigo")+"|"+
+									this._tempRegistro.getAsString("nombre")+"|"+
+									this._tempRegistro.getAsString("direccion")+"|"+
+									this._tempRegistro.getAsString("serie")+"|"+
+									this._tempRegistro.getAsString("ciclo")+"|"+
+									this._tempRegistro.getAsString("promedio")+"|"+
+									this._tempRegistro.getAsString("visita")+"|"+
+									this._tempRegistro.getAsString("lectura")+"|"+
+									this._tempRegistro.getAsString("medidor")+"|"+
+									this._tempRegistro.getAsString("precinto")+"|"+
+									this._tempRegistro.getAsString("observacion")+"|"+
+									this._tempRegistro.getAsString("fecha_visita")+"|"+
+									this._tempRegistro.getAsString("motivo")+"|"+
+									this._tempRegistro.getAsString("jornada_notificacion")+"|"+
+									this._tempRegistro.getAsString("hora_visita")+"|&";
 			}
-    		
-    		/*InfSendRevision = RealizadoSQL.SelectDataKeyValue(	"db_desviaciones", 
-    															"revision, codigo, nombre," +
-																"direccion, serie, ciclo," +
-																"promedio, fecha, hora," +
-																"tipo, area, pisos, " +
-																"actividad, uso, residentes, " +
-																"habitado, estado, acueducto, " +
-																"camaramedidor, estadocamara, serieindividual," +
-																"marcaindividual, diametroindividual, lecturaindividual, " +
-																"serietotalizador, marcatotalizador,diametrototalizador, " +
-																"lecturatotalizador, subterraneos, itemsubterraneos, " +
-																"estadosubterraneos, lavaplatos, itemlavaplatos, " +
-																"estadolavaplatos, lavaderos,itemlavadero, " +
-																"estadolavadero, elevados, itemelevado, " +
-																"estadoelevado, iteminternas, estadointernas, " +
-																"piscinas, itempiscina, estadopiscina, "+
-																"medidorregpaso, medidorregantifraude, medidordestruido, " +
-																"medidorinvertido, medidorilegible, medidorprecintoroto, " +
-																"hermeticidadreginternos, hermeticidadequipomedida, estanqueidadreselevado," +
-																"estanqueidadreslavadero,estanqueidadressubterraneo,estanqueidadcapelevado," +
-																"estanqueidadcaplavadero,estanqueidadcapsubterraneo,estanqueidadfugaelevado," +
-																"estanqueidadfugalavadero,estanqueidadfugasubterrano,hermeticidadfugaimperceptible, " +
-																"hermeticidadfugas,hermeticidadfugavisible, diagnostico, " +
-																"estrato, precinto, serviciodirecto, " +
-																"bypass, horaapertura, nombreusuario, " +
-																"cedulausuario, nombretestigo,cedulatestigo, " +
-																"cisterna, itemcisterna, estadocisterna, " +
-																"ducha, itemducha, estadoducha, " +
-																"lavamanos, itemlavamanos,estadolavamanos, " +
-																"servicioacueducto, servicioalcantarillado, horacierre, " +
-																"segundoconcepto, respuestadesviacion",
-																"revision IS NOT NULL");*/		
-    		
-    		iCiclo = InfSendRevision.listIterator();
-			while(iCiclo.hasNext()){
-				ArrayList<String> Registro = iCiclo.next();		
-				CadenaArchivo +="T|"+Registro.get(0)+"|"+Registro.get(1)+"|"+Registro.get(2)+"|"+
-								Registro.get(3)+"|"+Registro.get(4)+"|"+Registro.get(5)+"|"+
-								Registro.get(6)+"|"+Registro.get(7)+"|"+Registro.get(8)+"|"+
-								Registro.get(9)+"|"+Registro.get(10)+"|"+Registro.get(11)+"|"+
-								Registro.get(12)+"|"+Registro.get(13)+"|"+Registro.get(14)+"|"+
-								Registro.get(15)+"|"+Registro.get(16)+"|"+Registro.get(17)+"|"+
-								Registro.get(18)+"|"+Registro.get(19)+"|"+Registro.get(20)+"|"+
-								Registro.get(21)+"|"+Registro.get(22)+"|"+Registro.get(23)+"|"+
-								Registro.get(24)+"|"+Registro.get(25)+"|"+Registro.get(26)+"|"+
-								Registro.get(27)+"|"+Registro.get(28)+"|"+Registro.get(29)+"|"+
-					 			Registro.get(30)+"|"+Registro.get(31)+"|"+Registro.get(32)+"|"+
-					 			Registro.get(33)+"|"+Registro.get(34)+"|"+Registro.get(35)+"|"+
-					 			Registro.get(36)+"|"+Registro.get(37)+"|"+Registro.get(38)+"|"+
-					 			Registro.get(39)+"|"+Registro.get(40)+"|"+Registro.get(41)+"|"+
-					 			Registro.get(42)+"|"+Registro.get(43)+"|"+Registro.get(44)+"|"+
-					 			Registro.get(45)+"|"+Registro.get(46)+"|"+Registro.get(47)+"|"+
-					 			Registro.get(48)+"|"+Registro.get(49)+"|"+Registro.get(50)+"|"+
-					 			Registro.get(51)+"|"+Registro.get(52)+"|"+Registro.get(53)+"-"+	Registro.get(54)+"-"+Registro.get(55)+"|"+
-					 			Registro.get(56)+"-"+Registro.get(57)+"-"+Registro.get(58)+"|"+	Registro.get(59)+"-"+Registro.get(60)+"-"+Registro.get(61)+"|"+	Registro.get(62)+"|"+
-					 			Registro.get(63)+"|"+Registro.get(64)+"|"+Registro.get(65)+"|"+
-					 			Registro.get(66)+"|"+Registro.get(67)+"|"+Registro.get(68)+"|"+
-					 			Registro.get(69)+"|"+Registro.get(70)+"|"+Registro.get(71)+"|"+
-					 			Registro.get(72)+"|"+Registro.get(73)+"|"+Registro.get(74)+"|"+
-					 			Registro.get(75)+"|"+Registro.get(76)+"|"+Registro.get(77)+"|"+
-					 			Registro.get(78)+"|"+Registro.get(79)+"|"+Registro.get(80)+"|"+
-					 			Registro.get(81)+"|"+Registro.get(82)+"|"+Registro.get(83)+"|"+
-					 			Registro.get(84)+"|"+Registro.get(85)+"|"+Registro.get(86)+"|"+
-					 			Registro.get(87)+"|"+Registro.get(88)+"|&";
+    		    		
+			this._tempTabla = this.RealizadoSQL.SelectData(	"db_desviaciones", 
+															"revision, codigo, nombre," +
+															"direccion, serie, ciclo," +
+															"promedio, fecha, hora," +
+															"tipo, area, pisos, " +
+															"actividad, uso, residentes, " +
+															"habitado, estado, acueducto, " +
+															"camaramedidor, estadocamara, serieindividual," +
+															"marcaindividual, diametroindividual, lecturaindividual, " +
+															"serietotalizador, marcatotalizador,diametrototalizador, " +
+															"lecturatotalizador, subterraneos, itemsubterraneos, " +
+															"estadosubterraneos, lavaplatos, itemlavaplatos, " +
+															"estadolavaplatos, lavaderos,itemlavadero, " +
+															"estadolavadero, elevados, itemelevado, " +
+															"estadoelevado, iteminternas, estadointernas, " +
+															"piscinas, itempiscina, estadopiscina, "+
+															"medidorregpaso, medidorregantifraude, medidordestruido, " +
+															"medidorinvertido, medidorilegible, medidorprecintoroto, " +
+															"hermeticidadreginternos, hermeticidadequipomedida, estanqueidadreselevado," +
+															"estanqueidadreslavadero,estanqueidadressubterraneo,estanqueidadcapelevado," +
+															"estanqueidadcaplavadero,estanqueidadcapsubterraneo,estanqueidadfugaelevado," +
+															"estanqueidadfugalavadero,estanqueidadfugasubterrano,hermeticidadfugaimperceptible, " +
+															"hermeticidadfugas,hermeticidadfugavisible, diagnostico, " +
+															"estrato, precinto, serviciodirecto, " +
+															"bypass, horaapertura, nombreusuario, " +
+															"cedulausuario, nombretestigo,cedulatestigo, " +
+															"cisterna, itemcisterna, estadocisterna, " +
+															"ducha, itemducha, estadoducha, " +
+															"lavamanos, itemlavamanos,estadolavamanos, " +
+															"servicioacueducto, servicioalcantarillado, horacierre, " +
+															"segundoconcepto, respuestadesviacion",
+															"revision IS NOT NULL");
+			
+			for(int i=0;i<this._tempTabla.size();i++){
+				this._tempRegistro = this._tempTabla.get(i);
+				CadenaArchivo +="T|"+this._tempRegistro.getAsString("revision")+"|"
+									+this._tempRegistro.getAsString("codigo")+"|"
+									+this._tempRegistro.getAsString("nombre")+"|"
+									+this._tempRegistro.getAsString("direccion")+"|"
+									+this._tempRegistro.getAsString("serie")+"|"
+									+this._tempRegistro.getAsString("ciclo")+"|"
+									+this._tempRegistro.getAsString("promedio")+"|"
+									+this._tempRegistro.getAsString("fecha")+"|"
+									+this._tempRegistro.getAsString("hora")+"|"
+									+this._tempRegistro.getAsString("tipo")+"|"
+									+this._tempRegistro.getAsString("area")+"|"
+									+this._tempRegistro.getAsString("pisos")+"|"
+									+this._tempRegistro.getAsString("actividad")+"|"
+									+this._tempRegistro.getAsString("uso")+"|"
+									+this._tempRegistro.getAsString("residentes")+"|"
+									+this._tempRegistro.getAsString("habitado")+"|"
+									+this._tempRegistro.getAsString("estado")+"|"
+									+this._tempRegistro.getAsString("acueducto")+"|"
+									+this._tempRegistro.getAsString("camaramedidor")+"|"
+									+this._tempRegistro.getAsString("estadocamara")+"|"
+									+this._tempRegistro.getAsString("serieindividual")+"|"
+									+this._tempRegistro.getAsString("marcaindividual")+"|"
+									+this._tempRegistro.getAsString("diametroindividual")+"|"
+									+this._tempRegistro.getAsString("lecturaindividual")+"|"
+									+this._tempRegistro.getAsString("serietotalizador")+"|"
+									+this._tempRegistro.getAsString("marcatotalizador")+"|"
+									+this._tempRegistro.getAsString("diametrototalizador")+"|"
+									+this._tempRegistro.getAsString("lecturatotalizador")+"|"
+									+this._tempRegistro.getAsString("subterraneos")+"|"
+									+this._tempRegistro.getAsString("itemsubterraneos")+"|"
+									+this._tempRegistro.getAsString("estadosubterraneos")+"|"
+									+this._tempRegistro.getAsString("lavaplatos")+"|"
+									+this._tempRegistro.getAsString("itemlavaplatos")+"|"
+									+this._tempRegistro.getAsString("estadolavaplatos")+"|"
+									+this._tempRegistro.getAsString("lavaderos")+"|"
+									+this._tempRegistro.getAsString("itemlavadero")+"|"
+									+this._tempRegistro.getAsString("estadolavadero")+"|"
+									+this._tempRegistro.getAsString("elevados")+"|"
+									+this._tempRegistro.getAsString("itemelevado")+"|"
+									+this._tempRegistro.getAsString("estadoelevado")+"|"
+									+this._tempRegistro.getAsString("iteminternas")+"|"
+									+this._tempRegistro.getAsString("estadointernas")+"|"
+									+this._tempRegistro.getAsString("piscinas")+"|"
+									+this._tempRegistro.getAsString("itempiscina")+"|"
+									+this._tempRegistro.getAsString("estadopiscina")+"|"
+									+this._tempRegistro.getAsString("medidorregpaso")+"|"
+									+this._tempRegistro.getAsString("medidorregantifraude")+"|"
+									+this._tempRegistro.getAsString("medidordestruido")+"|"
+									+this._tempRegistro.getAsString("medidorinvertido")+"|"
+									+this._tempRegistro.getAsString("medidorilegible")+"|"
+									+this._tempRegistro.getAsString("medidorprecintoroto")+"|"
+									+this._tempRegistro.getAsString("hermeticidadreginternos")+"|"
+									+this._tempRegistro.getAsString("hermeticidadequipomedida")+"|"
+									+this._tempRegistro.getAsString("estanqueidadreselevado")+"-"+this._tempRegistro.getAsString("estanqueidadreslavadero")+"-"+this._tempRegistro.getAsString("estanqueidadressubterraneo")+"|"
+									+this._tempRegistro.getAsString("estanqueidadcapelevado")+"-"+this._tempRegistro.getAsString("estanqueidadcaplavadero")+"-"+this._tempRegistro.getAsString("estanqueidadcapsubterraneo")+"|"
+									+this._tempRegistro.getAsString("estanqueidadfugaelevado")+"-"+this._tempRegistro.getAsString("estanqueidadfugalavadero")+"-"+this._tempRegistro.getAsString("estanqueidadfugasubterrano")+"|"
+									+this._tempRegistro.getAsString("hermeticidadfugaimperceptible")+"|"
+									+this._tempRegistro.getAsString("hermeticidadfugas")+"|"
+									+this._tempRegistro.getAsString("hermeticidadfugavisible")+"|"
+									+this._tempRegistro.getAsString("diagnostico")+"|"
+									+this._tempRegistro.getAsString("estrato")+"|"
+									+this._tempRegistro.getAsString("precinto")+"|"
+									+this._tempRegistro.getAsString("serviciodirecto")+"|"
+									+this._tempRegistro.getAsString("bypass")+"|"
+									+this._tempRegistro.getAsString("horaapertura")+"|"
+									+this._tempRegistro.getAsString("nombreusuario")+"|"
+									+this._tempRegistro.getAsString("cedulausuario")+"|"
+									+this._tempRegistro.getAsString("nombretestigo")+"|"
+									+this._tempRegistro.getAsString("cedulatestigo")+"|"
+									+this._tempRegistro.getAsString("cisterna")+"|"
+									+this._tempRegistro.getAsString("itemcisterna")+"|"
+									+this._tempRegistro.getAsString("estadocisterna")+"|"
+									+this._tempRegistro.getAsString("ducha")+"|"
+									+this._tempRegistro.getAsString("itemducha")+"|"
+									+this._tempRegistro.getAsString("estadoducha")+"|"
+									+this._tempRegistro.getAsString("lavamanos")+"|"
+									+this._tempRegistro.getAsString("itemlavamanos")+"|"
+									+this._tempRegistro.getAsString("estadolavamanos")+"|"
+									+this._tempRegistro.getAsString("servicioacueducto, , ")+"|"
+									+this._tempRegistro.getAsString("servicioalcantarillado")+"|"
+									+this._tempRegistro.getAsString("horacierre")+"|"
+									+this._tempRegistro.getAsString("segundoconcepto")+"|"
+									+this._tempRegistro.getAsString("respuestadesviacion")+"|&";
 				NumTerminadas += 1;
 			}
 			
-			CadenaArchivo = CadenaArchivo.replace("\n", ". "); 	//Se elimina los saltos de linea dentro de la informacion digitada por el tecnico
+    		CadenaArchivo = CadenaArchivo.replace("\n", ". "); 	//Se elimina los saltos de linea dentro de la informacion digitada por el tecnico
 			CadenaArchivo = CadenaArchivo.replace("&", "\n");	//Se hace salto de linea por cada revision notificada o terminada que exista
 			
-			/*if(!this.RealizadoArch.CrearArchivo(UpLoadTrabajoRealizado.ArchivoCarga, CadenaArchivo)){
+			if(!this.RealizadoArch.DoFile("Descargas",UpLoadTrabajoRealizado.ArchivoCarga, CadenaArchivo)){
 				Toast.makeText(this.CtxTrabajoRealizado,"Imposible crear el archivo de carga.", Toast.LENGTH_SHORT).show();
 			}else{
 				Toast.makeText(this.CtxTrabajoRealizado,"Enviando \n"+NumNotificadas+" revisiones notificaciones. \n"+NumTerminadas+" revisiones terminadas, por favor espere...", Toast.LENGTH_SHORT).show();	
-		    }*/  		
+		    }		
     	}
 
     	
@@ -198,105 +272,9 @@ public class ConnectServer {
     	@Override
     	protected SoapPrimitive doInBackground(Void... params) {
     		try{
-    			/*String pda = RealizadoSQL.SelectShieldWhere("db_parametros", "valor", "item='pda'");			
-        		SoapObject so=new SoapObject(NAMESPACE, METHOD_NAME);
-    			so.addProperty("Informacion", this.RealizadoArch.FileToBytes(ArchivoCarga));
-    			so.addProperty("PDA", pda);	
-    			SoapSerializationEnvelope sse=new SoapSerializationEnvelope(SoapEnvelope.VER11);
-    			new MarshalBase64().register(sse);
-    			sse.dotNet=true;
-    			sse.setOutputSoapObject(so);
-    			HttpTransportSE htse=new HttpTransportSE(URL);
-    			htse.call(SOAP_ACTION, sse);
-    			response=(SoapPrimitive) sse.getResponse();*/
-    		} catch (Exception e) {
-    			e.printStackTrace();
-    		}
-    		return response;
-    	}
-
-    	@Override
-    	protected void onPostExecute(SoapPrimitive rta) {
-    		/*this.RealizadoArch.DeleteFolderOrFile(UpLoadTrabajoRealizado.ArchivoCarga);
-    		if(rta==null) {
-    			MensajeDialog.DialogoInformativo("ESTADO DE LA CONEXION","Error, no se ha obtenido respuesta del servidor.");
-    		}else{
-    			String resultado = rta.toString();
-				String ListaRetorno[] = resultado.split("\\|");
-				resultado = resultado.replace("|", "\n");
-				
-				for(int i=0;i<ListaRetorno.length;i++){
-					String OrdenesOk[] = ListaRetorno[i].split("--");
-					if(OrdenesOk[0].equals("OK")){
-						if(OrdenesOk[2].equals("Notificada")){
-							this.RealizadoSQL.BorraRegistro("db_notificaciones", "revision = '" + OrdenesOk[1] + "'");
-						}else if(OrdenesOk[2].equals("Terminada")){
-							this.RealizadoSQL.BorraRegistro("db_desviaciones", "revision = '" + OrdenesOk[1] + "'");
-						}
-						this.RealizadoSQL.BorraRegistro("db_solicitudes", "revision = '" + OrdenesOk[1] + "'");
-					}
-				}
-				int NotificadaPendientes = this.RealizadoSQL.SelectCountWhere("db_notificaciones", "revision IS NOT NULL");	
-				int TerminadaPendientes = this.RealizadoSQL.SelectCountWhere("db_desviaciones", "revision IS NOT NULL");	
-				MensajeDialog.DialogoInformativo("ESTADO DEL ENVIO","Respuesta Del Servidor \n"+resultado+" \n"+NotificadaPendientes + " revisiones notificadas pendientes por enviar.\n"+TerminadaPendientes + " revisiones terminadas pendientes por enviar.");
-    		}*/
-    	}	
-    }
-
-	
-	private class UpLoadTrabajoSinRealizar extends AsyncTask<Void,Void,SoapPrimitive>{
-    	//Variables para contexto de mensajes a visualizar y conexion a la base de datos
-		private Context CtxTrabajoSinRealizar;
-    	private SQLite SinRealizarSQL;
-    	private Archivos SinRealizarArch;
-    	private Dialogos MensajeDialog; 	
-    	SoapPrimitive response = null;
-    	
-    	//Variables con la informacion del web service
-    	private static final String METHOD_NAME	= "RevisionesDevueltas";
-    	private static final String SOAP_ACTION	= "RevisionesDevueltas";
-    	
-    	//Variables de ruta y archivo a crear para cargar en el servidor
-    	private String 	DirectorioCarga = null;
-    	static final String ArchivoCarga = "TrabajoSinRealizar.txt";
-    	
-    	private UpLoadTrabajoSinRealizar(Context context, String DirectorioArchivo){
-    		this.CtxTrabajoSinRealizar 	= context;
-    		this.DirectorioCarga 		= DirectorioArchivo;
-    		this.SinRealizarSQL 		= new SQLite(this.CtxTrabajoSinRealizar, this.DirectorioCarga, "BdEAAV_Android");
-    		//this.SinRealizarArch 		= new Archivos(this.CtxTrabajoSinRealizar, this.DirectorioCarga);
-    		MensajeDialog 				= new Dialogos(this.CtxTrabajoSinRealizar);    		
-    	}
-    	 
-    	protected void onPreExecute(){
-    		int NumRegistros = 0;
-    		String CadenaArchivo = "";    		
-    		ArrayList<ArrayList<String>> InfSendRevision;
-    		InfSendRevision = new ArrayList<ArrayList<String>>();
-    		
-    		//InfSendRevision = SinRealizarSQL.SelectDataKeyValue("db_solicitudes", "revision", "estado = 0");			
-			ListIterator<ArrayList<String>> iCiclo = InfSendRevision.listIterator();
-			while(iCiclo.hasNext()){
-				ArrayList<String> Registro = iCiclo.next();				
-				CadenaArchivo +=Registro.get(0)+"|\n";
-				NumRegistros += 1;
-			}
-			
-			
-			/*if(!this.SinRealizarArch.CrearArchivo(UpLoadTrabajoSinRealizar.ArchivoCarga, CadenaArchivo)){
-				Toast.makeText(this.CtxTrabajoSinRealizar,"Imposible crear el archivo de carga.", Toast.LENGTH_SHORT).show();
-			}else{
-				Toast.makeText(this.CtxTrabajoSinRealizar,"Enviando "+NumRegistros+" revisiones sin realizar, por favor espere...", Toast.LENGTH_SHORT).show();	
-			}*/
-		}
-
-    	@Override
-    	protected SoapPrimitive doInBackground(Void... params) {
-    		try{
-    			//String pda = SinRealizarSQL.SelectShieldWhere("db_parametros", "valor", "item='pda'");			
-        		SoapObject so=new SoapObject(NAMESPACE, METHOD_NAME);
-    			//so.addProperty("Informacion", this.SinRealizarArch.FileToBytes(ArchivoCarga));
-    			//so.addProperty("PDA", pda);	
+    			SoapObject so=new SoapObject(NAMESPACE, METHOD_NAME);
+    			so.addProperty("Informacion", this.RealizadoArch.FileToArrayBytes(FormLoggin.CARPETA_RAIZ+"/Descargas/"+ArchivoCarga));
+    			so.addProperty("PDA",  RealizadoSQL.StrSelectShieldWhere("db_parametros", "valor", "item='pda'"));
     			SoapSerializationEnvelope sse=new SoapSerializationEnvelope(SoapEnvelope.VER11);
     			new MarshalBase64().register(sse);
     			sse.dotNet=true;
@@ -312,7 +290,7 @@ public class ConnectServer {
 
     	@Override
     	protected void onPostExecute(SoapPrimitive rta) {
-    		/*this.SinRealizarArch.DeleteFolderOrFile(UpLoadTrabajoSinRealizar.ArchivoCarga);
+    		this.RealizadoArch.DeleteFile(FormLoggin.CARPETA_RAIZ+File.pathSeparator+UpLoadTrabajoRealizado.ArchivoCarga);
     		if(rta==null) {
     			MensajeDialog.DialogoInformativo("ESTADO DE LA CONEXION","Error, no se ha obtenido respuesta del servidor.");
     		}else{
@@ -323,48 +301,128 @@ public class ConnectServer {
 				for(int i=0;i<ListaRetorno.length;i++){
 					String OrdenesOk[] = ListaRetorno[i].split("--");
 					if(OrdenesOk[0].equals("OK")){
-						this.SinRealizarSQL.BorraRegistro("db_solicitudes", "revision = '" + OrdenesOk[1] + "' AND estado = 0");
+						if(OrdenesOk[2].equals("Notificada")){
+							this.RealizadoSQL.DeleteRegistro("db_notificaciones", "revision = '" + OrdenesOk[1] + "'");
+						}else if(OrdenesOk[2].equals("Terminada")){
+							this.RealizadoSQL.DeleteRegistro("db_desviaciones", "revision = '" + OrdenesOk[1] + "'");
+						}
+						this.RealizadoSQL.DeleteRegistro("db_solicitudes", "revision = '" + OrdenesOk[1] + "'");
 					}
 				}
-				int pendientes = this.SinRealizarSQL.SelectCountWhere("db_solicitudes", "estado = 0");				
-				MensajeDialog.DialogoInformativo("ESTADO DEL ENVIO","Respuesta Del Servidor \n"+resultado+" \n"+pendientes + " registros pendientes por enviar.");
-    		}*/
+				int NotificadaPendientes = this.RealizadoSQL.IntSelectShieldWhere("db_notificaciones", "count(revision) as cantidad", "revision IS NOT NULL");	
+				int TerminadaPendientes = this.RealizadoSQL.IntSelectShieldWhere("db_desviaciones", "count(revision) as cantidad", "revision IS NOT NULL");	
+				MensajeDialog.DialogoInformativo("ESTADO DEL ENVIO","Respuesta Del Servidor \n"+resultado+" \n"+NotificadaPendientes + " revisiones notificadas pendientes por enviar.\n"+TerminadaPendientes + " revisiones terminadas pendientes por enviar.");
+    		}
     	}	
     }
+
 	
-	
+	private class UpLoadTrabajoSinRealizar extends AsyncTask<Void,Void,SoapPrimitive>{
+    	//Variables para contexto de mensajes a visualizar y conexion a la base de datos
+		private Context 	CtxTrabajoSinRealizar;
+    	private SQLite 		SinRealizarSQL;
+    	private ArrayList<ContentValues> _tempTabla = new ArrayList<ContentValues>();
+    	private Archivos 	SinRealizarArch;
+    	private Dialogos 	MensajeDialog; 	
+    	SoapPrimitive 		response = null;
+    	
+    	
+    	//Variables con la informacion del web service
+    	private static final String METHOD_NAME	= "RevisionesDevueltas";
+    	private static final String SOAP_ACTION	= "RevisionesDevueltas";
+    	
+    	//Variables de ruta y archivo a crear para cargar en el servidor
+    	private String 	DirectorioCarga = null;
+    	static final String ArchivoCarga = "TrabajoSinRealizar.txt";
+    	
+    	private UpLoadTrabajoSinRealizar(Context context, String DirectorioArchivo){
+    		this.CtxTrabajoSinRealizar 	= context;
+    		this.DirectorioCarga 		= DirectorioArchivo;
+    		this.SinRealizarSQL 		= new SQLite(this.CtxTrabajoSinRealizar, this.DirectorioCarga, FormLoggin.NOMBRE_DATABASE);
+    		this.SinRealizarArch 		= new Archivos(this.CtxTrabajoSinRealizar, this.DirectorioCarga, 10);
+    		MensajeDialog 				= new Dialogos(this.CtxTrabajoSinRealizar);    		
+    	}
+    	 
+    	protected void onPreExecute(){
+    		int NumRegistros = 0;
+    		String CadenaArchivo = "";    		
+    		   		
+    		this._tempTabla = this.SinRealizarSQL.SelectData("db_solicitudes", "revision", "estado = 0");
+    		for(int i=0;i<this._tempTabla.size();i++){
+    			CadenaArchivo += this._tempTabla.get(i).getAsString("revision")+"|\n";
+    		}
+    		NumRegistros = this._tempTabla.size();
+			
+			if(!this.SinRealizarArch.DoFile("Descargas", UpLoadTrabajoSinRealizar.ArchivoCarga, CadenaArchivo)){
+				Toast.makeText(this.CtxTrabajoSinRealizar,"Imposible crear el archivo de carga.", Toast.LENGTH_SHORT).show();
+			}else{
+				Toast.makeText(this.CtxTrabajoSinRealizar,"Enviando "+NumRegistros+" revisiones sin realizar, por favor espere...", Toast.LENGTH_SHORT).show();	
+			}
+		}
+
+    	@Override
+    	protected SoapPrimitive doInBackground(Void... params) {
+    		try{
+    			SoapObject so=new SoapObject(NAMESPACE, METHOD_NAME);
+    			so.addProperty("Informacion", this.SinRealizarArch.FileToArrayBytes(FormLoggin.CARPETA_RAIZ+"/Descargas/"+ArchivoCarga));
+    			so.addProperty("PDA", SinRealizarSQL.StrSelectShieldWhere("db_parametros", "valor", "item='pda'"));	
+    			SoapSerializationEnvelope sse=new SoapSerializationEnvelope(SoapEnvelope.VER11);
+    			new MarshalBase64().register(sse);
+    			sse.dotNet=true;
+    			sse.setOutputSoapObject(so);
+    			HttpTransportSE htse=new HttpTransportSE(URL);
+    			htse.call(SOAP_ACTION, sse);
+    			response=(SoapPrimitive) sse.getResponse();
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    		}
+    		return response;
+    	}
+
+    	@Override
+    	protected void onPostExecute(SoapPrimitive rta) {
+    		this.SinRealizarArch.DeleteFile(FormLoggin.CARPETA_RAIZ+File.pathSeparator+UpLoadTrabajoSinRealizar.ArchivoCarga);
+    		if(rta==null) {
+    			MensajeDialog.DialogoInformativo("ESTADO DE LA CONEXION","Error, no se ha obtenido respuesta del servidor.");
+    		}else{
+    			String resultado = rta.toString();
+				String ListaRetorno[] = resultado.split("\\|");
+				resultado = resultado.replace("|", "\n");
+				
+				for(int i=0;i<ListaRetorno.length;i++){
+					String OrdenesOk[] = ListaRetorno[i].split("--");
+					if(OrdenesOk[0].equals("OK")){
+						this.SinRealizarSQL.DeleteRegistro("db_solicitudes", "revision = '" + OrdenesOk[1] + "' AND estado = 0");
+					}
+				}
+				int pendientes = this.SinRealizarSQL.IntSelectShieldWhere("db_solicitudes", "count(revision) as cantidad", "estado = 0");				
+				MensajeDialog.DialogoInformativo("ESTADO DEL ENVIO","Respuesta Del Servidor \n"+resultado+" \n"+pendientes + " registros pendientes por enviar.");
+    		}
+    	}	
+    }
 	
 
 	//Clase privada para descargar el trabajo asignado
     private class DownLoadTrabajoProgramado extends AsyncTask<Void,Void,Void>{
     	static final String ArchivoDescarga = "TrabajoProgramado.txt";
     	private ClassRevision 		FcnRevision;
-    	private ClassConfiguracion 	FcnConfiguracion;
     	private Archivos 			FcnArchivos;
     	
     	private Dialogos 	MensajeDialog;
     	private Context 	CtxTrabajoProgramado;
     	private String 		DirectorioDescarga = null;
-    	private String 		_servidor = null;
-    	private String 		_puerto = null;
-    	private String 		_pagina = null;
-    	private String 		_pda = null;
+    	
     	
     	private DownLoadTrabajoProgramado(Context context, String DirectorioArchivo){
     		this.CtxTrabajoProgramado 	= context;
     		this.DirectorioDescarga		= DirectorioArchivo;
     		MensajeDialog 			= new Dialogos(this.CtxTrabajoProgramado);
     		this.FcnRevision		= new ClassRevision(this.CtxTrabajoProgramado, this.DirectorioDescarga);
-    		this.FcnConfiguracion 	= new ClassConfiguracion(this.CtxTrabajoProgramado, this.DirectorioDescarga);
     		this.FcnArchivos 		= new Archivos(this.CtxTrabajoProgramado,this.DirectorioDescarga,10);
     	}
     	
     	protected void onPreExecute(){
     		Toast.makeText(this.CtxTrabajoProgramado,"Conectando con el servidor.", Toast.LENGTH_SHORT).show();
-    		_servidor 	= this.FcnConfiguracion.getServidor();
-			_puerto 	= this.FcnConfiguracion.getPuerto();
-			_pagina 	= this.FcnConfiguracion.getServicio();
-			_pda 		= this.FcnConfiguracion.getEquipo();
     	}
     	
     	@Override

@@ -1,7 +1,6 @@
 package eaav.android_v1;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 
 import Miscelanea.Bluetooth;
 import Miscelanea.SQLite;
@@ -17,8 +16,6 @@ public class Impresiones {
 	private ContentValues _tempRegistro = new ContentValues();
 	DecimalFormat FormatoSinDecima = new DecimalFormat("0");
 	
-	
-	//private ArrayList<String>  CamposImpresion= new ArrayList<String>();	
 	private String Impresora = null;
 	private String InfToPrinter= null;
 	private int WidthLabel;

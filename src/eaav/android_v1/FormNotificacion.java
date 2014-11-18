@@ -275,8 +275,6 @@ public class FormNotificacion extends Activity implements OnItemSelectedListener
 			finish();
 			this.FormSolicitudes.putExtra("FolderAplicacion", this.FolderAplicacion);
 			startActivity(FormSolicitudes);
-		}
-		
-		
+		}		
     }	
 }

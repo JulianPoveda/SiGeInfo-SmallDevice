@@ -26,7 +26,7 @@ public final class R {
         public static final int tabla_celda_cabecera=0x7f020002;
     }
     public static final class id {
-        public static final int CargarTrabajoProgramado=0x7f0900b7;
+        public static final int CargarTrabajoProgramado=0x7f0900b6;
         public static final int CfgBtnGuardar=0x7f09007e;
         public static final int CfgCmbImpresora=0x7f09007d;
         public static final int CfgLblCedulaTecnico=0x7f090082;
@@ -47,9 +47,9 @@ public final class R {
         public static final int DatePickerBtnAceptar=0x7f09008d;
         public static final int DatePickerBtnCancelar=0x7f09008e;
         public static final int DatePickerCmbFecha=0x7f09008c;
-        public static final int DescargarTrabajo=0x7f0900b8;
-        public static final int DescargarTrabajoRealizado=0x7f0900b9;
-        public static final int DescargarTrabajoSinRealizar=0x7f0900ba;
+        public static final int DescargarTrabajo=0x7f0900b7;
+        public static final int DescargarTrabajoRealizado=0x7f0900b8;
+        public static final int DescargarTrabajoSinRealizar=0x7f0900b9;
         public static final int DesviacionImprimir=0x7f0900ab;
         public static final int DesviacionSwapNotificacion=0x7f0900b0;
         public static final int DesviacionTerminar=0x7f0900af;
@@ -92,7 +92,7 @@ public final class R {
         public static final int InfGeneral=0x7f090014;
         public static final int InfTecnica=0x7f090038;
         public static final int InfVisita=0x7f090000;
-        public static final int IniciarTrabajo=0x7f0900bb;
+        public static final int IniciarTrabajo=0x7f0900ba;
         public static final int LblDesviacionArea=0x7f090020;
         public static final int LblDesviacionPisos=0x7f090037;
         public static final int LblDesviacionTipo=0x7f09001a;
@@ -123,7 +123,7 @@ public final class R {
         public static final int NotificacionTxtObservacion=0x7f090070;
         public static final int NotificacionTxtPrecinto=0x7f090064;
         public static final int NotificacionTxtRevision=0x7f090060;
-        public static final int Parametros=0x7f0900bc;
+        public static final int Parametros=0x7f0900bb;
         public static final int RevisionLblCiclo=0x7f09009a;
         public static final int RevisionLblCodigo=0x7f0900a0;
         public static final int RevisionLblDireccion=0x7f090095;
@@ -144,7 +144,7 @@ public final class R {
         public static final int RevisionTxtRevision=0x7f090090;
         public static final int RevisionTxtRuta=0x7f090098;
         public static final int RevisionTxtSerie=0x7f090092;
-        public static final int Salir=0x7f0900bd;
+        public static final int Salir=0x7f0900bc;
         public static final int TecnicaBtnGuardar=0x7f090043;
         public static final int TecnicaBtnGuardarDatosMedidor=0x7f09004e;
         public static final int TecnicaBtnObservacion=0x7f09004a;
@@ -210,15 +210,14 @@ public final class R {
         public static final int menu_ver_solicitudes=0x7f0900b1;
         public static final int mnu_apertura=0x7f0900b5;
         public static final int mnu_desviacion=0x7f0900b4;
-        public static final int mnu_imprimir=0x7f0900bf;
+        public static final int mnu_imprimir=0x7f0900be;
         public static final int mnu_informacion_general=0x7f0900b2;
-        public static final int mnu_loggin=0x7f0900c3;
+        public static final int mnu_loggin=0x7f0900c2;
         public static final int mnu_notificacion=0x7f0900b3;
-        public static final int mnu_notificacion_swap_desviacion=0x7f0900c1;
-        public static final int mnu_solicitudes=0x7f0900c2;
-        public static final int mnu_terminar=0x7f0900b6;
-        public static final int mnu_terminar_notificacion=0x7f0900c0;
-        public static final int mnu_ver_informacion=0x7f0900be;
+        public static final int mnu_notificacion_swap_desviacion=0x7f0900c0;
+        public static final int mnu_solicitudes=0x7f0900c1;
+        public static final int mnu_terminar_notificacion=0x7f0900bf;
+        public static final int mnu_ver_informacion=0x7f0900bd;
         public static final int textView_direccion=0x7f090084;
         public static final int textView_orden_trabajo=0x7f090083;
         public static final int textView_tipo=0x7f090085;

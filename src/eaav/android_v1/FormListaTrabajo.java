@@ -28,6 +28,7 @@ public class FormListaTrabajo extends Activity {
 	static int 		INGRESO_LECTURA_NOTIFICACION= 2;
 	static int 		INGRESO_LECTURA_DESVIACION	= 3;
 	static int 		CONFIRMACION_INFORMACION	= 4;
+	static int 		INGRESO_CODIGO_APERTURA		= 5;
 	public String _OrdenServicio = "";
 	
 	private Intent 			ModalInformacion; 
@@ -71,16 +72,20 @@ public class FormListaTrabajo extends Activity {
 		this.AdaptadorSolicitudes = new AdaptadorListaTrabajo(this,this.ArraySolicitudes);
 		this.ListaSolicitudes.setAdapter(this.AdaptadorSolicitudes);
 		
+		this.CargarSolicitudes();	
+		registerForContextMenu(this.ListaSolicitudes);
+	}
+	
+	
+	private void CargarSolicitudes(){
 		this.ArraySolicitudes.clear();
 		this._tempTabla = this.FcnRevision.getRevisiones();
 		for(int i=0;i<this._tempTabla.size();i++){
 			this._tempRegistro = this._tempTabla.get(i);
 			this.ArraySolicitudes.add(new InformacionSolicitudes(this._tempRegistro.getAsString("revision"),this._tempRegistro.getAsString("marca"),this._tempRegistro.getAsString("direccion"),this._tempRegistro.getAsInteger("estado")));
 		}
-		this.AdaptadorSolicitudes.notifyDataSetChanged();		
-		registerForContextMenu(this.ListaSolicitudes);
+		this.AdaptadorSolicitudes.notifyDataSetChanged();	
 	}
-	
 	
 	/**Funciones para el control del menu contextual del listview que muestra las ordenes de trabajo**/
 	@Override
@@ -116,8 +121,7 @@ public class FormListaTrabajo extends Activity {
 					this.ModalInformacion.putExtra("informacion", "No se puede iniciar la actividad, comprobar:\n->Que no exista otra solicitud abierta\n->Que la solicitud seleccionada no este en estado 'TERMINADA'");
 					startActivityForResult(this.ModalInformacion, CONFIRMACION_INFORMACION);
 				}				
-				return true;
-			
+				return true;			
 			
 			case R.id.mnu_desviacion:
 				if(this.FcnRevision.iniciarDesviacion(this.RevisionSeleccionada)){
@@ -129,14 +133,19 @@ public class FormListaTrabajo extends Activity {
 					this.ModalInformacion.putExtra("informacion", "No se puede iniciar la actividad, comprobar:\n->Que no exista otra solicitud abierta\n->Que la solicitud seleccionada no este en estado 'TERMINADA'");
 					startActivityForResult(this.ModalInformacion, CONFIRMACION_INFORMACION);
 				}	
-				/*if(this.FcnInSolicitudes.getEstadoSolicitud(this.SolicitudSeleccionada).equals("E")){
-					DialogConfirmacion.putExtra("informacion", "Desea Cerrar La Solicitud "+this.SolicitudSeleccionada);
-					startActivityForResult(DialogConfirmacion, CONFIRMACION_CERRAR_ORDEN);	
-				}else{
-					DialogInformacion.putExtra("informacion", "No se puede dar por terminada la actividad ya que no esta en estado EJECUCION.");
-					startActivityForResult(DialogInformacion, CONFIRMACION_INFORMACION);
-				}*/
 				return true;
+				
+			case R.id.mnu_apertura:
+				if(this.FcnRevision.abrirRevisionTerminada(this.RevisionSeleccionada)){
+					this.ModalInputSingle.putExtra("titulo","INGRESE EL CODIGO DE APERTURA");
+					this.ModalInputSingle.putExtra("lbl1", "Codigo:");
+					this.ModalInputSingle.putExtra("txt1", "");
+					startActivityForResult(this.ModalInputSingle, INGRESO_CODIGO_APERTURA);
+				}else{
+					this.ModalInformacion.putExtra("informacion", "No se puede iniciar la actividad, comprobar:\n->Que no exista otra solicitud abierta\n->Que la solicitud seleccionada no este en estado 'TERMINADA'");
+					startActivityForResult(this.ModalInformacion, CONFIRMACION_INFORMACION);
+				}	
+				return true;	
 							
 			default:
 	            return super.onContextItemSelected(item);        
@@ -159,20 +168,10 @@ public class FormListaTrabajo extends Activity {
 			this.FormDesviacion.putExtra("Solicitud", this.RevisionSeleccionada);
 			this.FormDesviacion.putExtra("FolderAplicacion", this.FolderAplicacion);
 			startActivity(this.FormDesviacion);
-		}/*else if(resultCode == RESULT_OK && requestCode == CONFIRMACION_CERRAR_ORDEN && data.getExtras().getBoolean("accion")){
-			_tempRegistro.clear();
-			_tempRegistro.put("estado","T");
-			this.FcnInSolicitudes.setEstadoSolicitud(this.SolicitudSeleccionada, "T");
-			CargarOrdenesTrabajo();			
-		}else if(resultCode == RESULT_OK && requestCode == CONFIRMACION_COD_APERTURA && data.getExtras().getBoolean("accion")){
-			if(this.FcnInSolicitudes.VerificarCodigoApertura(this.SolicitudSeleccionada,data.getExtras().getString("txt1"))){
-				this.FcnInSolicitudes.setEstadoSolicitud(this.SolicitudSeleccionada, "E");
-				CargarOrdenesTrabajo();
-			}else{
-				DialogInformacion.putExtra("informacion", "Codigo De Apertura Erroneo");
-				startActivityForResult(DialogInformacion, CONFIRMACION_INFORMACION);
-			}
-		}*/
+		}else if(resultCode == RESULT_OK && requestCode == INGRESO_CODIGO_APERTURA && data.getExtras().getBoolean("accion")){
+			this.FcnRevision.verificarCodigoApertura(this.RevisionSeleccionada, data.getExtras().getString("txt1"));
+			this.CargarSolicitudes();	
+		}
     }
 	
 	@Override

@@ -6,6 +6,7 @@ import java.util.ListIterator;
 import Miscelanea.SQLite;
 import android.content.ContentValues;
 import android.content.Context;
+import android.widget.Toast;
 import eaav.android_v1.FormLoggin;
 
 public class ClassRevision {
@@ -22,6 +23,16 @@ public class ClassRevision {
 		this._folderAplicacion	= _folder;
 		this.FcnSQL				= new SQLite(this._ctxRevision, this._folderAplicacion, FormLoggin.NOMBRE_DATABASE);
 	}
+	
+	public boolean existeEjecutadasSinDescargar(){
+		return this.FcnSQL.ExistRegistros("db_solicitudes", "estado=3");
+	}
+
+	
+	public boolean existeRevisionesSinRealizar(){
+		return this.FcnSQL.ExistRegistros("db_solicitudes", "estado=0");
+	}
+	
 	
 	public String registrarRevisiones(ArrayList<String> _revisiones){
 		String[] Campos={"Id_serial","Revision","Codigo","Nombre","Direccion","Ciclo","Ruta","Uso","Marca","Serie","Novedad1","Lectura1","Novedad2","Lectura2","Promedio","Visita","Estado","Jornada","Factura","Periodo_ini","Periodo_fin","Codigo_apertura"};
@@ -92,6 +103,33 @@ public class ClassRevision {
 		this.FcnSQL.UpdateRegistro("db_solicitudes", this._tempRegistro, "revision='"+_revision+"'");		
 	}
 	
+	public void verificarCodigoApertura(String _revision, String _codigo){
+		if(this.FcnSQL.ExistRegistros("db_solicitudes", "revision='"+_revision+"' AND codigo_apertura='"+_codigo+"'")){
+			this._tempRegistro.clear();
+			if(this.FcnSQL.ExistRegistros("db_notificaciones","revision='"+_revision+"'")){
+				this.setEstadoRevision(_revision, 1);
+				Toast.makeText(this._ctxRevision,"Revision "+_revision+" abierta nuevamente como notificacion." , Toast.LENGTH_LONG).show();
+			}else if(this.FcnSQL.ExistRegistros("db_desviaciones","revision='"+_revision+"'")){
+				this.setEstadoRevision(_revision, 2);
+				Toast.makeText(this._ctxRevision,"Revision "+_revision+" abierta nuevamente como desviacion." , Toast.LENGTH_LONG).show();
+			}else{
+				Toast.makeText(this._ctxRevision,"Imposible abrir la revision.", Toast.LENGTH_LONG).show();
+			}
+		}else{
+			Toast.makeText(this._ctxRevision,"Codigo de apertura erroneo.", Toast.LENGTH_LONG).show();
+		}
+	}
+	
+	
+	public boolean abrirRevisionTerminada(String _revision){
+		boolean _retorno = false;
+		if(this.FcnSQL.ExistRegistros("db_solicitudes", "estado IN (1,2) AND revision <>'"+_revision+"'")){
+			_retorno = false;
+		}else if(this.FcnSQL.ExistRegistros("db_solicitudes", "estado = '3' AND revision ='"+_revision+"'")){
+			_retorno = true;
+		}
+		return _retorno;
+	}
 	
 	public boolean iniciarNotificacion(String _revision){
 		boolean _retorno = false;

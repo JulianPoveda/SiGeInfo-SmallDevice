@@ -3,6 +3,7 @@ package eaav.android_v1;
 import java.io.File;
 
 import clases.ClassConfiguracion;
+import clases.ClassRevision;
 import clases.ClassUsuario;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,6 +24,7 @@ public class FormLoggin extends Activity implements OnClickListener{
 	public static String 	CARPETA_RAIZ 	= Environment.getExternalStorageDirectory()+File.separator+"EAAV";		//Ruta donde se encuentra la carpeta principal del programa
 	
 	private ConnectServer 		ProgramadoCS;
+	private ClassRevision		FcnRevision;
 	private ClassConfiguracion 	FcnConfiguracion; 
 	private ClassUsuario		FcnUsuario;
 
@@ -39,6 +41,7 @@ public class FormLoggin extends Activity implements OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loggin);
         
+        this.FcnRevision	 	= new ClassRevision(this, FormLoggin.CARPETA_RAIZ);
         this.FcnConfiguracion 	= new ClassConfiguracion(this, FormLoggin.CARPETA_RAIZ);
         this.FcnUsuario 		= new ClassUsuario(this, FormLoggin.CARPETA_RAIZ);
         this.ProgramadoCS		= new ConnectServer(this, FormLoggin.CARPETA_RAIZ);
@@ -98,21 +101,21 @@ public class FormLoggin extends Activity implements OnClickListener{
 			return true;
 		
 		case R.id.DescargarTrabajoRealizado:
-			/*if((SQL.SelectCountWhere("db_notificaciones", "revision IS NOT NULL")>0)||(SQL.SelectCountWhere("db_desviaciones", "revision IS NOT NULL")>0)){
-				ConnectServer CS= new ConnectServer(this, CarpetaRaiz);
+			if(this.FcnRevision.existeEjecutadasSinDescargar()){
+				ConnectServer CS= new ConnectServer(this, FormLoggin.CARPETA_RAIZ);
 				CS.UpLoadTrabajoRealizado();
 			}else{
-				Toast.makeText(getApplicationContext(),"No hay notificaciones por enviar.", Toast.LENGTH_SHORT).show();	
-			}*/
+				Toast.makeText(getApplicationContext(),"No hay trabajo ejecutado pendiente por enviar.", Toast.LENGTH_SHORT).show();	
+			}
 			return true;
 			
 		case R.id.DescargarTrabajoSinRealizar:
-			/*if(SQL.SelectCountWhere("db_solicitudes", "estado = 0")>0){
-				ConnectServer SinRealizarCS= new ConnectServer(this, CarpetaRaiz);
+			if(this.FcnRevision.existeRevisionesSinRealizar()){
+				ConnectServer SinRealizarCS= new ConnectServer(this, FormLoggin.CARPETA_RAIZ);
 				SinRealizarCS.UpLoadTrabajoSinRealizar();
 			}else{
 				Toast.makeText(getApplicationContext(),"No hay trabajo sin realizar por enviar.", Toast.LENGTH_SHORT).show();	
-			}*/
+			}
 			return true;	
 	
 		case R.id.IniciarTrabajo:

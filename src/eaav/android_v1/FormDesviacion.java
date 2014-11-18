@@ -1,30 +1,15 @@
 package eaav.android_v1;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 import modal.ModalInfGeneral;
 import modal.ModalInputSingle;
 import modal.ModalConfirmacion;
 
-import org.ksoap2.SoapEnvelope;
-import org.ksoap2.serialization.MarshalBase64;
-import org.ksoap2.serialization.SoapObject;
-import org.ksoap2.serialization.SoapPrimitive;
-import org.ksoap2.serialization.SoapSerializationEnvelope;
-import org.ksoap2.transport.HttpTransportSE;
-
 import clases.ClassDesviacion;
 import clases.ClassRevision;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -63,13 +48,6 @@ public class FormDesviacion extends Activity implements OnClickListener, OnItemS
 	private String Revision;
 	private String FolderAplicacion;
 	private ContentValues _tempRegistro = new ContentValues();
-		
-	
-	//nusoap
-	private static String URL	= "http://190.93.133.127:8080/EAAV-Desviaciones/ServerPDA/WS_EAAV_Desviaciones.php?wsdl";
-	private static String NAMESPACE 	= "http://190.93.133.127:8080/EAAV-Desviaciones/ServerPDA";
-	private static String METHOD_NAME	= "DesviacionTxt";
-	private static String SOAP_ACTION 	= "DesviacionTxt";
 	boolean MenuEnabled = false;
 	
 	/*String's Adaptadores Informacion General*/
@@ -348,13 +326,10 @@ public class FormDesviacion extends Activity implements OnClickListener, OnItemS
 		_btnGuardarDatosMedidor.setOnClickListener(this);
 		_btnObservacion.setOnClickListener(this);
 		
-		
 		/*Listener Informacion Visita Tecnica*/
 		_cmbClase.setOnItemSelectedListener(this);
 		_cmbSubClase.setOnItemSelectedListener(this);
 		_btnGuardarVisita.setOnClickListener(this);
-		//////////////////////////////////////
-		/**/
 		this.CargarInfGuardada();
 	}
 
@@ -418,6 +393,8 @@ public class FormDesviacion extends Activity implements OnClickListener, OnItemS
 				if(ValidarImpresionDesviacion()){
 					this.ModalConfirmacion.putExtra("informacion", "¿ Desea terminar la desviacion. ?");
 					startActivityForResult(this.ModalConfirmacion, CONFIRMACION_TERMINACION);
+				}else{
+					Toast.makeText(getApplicationContext(),"No se puede terminar la desviacion datos incompletos.", Toast.LENGTH_LONG).show();	
 				}
 				return true;	
 				
@@ -991,7 +968,6 @@ public class FormDesviacion extends Activity implements OnClickListener, OnItemS
 				this.FcnRevision.setEstadoRevision(this.Revision, 3);
 				this.FcnDesviacion.setFechaCierre(this.Revision);
 				this.MenuEnabled = true;
-				//new UpLoadDesviacion().execute();
 			}
 			
 			if(resultCode == RESULT_OK && requestCode == CONFIRMACION_CAMBIO_ACTA && data.getExtras().getBoolean("accion")){
@@ -1001,158 +977,5 @@ public class FormDesviacion extends Activity implements OnClickListener, OnItemS
 				this.FormSolicitudes.putExtra("FolderAplicacion", this.FolderAplicacion);
 				startActivity(FormSolicitudes);
 			}
-	    }
-		
-		
-		
-		private class UpLoadDesviacion extends AsyncTask<Void,Void,Void>{
-			String path=	Environment.getExternalStorageDirectory() + File.separator + "EAAV" + File.separator + "ArchivoPrueba.txt";
-			InputStream is 		= null;
-			String CadenaArchivo= null;
-			byte[] array;
-			
-			/*************************************/
-			//String res = null;
-	    	private ArrayList<String> SendDesviacion;
-	    	String pda = null;
-	    	String str;
-			 
-	    	protected void onPreExecute(){
-	    		//Se consulta la base de datos
-	    		SendDesviacion = new ArrayList<String>();
-	    		//SQL.abrir();
-	    		/*SQL.SelectData(	SendDesviacion,
-								"db_desviaciones",
-								"revision, codigo, nombre, direccion, serie, ciclo, promedio, fecha, hora, tipo, area, pisos, actividad, uso, residentes, habitado, estado,"+
-  								"acueducto, camaramedidor, estadocamara, serieindividual, marcaindividual, diametroindividual, lecturaindividual, serietotalizador, marcatotalizador,"+ 
-  								"diametrototalizador, lecturatotalizador, subterraneos, itemsubterraneos, estadosubterraneos, lavaplatos, itemlavaplatos, estadolavaplatos, lavaderos,"+
-  								"itemlavadero, estadolavadero, elevados, itemelevado, estadoelevado, iteminternas, estadointernas, piscinas, itempiscina, estadopiscina, "+
-  								"medidorregpaso, medidorregantifraude, medidordestruido, medidorinvertido, medidorilegible, medidorprecintoroto, hermeticidadreginternos, "+
-  								"hermeticidadequipomedida," +
-  								"estanqueidadreselevado,estanqueidadreslavadero,estanqueidadressubterraneo," +
-  								"estanqueidadcapelevado,estanqueidadcaplavadero,estanqueidadcapsubterraneo," +
-  								"estanqueidadfugaelevado,estanqueidadfugalavadero,estanqueidadfugasubterrano," +
-  								"hermeticidadfugaimperceptible, hermeticidadfugas,"+
-  								"hermeticidadfugavisible, diagnostico, estrato, precinto, serviciodirecto, bypass, horaapertura, nombreusuario, cedulausuario, nombretestigo,"+
-  								"cedulatestigo, cisterna, itemcisterna, estadocisterna, ducha, itemducha, estadoducha, lavamanos, itemlavamanos,"+
-  								"estadolavamanos, servicioacueducto, servicioalcantarillado, horacierre, segundoconcepto, respuestadesviacion",
-								"revision='" + Solicitud +"'");
-	    		pda = SQL.SelectShieldWhere("db_parametros", "valor", "item='pda'");*/
-				//SQL.cerrar();
-	    		
-	    		CadenaArchivo = SendDesviacion.get(0)+";"+SendDesviacion.get(1)+";"+SendDesviacion.get(2)+";"+
-			    				SendDesviacion.get(3)+";"+SendDesviacion.get(4)+";"+SendDesviacion.get(5)+";"+
-			    				SendDesviacion.get(6)+";"+SendDesviacion.get(7)+";"+SendDesviacion.get(8)+";"+
-					     		SendDesviacion.get(9)+";"+SendDesviacion.get(10)+";"+SendDesviacion.get(11)+";"+
-					     		SendDesviacion.get(12)+";"+SendDesviacion.get(13)+";"+SendDesviacion.get(14)+";"+
-					    		SendDesviacion.get(15)+";"+SendDesviacion.get(16)+";"+SendDesviacion.get(17)+";"+
-					    		SendDesviacion.get(18)+";"+SendDesviacion.get(19)+";"+SendDesviacion.get(20)+";"+
-					  			SendDesviacion.get(21)+";"+SendDesviacion.get(22)+";"+SendDesviacion.get(23)+";"+
-					  			SendDesviacion.get(24)+";"+SendDesviacion.get(25)+";"+SendDesviacion.get(26)+";"+
-					 			SendDesviacion.get(27)+";"+SendDesviacion.get(28)+";"+SendDesviacion.get(29)+";"+
-					  			SendDesviacion.get(30)+";"+SendDesviacion.get(31)+";"+SendDesviacion.get(32)+";"+
-					  			SendDesviacion.get(33)+";"+SendDesviacion.get(34)+";"+SendDesviacion.get(35)+";"+
-					   			SendDesviacion.get(36)+";"+SendDesviacion.get(37)+";"+SendDesviacion.get(38)+";"+
-					   			SendDesviacion.get(39)+";"+SendDesviacion.get(40)+";"+SendDesviacion.get(41)+";"+
-					    		SendDesviacion.get(42)+";"+SendDesviacion.get(43)+";"+SendDesviacion.get(44)+";"+
-					  			SendDesviacion.get(45)+";"+SendDesviacion.get(46)+";"+SendDesviacion.get(47)+";"+
-					  			SendDesviacion.get(48)+";"+SendDesviacion.get(49)+";"+SendDesviacion.get(50)+";"+
-					  			SendDesviacion.get(51)+";"+SendDesviacion.get(52)+";"+SendDesviacion.get(53)+"-"+
-					  			SendDesviacion.get(54)+"-"+SendDesviacion.get(55)+";"+SendDesviacion.get(56)+"-"+
-					  			SendDesviacion.get(57)+"-"+SendDesviacion.get(58)+";"+SendDesviacion.get(59)+"-"+
-					  			SendDesviacion.get(60)+"-"+SendDesviacion.get(61)+";"+SendDesviacion.get(62)+";"+
-					  			SendDesviacion.get(63)+";"+SendDesviacion.get(64)+";"+SendDesviacion.get(65)+";"+
-					    		SendDesviacion.get(66)+";"+SendDesviacion.get(67)+";"+SendDesviacion.get(68)+";"+
-					    		SendDesviacion.get(69)+";"+SendDesviacion.get(70)+";"+SendDesviacion.get(71)+";"+
-					   			SendDesviacion.get(72)+";"+SendDesviacion.get(73)+";"+SendDesviacion.get(74)+";;;"+
-					   			SendDesviacion.get(75)+";"+SendDesviacion.get(76)+";"+SendDesviacion.get(77)+";"+
-					     		SendDesviacion.get(78)+";"+SendDesviacion.get(79)+";"+SendDesviacion.get(80)+";"+
-					    		SendDesviacion.get(81)+";"+SendDesviacion.get(82)+";"+SendDesviacion.get(83)+";"+
-					  			SendDesviacion.get(84)+";"+SendDesviacion.get(85)+";"+SendDesviacion.get(86)+";"+
-					   			SendDesviacion.get(87)+";"+SendDesviacion.get(88)+";"+pda;
-
-	    	  		
-	    		//Primero se crea el archivo de texto a enviar
-	    		try {
-	    			File file = new File(path);
-		    		file.createNewFile();
-		    		if (file.exists()&&file.canWrite()){
-		    			FileWriter filewriter = new FileWriter(file,false);
-		    			filewriter.write(CadenaArchivo);
-		    			filewriter.close();
-		    		}
-				} catch (IOException e2) {
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
-				}
-	    		    		
-	    		//Se convierte a tipo array Base64 quedando listo para usar el WS
-	    		try{
-	    			is = new FileInputStream(path);
-	    			if (path != null) {
-	    				try {
-	    					array=streamToBytes(is);
-	    				} finally {
-	    					is.close();
-	    				}
-	    			}
-	    		}catch (Exception e){
-	    			e.printStackTrace();
-	    			try {
-	    				throw new IOException("Unable to open R.raw.");
-	    			} catch (IOException e1) {
-	    				e1.printStackTrace();
-	    			}
-	    		}
-	    		Toast.makeText(getApplicationContext(),"Conectando con el servidor, por favor espere...", Toast.LENGTH_SHORT).show();	
-	    		MenuEnabled = true;
-	    	}
-	    	
-	    	private byte[] streamToBytes(InputStream is) {
-	    		ByteArrayOutputStream os = new ByteArrayOutputStream(1024);
-	    		byte[] buffer = new byte[1024];
-	    		int len;
-	    		try {
-		    		while ((len = is.read(buffer)) >= 0) {
-		    			os.write(buffer, 0, len);
-		    			}
-	    		} catch (java.io.IOException e) {
-	    		}
-	    		return os.toByteArray();
-	    	}
-	    	
-	    	
-	    	
-	    	@Override
-	    	protected Void doInBackground(Void... params) {
-	    		try{
-	    			SoapObject so=new SoapObject(NAMESPACE, METHOD_NAME);
-	    			so.addProperty("Revision", SendDesviacion.get(0).toString());
-	    			so.addProperty("Informacion", array);
-	    			SoapSerializationEnvelope sse=new SoapSerializationEnvelope(SoapEnvelope.VER11);
-	    			new MarshalBase64().register(sse);
-	    			sse.dotNet=true;
-	    			sse.setOutputSoapObject(so);
-	    			HttpTransportSE htse=new HttpTransportSE(URL);
-	    			htse.call(SOAP_ACTION, sse);
-	    			SoapPrimitive response=(SoapPrimitive) sse.getResponse();
-	    			str = response.toString();
-	    			
-	    			if(str.equals("Ok")){
-	    				//SQL.abrir();
-	    				//SQL.BorraRegistro("db_solicitudes", "revision ='" + Solicitud + "'");
-	    				//SQL.BorraRegistro("db_desviaciones", "revision ='" + Solicitud + "'");
-	    				//SQL.cerrar();
-	    			}
-	    		} catch (Exception e) {
-	    			e.printStackTrace();
-	    		}
-	    		return null;
-	    	}
-
-	    	@Override
-	    	protected void onPostExecute(Void unused) {
-	    		Toast.makeText(getApplicationContext(),"Conexion terminada.", Toast.LENGTH_SHORT).show();
-	    	}	
 	    }
 }
