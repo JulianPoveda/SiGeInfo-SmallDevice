@@ -462,7 +462,7 @@ public class ConnectServer {
     	@Override
     	protected void onPostExecute(Void unused) {
     		Toast.makeText(this.CtxTrabajoProgramado,"Conexion terminada.", Toast.LENGTH_SHORT).show();
-    		if(this.FcnArchivos.ExistFolderOrFile(this.DirectorioDescarga+File.separator +ArchivoDescarga)){
+    		if(this.FcnArchivos.ExistFolderOrFile(ArchivoDescarga, true)){
     			ArrayList<String> OrdenesTrabajo = new ArrayList<String>();
         		OrdenesTrabajo = this.FcnArchivos.FileToArrayString(ArchivoDescarga, false);
         		this.FcnArchivos.DeleteFile(ArchivoDescarga);

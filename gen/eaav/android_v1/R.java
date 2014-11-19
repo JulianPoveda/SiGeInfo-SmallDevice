@@ -206,13 +206,14 @@ public final class R {
         public static final int ds_lbl_titulo=0x7f0900a5;
         public static final int ds_txt_text1=0x7f0900a6;
         public static final int imageView1=0x7f09008b;
+        public static final int menu_tomar_foto=0x7f0900c2;
         public static final int menu_ver_informacion=0x7f0900aa;
         public static final int menu_ver_solicitudes=0x7f0900b1;
         public static final int mnu_apertura=0x7f0900b5;
         public static final int mnu_desviacion=0x7f0900b4;
         public static final int mnu_imprimir=0x7f0900be;
         public static final int mnu_informacion_general=0x7f0900b2;
-        public static final int mnu_loggin=0x7f0900c2;
+        public static final int mnu_loggin=0x7f0900c3;
         public static final int mnu_notificacion=0x7f0900b3;
         public static final int mnu_notificacion_swap_desviacion=0x7f0900c0;
         public static final int mnu_solicitudes=0x7f0900c1;

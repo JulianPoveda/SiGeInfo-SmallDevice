@@ -10,5 +10,6 @@
     <item android:id="@+id/mnu_terminar_notificacion" android:title="Terminar Notificacion"></item>
     <item android:id="@+id/mnu_notificacion_swap_desviacion" android:title="Iniciar Como Desviacion"></item>
     <item android:id="@+id/mnu_solicitudes" android:title="Ver Lista Solicitudes"></item>
+    <item android:id="@+id/menu_tomar_foto" android:title="Tomar Foto"></item>
 
 </menu>

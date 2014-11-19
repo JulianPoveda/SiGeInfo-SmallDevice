@@ -20,7 +20,8 @@ import android.widget.Toast;
 public class Archivos {
 	private Context ctx;
 	private String 	Directory;
-	private int SizeBuffer;	
+	private int 	SizeBuffer;	
+	private File[]	ListaDirectorios;
 	
 	FileInputStream fis;
 	FileReader file;
@@ -30,14 +31,14 @@ public class Archivos {
 		this.Directory = CurrentDirectory;
 		this.SizeBuffer = BufferKbytes;
 		
-		if(!ExistFolderOrFile(this.Directory)){		
-			MakeDirectory();
+		if(!ExistFolderOrFile(this.Directory, false)){		
+			MakeDirectory(this.Directory, false);
 		}
 	}
 	
 	
 	//Metodo para crear una carpeta en el directorio raiz
-	public boolean MakeDirectory(){
+	/*public boolean MakeDirectory(){
 		File f = new File(this.Directory);
         if(f.mkdir()){
         	Toast.makeText(this.ctx,"Directorio "+this.Directory+" correctamente.", Toast.LENGTH_SHORT).show();
@@ -45,12 +46,23 @@ public class Archivos {
         }else{
         	return false;
         }
-	}
+	}*/
 	
 
 	//Metodo para crear una carpeta en el directorio raiz
-	public boolean MakeDirectory(String _new_directory){
-		File f = new File(this.Directory+File.separator+_new_directory);
+	/**
+	 * Metodo para crear una carpeta 
+	 * @param _new_directory 					-> ruta de la nueva carpeta
+	 * @param _relativeCurrentDirectory true	-> si la carpeta es relativa al directorio del proyecto
+	 * 									false	-> si la carpeta es independiente al directorio del proyecto
+	 * @return 							true	-> si se creo correctamente la carpeta
+	 * 									false	-> si hubo algun error al crear la carpeta
+	 */
+	public boolean MakeDirectory(String _new_directory, boolean _relativeCurrentDirectory){
+		if(_relativeCurrentDirectory){
+			_new_directory = this.Directory+File.separator+_new_directory;
+		}
+		File f = new File(_new_directory);
 		if(f.mkdir()){
 			Toast.makeText(this.ctx,"Directorio "+_new_directory+" correctamente.", Toast.LENGTH_SHORT).show();
 			return true;
@@ -60,12 +72,34 @@ public class Archivos {
 	}
 	
 	
-	//Metodo para comprobar la existencia de un directorio y/o carpeta
-	public boolean ExistFolderOrFile(String Carpeta){
-		File f = new File(Carpeta);
+	/**
+	 * Metodo para comprobar si existe una carpeta o archivo
+	 * @param _ruta String con la ruta completa de la carpeta que deseamos saber si existe
+	 * @return	retorna true si existe la carpeta false en caso contrario
+	 */
+	public boolean ExistFolderOrFile(String _ruta, boolean _relativeCurrentDirectory){
+		if(_relativeCurrentDirectory){
+			_ruta = this.Directory+File.separator+_ruta;
+		}
+		File f = new File(_ruta);
 		return f.exists();
 	}
 	
+	
+	
+	/**
+	 * Metodo que retorna la cantidad de archivos que contiene una carpeta
+	 * @param _ruta, carpeta a la que se quiere indagar la cantidad de archivos que contiene
+	 * @param _currentDirectory, variable que indica si la ruta es relativa a la carpeta del proyecto
+	 * @return
+	 */
+	public int numArchivosInFolder(String _ruta, boolean _relativeCurrentDirectory){
+		if(_relativeCurrentDirectory){
+			_ruta = this.Directory+File.separator+_ruta;
+		}
+		this.ListaDirectorios = new File(_ruta).listFiles();
+		return this.ListaDirectorios.length;
+	}
 	
 	//Metodo para comprobar la existencia de un directorio y/o carpeta
 	public boolean DeleteFile(String Archivo){
@@ -154,8 +188,8 @@ public class Archivos {
 		File file;
 		try {
 			if(!_rutaArchivo.isEmpty()){
-				if(!ExistFolderOrFile(this.Directory + File.separator + _rutaArchivo)){
-					MakeDirectory(_rutaArchivo);
+				if(!ExistFolderOrFile(_rutaArchivo,true)){
+					MakeDirectory(_rutaArchivo, true);
 				}
 				file = new File(this.Directory + File.separator + _rutaArchivo + File.separator + NombreArchivo);
 			}else{

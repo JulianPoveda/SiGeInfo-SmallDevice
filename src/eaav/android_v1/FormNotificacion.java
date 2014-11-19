@@ -1,5 +1,7 @@
 package eaav.android_v1;
 
+import java.io.File;
+
 import modal.ModalConfirmacion;
 import modal.ModalDate;
 import modal.ModalInfGeneral;
@@ -8,7 +10,10 @@ import modal.ModalInputSingle;
 import clases.ClassNotificacion;
 import clases.ClassRevision;
 
+import Miscelanea.Archivos;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
@@ -29,15 +34,18 @@ public class FormNotificacion extends Activity implements OnItemSelectedListener
 	static int 				INGRESO_NOMBRE_USUARIO	= 2;
 	static int 				DATE_PICKER				= 3;
 	static int 				CONFIRMACION_CAMBIO_ACTA= 4;
+	static int 				INICIAR_CAMARA			= 5;
 	
 	private Intent			ModalConfirmacion;
 	private Intent			ModalDate;
 	private Intent 			ModalInputSingle;
 	private Intent 			ModalInformacionSolicitud;
 	private Intent 			FormSolicitudes;
+	private Intent 			IniciarCamara; 
 		
 	//Instancias
 	private Impresiones 		Imp; 
+	private	Archivos			FcnArchivos;
 	private ClassNotificacion 	FcnNotificacion;
 	private ClassRevision		FcnRevision;	
 	
@@ -74,8 +82,10 @@ public class FormNotificacion extends Activity implements OnItemSelectedListener
 		this.ModalInputSingle			= new Intent(this, ModalInputSingle.class);
 		this.ModalInformacionSolicitud	= new Intent(this, ModalInfGeneral.class);		
 		this.FormSolicitudes 			= new Intent(this, FormListaTrabajo.class);
+		this.IniciarCamara				= new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE); 
 				
 		this.Imp 			= new Impresiones(this);
+		this.FcnArchivos	= new Archivos(this, this.FolderAplicacion, 10);
 		this.FcnNotificacion= new ClassNotificacion(this, this.FolderAplicacion);
 		this.FcnRevision	= new ClassRevision(this, this.FolderAplicacion);
 		
@@ -174,11 +184,24 @@ public class FormNotificacion extends Activity implements OnItemSelectedListener
 			this.ModalConfirmacion.putExtra("informacion", "Confirma cancelar la notificacion. ?");
 			startActivityForResult(this.ModalConfirmacion, CONFIRMACION_CAMBIO_ACTA);
 			return true;
+		
 		case R.id.mnu_solicitudes:
 			finish();
 			this.FormSolicitudes.putExtra("FolderAplicacion",this.FolderAplicacion);
 			startActivity(this.FormSolicitudes );
 			return true;	
+		
+		case R.id.menu_tomar_foto:
+			if(!this.FcnArchivos.ExistFolderOrFile(this.Revision, true)){
+				this.FcnArchivos.MakeDirectory(this.Revision, true);
+			}
+			File imagesFolder = new File(FormLoggin.CARPETA_RAIZ, this.Revision);
+			File image = new File(imagesFolder, this.Revision +"_"+this.FcnArchivos.numArchivosInFolder(this.Revision, true)); 
+			Uri uriSavedImage = Uri.fromFile(image);
+			this.IniciarCamara.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
+			startActivityForResult(IniciarCamara, INICIAR_CAMARA);
+			return true;
+			
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -275,6 +298,6 @@ public class FormNotificacion extends Activity implements OnItemSelectedListener
 			finish();
 			this.FormSolicitudes.putExtra("FolderAplicacion", this.FolderAplicacion);
 			startActivity(FormSolicitudes);
-		}		
+		}
     }	
 }
