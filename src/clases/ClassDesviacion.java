@@ -738,21 +738,17 @@ public class ClassDesviacion {
 			_opciones.add("Malo");
 			_opciones.add("No Tiene");
 		}else if(_itemSubclase.equals("SiNo")){
-			_opciones.add("");
 			_opciones.add("Si");
 			_opciones.add("No");
 		}else if(_itemSubclase.equals("SiNoNoAplica")){
-			_opciones.add("");
 			_opciones.add("Si");
 			_opciones.add("No");
 			_opciones.add("N/A");
 		}else if(_itemSubclase.equals("SiNoNoTiene")){
-			_opciones.add("");
 			_opciones.add("Si");
 			_opciones.add("No");
 			_opciones.add("No Tiene");
 		}else if(_itemSubclase.equals("BuenaMalaNoSeRealizo")){
-			_opciones.add("");
 			_opciones.add("No Se Realizo");
 			_opciones.add("Buena");
 			_opciones.add("Mala");
