@@ -9,6 +9,7 @@
     <item android:id="@+id/DesviacionSwapNotificacion" android:title="Iniciar Como Notificacion"></item>
     
     <item android:id="@+id/menu_ver_solicitudes" android:title="Ver Lista Solicitudes"></item>
+    <item android:id="@+id/DesviacionTomarFoto" android:title="Tomar Foto"></item>
     
 
 </menu>

@@ -4,6 +4,7 @@
         <menu>
             <item android:id="@+id/DescargarTrabajoRealizado" android:title="Trabajo Realizado"/>
             <item android:id="@+id/DescargarTrabajoSinRealizar" android:title="Trabajo Sin Realizar"/>
+            <item android:id="@+id/DescargarFotos" android:title="Descargar Fotos"/>
         </menu>
     </item>
     <item android:id="@+id/IniciarTrabajo" android:title="Ver Lista De Trabajo"></item>

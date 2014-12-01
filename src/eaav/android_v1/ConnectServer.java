@@ -22,6 +22,7 @@ import clases.ClassRevision;
 import Miscelanea.Archivos;
 import Miscelanea.Dialogos;
 import Miscelanea.SQLite;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -72,7 +73,130 @@ public class ConnectServer {
 		new DownLoadTrabajoProgramado(this.ConnectServerContext, this.DirectorioConexionServer).execute();
 	}
 	
+	public void UpLoadFotos(){
+		new UpLoadFotos(this.ConnectServerContext, this.DirectorioConexionServer).execute();
+	}
+	
+	
+	//clase para enviar de forma asincrona las desviaciones
+	private class UpLoadFotos extends AsyncTask<Void,Integer,SoapPrimitive>{
+		//Variables para contexto de mensajes a visualizar y conexion a la base de datos
+		private Context 	CtxUpLoadFotos;
+		private SQLite 		FcnSQL;
+		private Archivos 	FcnArch;
+		private Dialogos 	FcnDialog; 	
+		SoapPrimitive 		response = null;
+		private ArrayList<ContentValues> 	_tempTabla = new ArrayList<ContentValues>();
+		private ContentValues 				_tempRegistro= new ContentValues();
 		
+		private File[] 	lista_directorios;
+		private File[] 	lista_fotos;
+		private int 	cantidad_carpetas;
+		private int 	cantidad_fotos;
+		
+		//Variables con la informacion del web service
+		private static final String METHOD_NAME	= "UpLoadFotos";
+		private static final String SOAP_ACTION	= "UpLoadFotos";
+			    	
+		//Variables de ruta y archivo a crear para cargar en el servidor
+		private String 			DirectorioCarga = null;
+		private ProgressDialog 	_pDialog;
+			
+					 
+		private UpLoadFotos(Context context, String DirectorioArchivo){
+			this.CtxUpLoadFotos = context;
+			this.DirectorioCarga= DirectorioArchivo;
+			this.FcnSQL 		= new SQLite(this.CtxUpLoadFotos, FormLoggin.CARPETA_RAIZ, FormLoggin.NOMBRE_DATABASE);
+			this.FcnArch 		= new Archivos(this.CtxUpLoadFotos, this.DirectorioCarga,10);
+			this.FcnDialog 		= new Dialogos(this.CtxUpLoadFotos);
+			this._pDialog = new ProgressDialog(this.CtxUpLoadFotos);
+		}
+			
+		protected void onPreExecute(){
+			Toast.makeText(this.CtxUpLoadFotos,"Preparando para enviar al servidor.", Toast.LENGTH_SHORT).show();
+			this.lista_directorios	= FcnArch.ListaDirectorios(FormLoggin.CARPETA_RAIZ, false);
+			this.cantidad_carpetas	= this.lista_directorios.length;
+			for(int i=0; i<this.lista_directorios.length;i++){
+				this.cantidad_fotos += FcnArch.ListaFotos(this.lista_directorios[i].getName(), true).length;
+			}
+			
+			Toast.makeText(this.CtxUpLoadFotos,"Enviando \n"+cantidad_carpetas+" revisiones. \n"+cantidad_fotos+" fotos en total, por favor espere...", Toast.LENGTH_LONG).show();	
+			_pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+	        _pDialog.setMessage("Ejecutando operaciones...");
+	        _pDialog.setCancelable(false);
+	        _pDialog.setProgress(0);
+	        _pDialog.setMax(cantidad_fotos);
+	        _pDialog.show();
+		}
+
+	    	
+	    	
+	    	
+		@Override
+		protected SoapPrimitive doInBackground(Void... params) {
+			try{
+				int k = 0;
+				for(int i=0; i<this.lista_directorios.length;i++){
+					this.lista_fotos = this.FcnArch.ListaFotos(this.lista_directorios[i].getName(), true);
+					for(int j=0; j<this.lista_fotos.length;j++){
+						FcnArch.ResizePicture(this.lista_fotos[j].toString());
+						SoapObject so=new SoapObject(NAMESPACE, METHOD_NAME);
+						so.addProperty("Solicitud", this.lista_directorios[i].getName());
+						so.addProperty("Foto",  this.FcnArch.FileToArrayBytes(this.lista_fotos[j].toString()));
+						SoapSerializationEnvelope sse=new SoapSerializationEnvelope(SoapEnvelope.VER11);
+						new MarshalBase64().register(sse);
+						sse.dotNet=true;
+						sse.setOutputSoapObject(so);
+						HttpTransportSE htse=new HttpTransportSE(URL);
+						htse.call(SOAP_ACTION, sse);
+						response=(SoapPrimitive) sse.getResponse();
+						publishProgress(k);
+						k++;
+					}										
+				}				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return response;
+		}
+
+		
+		@Override
+		protected void onPostExecute(SoapPrimitive rta) {
+			/*this.RealizadoArch.DeleteFile(FormLoggin.CARPETA_RAIZ+File.pathSeparator+UpLoadTrabajoRealizado.ArchivoCarga);
+			if(rta==null) {
+				MensajeDialog.DialogoInformativo("ESTADO DE LA CONEXION","Error, no se ha obtenido respuesta del servidor.");
+			}else{
+				String resultado = rta.toString();
+				String ListaRetorno[] = resultado.split("\\|");
+				resultado = resultado.replace("|", "\n");
+					
+				for(int i=0;i<ListaRetorno.length;i++){
+					String OrdenesOk[] = ListaRetorno[i].split("--");
+					if(OrdenesOk[0].equals("OK")){
+						if(OrdenesOk[2].equals("Notificada")){
+							this.RealizadoSQL.DeleteRegistro("db_notificaciones", "revision = '" + OrdenesOk[1] + "'");
+						}else if(OrdenesOk[2].equals("Terminada")){
+							this.RealizadoSQL.DeleteRegistro("db_desviaciones", "revision = '" + OrdenesOk[1] + "'");
+						}
+						this.RealizadoSQL.DeleteRegistro("db_solicitudes", "revision = '" + OrdenesOk[1] + "'");
+					}
+				}
+				int NotificadaPendientes = this.RealizadoSQL.IntSelectShieldWhere("db_notificaciones", "count(revision) as cantidad", "revision IS NOT NULL");	
+				int TerminadaPendientes = this.RealizadoSQL.IntSelectShieldWhere("db_desviaciones", "count(revision) as cantidad", "revision IS NOT NULL");	
+				MensajeDialog.DialogoInformativo("ESTADO DEL ENVIO","Respuesta Del Servidor \n"+resultado+" \n"+NotificadaPendientes + " revisiones notificadas pendientes por enviar.\n"+TerminadaPendientes + " revisiones terminadas pendientes por enviar.");
+			}*/
+			_pDialog.dismiss();
+		}
+		
+		@Override
+	    protected void onProgressUpdate(Integer... values) {
+	        int progreso = values[0].intValue();
+	        _pDialog.setProgress(progreso);
+	    }
+	}
+	
+	
 	
 	//clase para enviar de forma asincrona las desviaciones
 	private class UpLoadTrabajoRealizado extends AsyncTask<Void,Void,SoapPrimitive>{
@@ -316,6 +440,7 @@ public class ConnectServer {
     	}	
     }
 
+	
 	
 	private class UpLoadTrabajoSinRealizar extends AsyncTask<Void,Void,SoapPrimitive>{
     	//Variables para contexto de mensajes a visualizar y conexion a la base de datos

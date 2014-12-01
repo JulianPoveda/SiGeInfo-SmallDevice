@@ -3,33 +3,55 @@ package Miscelanea;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.Environment;
 import android.widget.Toast;
 
 public class Archivos {
+	public static int MAX_WIDTH 	= 1280;
+	public static int MAX_HEIGTH	= 960;
+	
 	private Context ctx;
-	private String 	Directory;
-	private int 	SizeBuffer;	
-	private File[]	ListaDirectorios;
+	private String 			Directory;
+	private int 			SizeBuffer;	
+	private File[]			ListaArchivos;
+	private FileFilter 	OnlyFolders;
+	private FilenameFilter	OnlyPictures;
 	
 	FileInputStream fis;
 	FileReader file;
 	
 	public Archivos(Context ctx, String CurrentDirectory, int BufferKbytes){
-		this.ctx = ctx;
-		this.Directory = CurrentDirectory;
-		this.SizeBuffer = BufferKbytes;
+		this.ctx 			= ctx;
+		this.Directory 		= CurrentDirectory;
+		this.SizeBuffer 	= BufferKbytes;
+		this.OnlyFolders	= 	new FileFilter(){
+									public boolean accept(File dir){
+										return (dir.isDirectory());
+									};
+								};
+		
+		this.OnlyPictures	= 	new FilenameFilter(){
+									public boolean accept(File dir, String name){
+										return (name.endsWith(".jpg")||name.endsWith(".jpeg")); 
+									};
+								};						
+									
 		
 		if(!ExistFolderOrFile(this.Directory, false)){		
 			MakeDirectory(this.Directory, false);
@@ -37,19 +59,6 @@ public class Archivos {
 	}
 	
 	
-	//Metodo para crear una carpeta en el directorio raiz
-	/*public boolean MakeDirectory(){
-		File f = new File(this.Directory);
-        if(f.mkdir()){
-        	Toast.makeText(this.ctx,"Directorio "+this.Directory+" correctamente.", Toast.LENGTH_SHORT).show();
-            return true;
-        }else{
-        	return false;
-        }
-	}*/
-	
-
-	//Metodo para crear una carpeta en el directorio raiz
 	/**
 	 * Metodo para crear una carpeta 
 	 * @param _new_directory 					-> ruta de la nueva carpeta
@@ -97,11 +106,85 @@ public class Archivos {
 		if(_relativeCurrentDirectory){
 			_ruta = this.Directory+File.separator+_ruta;
 		}
-		this.ListaDirectorios = new File(_ruta).listFiles();
-		return this.ListaDirectorios.length;
+		this.ListaArchivos = new File(_ruta).listFiles();
+		return this.ListaArchivos.length;
 	}
 	
-	//Metodo para comprobar la existencia de un directorio y/o carpeta
+	
+	/**
+	 * Metodo que retorna una lista con los nombres de las carpetas que existen
+	 * @param _ruta, carpeta a la que se quiere indagar la cantidad de archivos que contiene
+	 * @param _currentDirectory, variable que indica si la ruta es relativa a la carpeta del proyecto
+	 * @return
+	 */
+	public File[] ListaDirectorios(String _ruta, boolean _relativeCurrentDirectory){
+		if(_relativeCurrentDirectory){
+			_ruta = this.Directory+File.separator+_ruta;
+		}
+		this.ListaArchivos = new File(_ruta).listFiles(OnlyFolders);
+		return this.ListaArchivos;
+	}
+	
+	
+	/**
+	 * Metodo que retorna una lista con los nombres de las fotos que contiene una carpeta
+	 * @param _ruta, carpeta a la que se quiere indagar los nombres de las fotos que contiene
+	 * @param _currentDirectory, variable que indica si la ruta es relativa a la carpeta del proyecto
+	 * @return
+	 */
+	public File[] ListaFotos(String _ruta, boolean _relativeCurrentDirectory){
+		if(_relativeCurrentDirectory){
+			_ruta = this.Directory+File.separator+_ruta;
+		}
+		this.ListaArchivos = new File(_ruta).listFiles(OnlyPictures);
+		return this.ListaArchivos;
+	}
+	
+	
+	public void ResizePicture(String _archivo){
+		Bitmap resizedBitmap;
+		Bitmap bimage = BitmapFactory.decodeFile(_archivo);
+		//resizedBitmap = Bitmap.createScaledBitmap(bimage, MAX_HEIGTH, MAX_WIDTH, false);
+		this.DeleteFile(_archivo);
+		
+		
+		//Redimensionamos
+		int width = bimage.getWidth();
+		int height = bimage.getHeight();
+		float scaleHeight = ((float) MAX_HEIGTH) / height;
+		float scaleWidth = ((float) MAX_WIDTH) / width;
+		// create a matrix for the manipulation
+		Matrix matrix = new Matrix();
+		// resize the bit map
+		matrix.postScale(scaleWidth,scaleHeight);
+		matrix.postRotate(90);
+		// recreate the new Bitmap
+		resizedBitmap = Bitmap.createBitmap(bimage, 0, 0, width, height, matrix, false);		
+		
+		FileOutputStream fos = null;
+	    try{
+	        fos = new FileOutputStream(_archivo);
+	        resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+	        fos.flush();
+	    }catch (FileNotFoundException ex){
+	        ex.printStackTrace();
+	    }catch (IOException ex){
+	        ex.printStackTrace();
+	    }
+	}
+	
+	
+	 
+    
+
+	
+	
+	
+	/**Metodo par aeliminar un archivo que se encuentre en una carpeta especifica
+	 * 
+	 * @param Archivo 	-> ruta y archivo que se va a eliminar
+	 * @return			-> true si se elimino correctamente, false en caso contrario
+	 */
 	public boolean DeleteFile(String Archivo){
 		File f = new File(Archivo);
 		return f.delete();

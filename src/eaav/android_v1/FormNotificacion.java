@@ -196,7 +196,7 @@ public class FormNotificacion extends Activity implements OnItemSelectedListener
 				this.FcnArchivos.MakeDirectory(this.Revision, true);
 			}
 			File imagesFolder = new File(FormLoggin.CARPETA_RAIZ, this.Revision);
-			File image = new File(imagesFolder, this.Revision +"_"+this.FcnArchivos.numArchivosInFolder(this.Revision, true)); 
+			File image = new File(imagesFolder, this.Revision +"_"+this.FcnArchivos.numArchivosInFolder(this.Revision, true)+".jpeg"); 
 			Uri uriSavedImage = Uri.fromFile(image);
 			this.IniciarCamara.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
 			startActivityForResult(IniciarCamara, INICIAR_CAMARA);

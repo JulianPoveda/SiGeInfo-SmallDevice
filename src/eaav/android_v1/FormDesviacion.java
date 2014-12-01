@@ -1,5 +1,6 @@
 package eaav.android_v1;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import modal.ModalInfGeneral;
@@ -9,7 +10,10 @@ import modal.ModalConfirmacion;
 import clases.ClassDesviacion;
 import clases.ClassRevision;
 
+import Miscelanea.Archivos;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -33,14 +37,17 @@ public class FormDesviacion extends Activity implements OnClickListener, OnItemS
 	static int 				INFORMACION_GENERAL		= 2;
 	static int 				CONFIRMACION_TERMINACION= 3;
 	static int 				CONFIRMACION_CAMBIO_ACTA= 4;
+	static int 				INICIAR_CAMARA			= 5;
 	
 	private Intent			ModalConfirmacion;
 	private Intent 			ModalInputSingle;
 	private Intent 			ModalInformacionSolicitud;
 	private Intent 			FormSolicitudes;
+	private Intent 			IniciarCamara; 
 	
 	//Instancias
 	private Impresiones 		Imp; 
+	private	Archivos			FcnArchivos;
 	private ClassDesviacion 	FcnDesviacion;
 	private ClassRevision		FcnRevision;
 	
@@ -152,6 +159,7 @@ public class FormDesviacion extends Activity implements OnClickListener, OnItemS
 		this.FormSolicitudes 			= new Intent(this, FormListaTrabajo.class);
 		
 		this.Imp 			= new Impresiones(this);
+		this.FcnArchivos	= new Archivos(this, this.FolderAplicacion, 10);
 		this.FcnDesviacion	= new ClassDesviacion(this, this.FolderAplicacion);
 		this.FcnRevision	= new ClassRevision(this, this.FolderAplicacion);
 		
@@ -403,6 +411,17 @@ public class FormDesviacion extends Activity implements OnClickListener, OnItemS
 				startActivityForResult(this.ModalConfirmacion, CONFIRMACION_CAMBIO_ACTA);
 				return true;
 	
+			case R.id.DesviacionTomarFoto:
+				if(!this.FcnArchivos.ExistFolderOrFile(this.Revision, true)){
+					this.FcnArchivos.MakeDirectory(this.Revision, true);
+				}
+				File imagesFolder = new File(FormLoggin.CARPETA_RAIZ, this.Revision);
+				File image = new File(imagesFolder, this.Revision +"_"+this.FcnArchivos.numArchivosInFolder(this.Revision, true)+".jpeg"); 
+				Uri uriSavedImage = Uri.fromFile(image);
+				this.IniciarCamara.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
+				startActivityForResult(IniciarCamara, INICIAR_CAMARA);
+				return true;	
+				
 			default:
 				return super.onOptionsItemSelected(item);
 			}

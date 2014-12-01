@@ -124,6 +124,11 @@ public class FormLoggin extends Activity implements OnClickListener{
 			startActivity(k);
 			return true;
 			
+		case R.id.DescargarFotos:
+			ConnectServer CS= new ConnectServer(this, FormLoggin.CARPETA_RAIZ);
+			CS.UpLoadFotos();
+			return true;	
+			
 		case R.id.Salir:
 			this.finish();
 			return true;
