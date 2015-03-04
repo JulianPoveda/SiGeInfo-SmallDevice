@@ -5,7 +5,8 @@ import java.io.File;
 import modal.ModalConfirmacion;
 import modal.ModalDate;
 import modal.ModalInfGeneral;
-import modal.ModalInputSingle;
+//import modal.ModalInputSingle;
+import modal.ModalInputDouble;
 
 import clases.ClassNotificacion;
 import clases.ClassRevision;
@@ -38,7 +39,8 @@ public class FormNotificacion extends Activity implements OnItemSelectedListener
 	
 	private Intent			ModalConfirmacion;
 	private Intent			ModalDate;
-	private Intent 			ModalInputSingle;
+	//private Intent 			ModalInputSingle;
+	private Intent 			ModalInputDouble;
 	private Intent 			ModalInformacionSolicitud;
 	private Intent 			FormSolicitudes;
 	private Intent 			IniciarCamara; 
@@ -50,13 +52,14 @@ public class FormNotificacion extends Activity implements OnItemSelectedListener
 	private ClassRevision		FcnRevision;	
 	
 	//Adaptadores
-	String[] MotivoNotificacion={"...","Casa Sola","Inmueble Desocupado","No Permitir Acceso","Solo Menores De Edad","Sin Agua En El Sector"};																
+	String[] MotivoNotificacion={"...","Casa Sola","Inmueble Desocupado","No Permitir Acceso","Solo Menores De Edad","Sin Agua En El Sector","Servicio Suspendido"};																
 	String[] JornadaNotificacion={"am","pm"};																
 	ArrayAdapter<String> AdapMotivoNotificacion;
 	ArrayAdapter<String> AdapJornadaNotificacion;
 	
 	//Variables
 	private String 		StrNombreUsuario= "";
+	private String 		StrCedulaUsuario= "";
 	private String 		StrTipoUsuario	= "";
 	private boolean 	MenuEnabled = false;
 	private String 		Revision;
@@ -79,7 +82,8 @@ public class FormNotificacion extends Activity implements OnItemSelectedListener
 
 		this.ModalConfirmacion			= new Intent(this, ModalConfirmacion.class);
 		this.ModalDate					= new Intent(this, ModalDate.class);
-		this.ModalInputSingle			= new Intent(this, ModalInputSingle.class);
+		//this.ModalInputSingle			= new Intent(this, ModalInputSingle.class);
+		this.ModalInputDouble 			= new Intent(this, ModalInputDouble.class);
 		this.ModalInformacionSolicitud	= new Intent(this, ModalInfGeneral.class);		
 		this.FormSolicitudes 			= new Intent(this, FormListaTrabajo.class);
 		this.IniciarCamara				= new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE); 
@@ -159,17 +163,17 @@ public class FormNotificacion extends Activity implements OnItemSelectedListener
 			return true;			
 		case R.id.ImpOriginal:
 			if(verificarDatosNotificacion()){
-				Imp.FormatoNotificacion("Original", this.Revision, this.StrNombreUsuario, this.StrTipoUsuario);
+				Imp.FormatoNotificacion("Original", this.Revision, this.StrNombreUsuario, this.StrCedulaUsuario, this.StrTipoUsuario);
 			}
 			return true;			
 		case R.id.ImpUsuario:
 			if(verificarDatosNotificacion()){
-				Imp.FormatoNotificacion("Usuario", this.Revision, this.StrNombreUsuario, this.StrTipoUsuario);
+				Imp.FormatoNotificacion("Usuario", this.Revision, this.StrNombreUsuario, this.StrCedulaUsuario, this.StrTipoUsuario);
 			}
 			return true;			
 		case R.id.ImpCopia:
 			if(verificarDatosNotificacion()){
-				Imp.FormatoNotificacion("Copia", this.Revision, this.StrNombreUsuario, this.StrTipoUsuario);
+				Imp.FormatoNotificacion("Copia", this.Revision, this.StrNombreUsuario, this.StrCedulaUsuario, this.StrTipoUsuario);
 			}
 			return true;			
 		case R.id.mnu_terminar_notificacion:
@@ -206,6 +210,7 @@ public class FormNotificacion extends Activity implements OnItemSelectedListener
 			return super.onOptionsItemSelected(item);
 		}
 	}
+	
 	
 	@Override
 	public void onClick(View v) {
@@ -261,16 +266,20 @@ public class FormNotificacion extends Activity implements OnItemSelectedListener
 			case R.id.NotificacionCmbMotivo:
 				if(_cmbMotivoNotificacion.getSelectedItem().equals("Sin Agua En El Sector")){
 					this.StrTipoUsuario = "Usuario";
-					this.ModalInputSingle.putExtra("titulo","INGRESE NOMBRE USUARIO");
-					this.ModalInputSingle.putExtra("lbl1", "Nombre:");
-					this.ModalInputSingle.putExtra("txt1", "");
-					startActivityForResult(this.ModalInputSingle, INGRESO_NOMBRE_USUARIO);
+					this.ModalInputDouble.putExtra("titulo","INGRESE NOMBRE USUARIO");
+					this.ModalInputDouble.putExtra("lbl1", "Nombre:");
+					this.ModalInputDouble.putExtra("txt1", "");
+					this.ModalInputDouble.putExtra("lbl2", "Cedula:");
+					this.ModalInputDouble.putExtra("txt2", "");
+					startActivityForResult(this.ModalInputDouble, INGRESO_NOMBRE_USUARIO);
 				}else if(!_cmbMotivoNotificacion.getSelectedItem().equals("Sin Agua En El Sector") && !_cmbMotivoNotificacion.getSelectedItem().equals("...")){
 					this.StrTipoUsuario = "Testigo";
-					this.ModalInputSingle.putExtra("titulo","INGRESE NOMBRE TESTIGO");
-					this.ModalInputSingle.putExtra("lbl1", "Nombre:");
-					this.ModalInputSingle.putExtra("txt1", "");	
-					startActivityForResult(this.ModalInputSingle, INGRESO_NOMBRE_USUARIO);
+					this.ModalInputDouble.putExtra("titulo","INGRESE NOMBRE TESTIGO");
+					this.ModalInputDouble.putExtra("lbl1", "Nombre:");
+					this.ModalInputDouble.putExtra("txt1", "");	
+					this.ModalInputDouble.putExtra("lbl2", "Cedula:");
+					this.ModalInputDouble.putExtra("txt2", "");
+					startActivityForResult(this.ModalInputDouble, INGRESO_NOMBRE_USUARIO);
 				}
 				break;
 		}
@@ -287,8 +296,9 @@ public class FormNotificacion extends Activity implements OnItemSelectedListener
 		if(resultCode == RESULT_OK && requestCode == DATE_PICKER && data.getExtras().getBoolean("accion")){
 			this._txtFechaNotificacion.setText(data.getExtras().getString("fecha"));
 		}else if(resultCode == RESULT_OK && requestCode == INGRESO_NOMBRE_USUARIO && data.getExtras().getBoolean("accion")){
-			this.StrNombreUsuario = data.getExtras().getString("txt1");	
-			Toast.makeText(getApplicationContext(),"Nombre registrado correctamente.", Toast.LENGTH_SHORT).show();
+			this.StrNombreUsuario = data.getExtras().getString("txt1");
+			this.StrCedulaUsuario = data.getExtras().getString("txt2");
+			Toast.makeText(getApplicationContext(),"Nombre y cedula registrado correctamente.", Toast.LENGTH_SHORT).show();
 		}else if(resultCode == RESULT_OK && requestCode == INGRESO_NOMBRE_USUARIO && !data.getExtras().getBoolean("accion")){
 			_cmbMotivoNotificacion.setSelection(AdapMotivoNotificacion.getPosition("..."));
 			Toast.makeText(getApplicationContext(),"No ha ingresado un nombre valido.", Toast.LENGTH_SHORT).show();

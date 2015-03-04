@@ -82,12 +82,8 @@ public class ConnectServer {
 	private class UpLoadFotos extends AsyncTask<Void,Integer,SoapPrimitive>{
 		//Variables para contexto de mensajes a visualizar y conexion a la base de datos
 		private Context 	CtxUpLoadFotos;
-		private SQLite 		FcnSQL;
 		private Archivos 	FcnArch;
-		private Dialogos 	FcnDialog; 	
 		SoapPrimitive 		response = null;
-		private ArrayList<ContentValues> 	_tempTabla = new ArrayList<ContentValues>();
-		private ContentValues 				_tempRegistro= new ContentValues();
 		
 		private File[] 	lista_directorios;
 		private File[] 	lista_fotos;
@@ -106,9 +102,7 @@ public class ConnectServer {
 		private UpLoadFotos(Context context, String DirectorioArchivo){
 			this.CtxUpLoadFotos = context;
 			this.DirectorioCarga= DirectorioArchivo;
-			this.FcnSQL 		= new SQLite(this.CtxUpLoadFotos, FormLoggin.CARPETA_RAIZ, FormLoggin.NOMBRE_DATABASE);
 			this.FcnArch 		= new Archivos(this.CtxUpLoadFotos, this.DirectorioCarga,10);
-			this.FcnDialog 		= new Dialogos(this.CtxUpLoadFotos);
 			this._pDialog = new ProgressDialog(this.CtxUpLoadFotos);
 		}
 			
@@ -125,12 +119,10 @@ public class ConnectServer {
 	        _pDialog.setMessage("Ejecutando operaciones...");
 	        _pDialog.setCancelable(false);
 	        _pDialog.setProgress(0);
-	        _pDialog.setMax(cantidad_fotos);
+	        _pDialog.setMax(cantidad_fotos-1);
 	        _pDialog.show();
 		}
-
-	    	
-	    	
+  	
 	    	
 		@Override
 		protected SoapPrimitive doInBackground(Void... params) {
@@ -139,10 +131,12 @@ public class ConnectServer {
 				for(int i=0; i<this.lista_directorios.length;i++){
 					this.lista_fotos = this.FcnArch.ListaFotos(this.lista_directorios[i].getName(), true);
 					for(int j=0; j<this.lista_fotos.length;j++){
-						FcnArch.ResizePicture(this.lista_fotos[j].toString());
+						FcnArch.ResizePicture(this.lista_fotos[i].getParent().toString(),this.lista_fotos[j],"tmp_");
 						SoapObject so=new SoapObject(NAMESPACE, METHOD_NAME);
 						so.addProperty("Solicitud", this.lista_directorios[i].getName());
-						so.addProperty("Foto",  this.FcnArch.FileToArrayBytes(this.lista_fotos[j].toString()));
+						so.addProperty("NombreFoto", this.lista_fotos[j].getName());
+						so.addProperty("Foto",  this.FcnArch.FileToArrayBytes(this.lista_fotos[j].getParent().toString()+File.separator+"tmp_"+this.lista_fotos[j].getName()));
+						FcnArch.DeleteFile(this.lista_fotos[j].getParent().toString()+File.separator+"tmp_"+this.lista_fotos[j].getName());
 						SoapSerializationEnvelope sse=new SoapSerializationEnvelope(SoapEnvelope.VER11);
 						new MarshalBase64().register(sse);
 						sse.dotNet=true;
@@ -150,6 +144,9 @@ public class ConnectServer {
 						HttpTransportSE htse=new HttpTransportSE(URL);
 						htse.call(SOAP_ACTION, sse);
 						response=(SoapPrimitive) sse.getResponse();
+						if(response.toString().equals(this.lista_fotos[j].getName())){
+							this.FcnArch.DeleteFile(this.lista_fotos[j].toString());
+						}
 						publishProgress(k);
 						k++;
 					}										
@@ -163,29 +160,12 @@ public class ConnectServer {
 		
 		@Override
 		protected void onPostExecute(SoapPrimitive rta) {
-			/*this.RealizadoArch.DeleteFile(FormLoggin.CARPETA_RAIZ+File.pathSeparator+UpLoadTrabajoRealizado.ArchivoCarga);
-			if(rta==null) {
-				MensajeDialog.DialogoInformativo("ESTADO DE LA CONEXION","Error, no se ha obtenido respuesta del servidor.");
-			}else{
-				String resultado = rta.toString();
-				String ListaRetorno[] = resultado.split("\\|");
-				resultado = resultado.replace("|", "\n");
-					
-				for(int i=0;i<ListaRetorno.length;i++){
-					String OrdenesOk[] = ListaRetorno[i].split("--");
-					if(OrdenesOk[0].equals("OK")){
-						if(OrdenesOk[2].equals("Notificada")){
-							this.RealizadoSQL.DeleteRegistro("db_notificaciones", "revision = '" + OrdenesOk[1] + "'");
-						}else if(OrdenesOk[2].equals("Terminada")){
-							this.RealizadoSQL.DeleteRegistro("db_desviaciones", "revision = '" + OrdenesOk[1] + "'");
-						}
-						this.RealizadoSQL.DeleteRegistro("db_solicitudes", "revision = '" + OrdenesOk[1] + "'");
-					}
+			for(int i=0; i<this.lista_directorios.length;i++){
+				this.lista_fotos = this.FcnArch.ListaFotos(this.lista_directorios[i].toString(), false);
+				if(this.lista_fotos.length==0){
+					this.FcnArch.DeleteFile(this.lista_directorios[i].toString());
 				}
-				int NotificadaPendientes = this.RealizadoSQL.IntSelectShieldWhere("db_notificaciones", "count(revision) as cantidad", "revision IS NOT NULL");	
-				int TerminadaPendientes = this.RealizadoSQL.IntSelectShieldWhere("db_desviaciones", "count(revision) as cantidad", "revision IS NOT NULL");	
-				MensajeDialog.DialogoInformativo("ESTADO DEL ENVIO","Respuesta Del Servidor \n"+resultado+" \n"+NotificadaPendientes + " revisiones notificadas pendientes por enviar.\n"+TerminadaPendientes + " revisiones terminadas pendientes por enviar.");
-			}*/
+			}
 			_pDialog.dismiss();
 		}
 		
@@ -207,6 +187,7 @@ public class ConnectServer {
 		private Dialogos 	MensajeDialog; 	
 		SoapPrimitive 		response = null;
 		private ArrayList<ContentValues> 	_tempTabla = new ArrayList<ContentValues>();
+		private ArrayList<ContentValues> 	_tempTabla1 = new ArrayList<ContentValues>();
 		private ContentValues 				_tempRegistro= new ContentValues();
 		    	
 		//Variables con la informacion del web service
@@ -229,159 +210,160 @@ public class ConnectServer {
     		int NumNotificadas= 0;
     		int NumTerminadas= 0;
     		String CadenaArchivo = "";    		
-    		//ArrayList<ArrayList<String>> InfSendRevision;
-    		//InfSendRevision = new ArrayList<ArrayList<String>>();
     		
-    		this._tempTabla = this.RealizadoSQL.SelectData(	"db_notificaciones", 
-    														"fecha_notificacion,revision,codigo,nombre,direccion,serie,ciclo,promedio,visita,lectura,medidor,precinto,observacion,fecha_visita,motivo,jornada_notificacion,hora_visita",
-															"revision IS NOT NULL");
+    		this._tempTabla1 = this.RealizadoSQL.SelectData("db_solicitudes", "revision", "estado=3");
+    		for(int j=0; j<this._tempTabla1.size();j++) {
+    			this._tempTabla = this.RealizadoSQL.SelectData(	"db_notificaciones", 
+																"fecha_notificacion,revision,codigo,nombre,direccion,serie,ciclo,promedio,visita,lectura,medidor,precinto,observacion,fecha_visita,motivo,jornada_notificacion,hora_visita",
+																"revision='"+this._tempTabla1.get(j).getAsString("revision")+"'");
+    			
+    			NumNotificadas = this._tempTabla.size();
+    			for(int i=0;i<this._tempTabla.size();i++){
+    				this._tempRegistro = this._tempTabla.get(i);
+    				CadenaArchivo+="N|"+this._tempRegistro.getAsString("fecha_notificacion")+"|"+
+    									this._tempRegistro.getAsString("revision")+"|"+
+    									this._tempRegistro.getAsString("codigo")+"|"+
+    									this._tempRegistro.getAsString("nombre")+"|"+
+    									this._tempRegistro.getAsString("direccion")+"|"+
+    									this._tempRegistro.getAsString("serie")+"|"+
+    									this._tempRegistro.getAsString("ciclo")+"|"+
+    									this._tempRegistro.getAsString("promedio")+"|"+
+    									this._tempRegistro.getAsString("visita")+"|"+
+    									this._tempRegistro.getAsString("lectura")+"|"+
+    									this._tempRegistro.getAsString("medidor")+"|"+
+    									this._tempRegistro.getAsString("precinto")+"|"+
+    									this._tempRegistro.getAsString("observacion")+"|"+
+    									this._tempRegistro.getAsString("fecha_visita")+"|"+
+    									this._tempRegistro.getAsString("motivo")+"|"+
+    									this._tempRegistro.getAsString("jornada_notificacion")+"|"+
+    									this._tempRegistro.getAsString("hora_visita")+"|&";
+    			}
+    			
+    			this._tempTabla = this.RealizadoSQL.SelectData(	"db_desviaciones", 
+																"revision, codigo, nombre," +
+																"direccion, serie, ciclo," +
+																"promedio, fecha, hora," +
+																"tipo, area, pisos, " +
+																"actividad, uso, residentes, " +
+																"habitado, estado, acueducto, " +
+																"camaramedidor, estadocamara, serieindividual," +
+																"marcaindividual, diametroindividual, lecturaindividual, " +
+																"serietotalizador, marcatotalizador,diametrototalizador, " +
+																"lecturatotalizador, subterraneos, itemsubterraneos, " +
+																"estadosubterraneos, lavaplatos, itemlavaplatos, " +
+																"estadolavaplatos, lavaderos,itemlavadero, " +
+																"estadolavadero, elevados, itemelevado, " +
+																"estadoelevado, iteminternas, estadointernas, " +
+																"piscinas, itempiscina, estadopiscina, "+
+																"medidorregpaso, medidorregantifraude, medidordestruido, " +
+																"medidorinvertido, medidorilegible, medidorprecintoroto, " +
+																"hermeticidadreginternos, hermeticidadequipomedida, estanqueidadreselevado," +
+																"estanqueidadreslavadero,estanqueidadressubterraneo,estanqueidadcapelevado," +
+																"estanqueidadcaplavadero,estanqueidadcapsubterraneo,estanqueidadfugaelevado," +
+																"estanqueidadfugalavadero,estanqueidadfugasubterrano,hermeticidadfugaimperceptible, " +
+																"hermeticidadfugas,hermeticidadfugavisible, diagnostico, " +
+																"estrato, precinto, serviciodirecto, " +
+																"bypass, horaapertura, nombreusuario, " +
+																"cedulausuario, nombretestigo,cedulatestigo, " +
+																"cisterna, itemcisterna, estadocisterna, " +
+																"ducha, itemducha, estadoducha, " +
+																"lavamanos, itemlavamanos,estadolavamanos, " +
+																"servicioacueducto, servicioalcantarillado, horacierre, " +
+																"segundoconcepto, respuestadesviacion, escapecamara",
+																"revision='"+this._tempTabla1.get(j).getAsString("revision")+"'");
+
+				for(int i=0;i<this._tempTabla.size();i++){
+					this._tempRegistro = this._tempTabla.get(i);
+					CadenaArchivo +="T|"+this._tempRegistro.getAsString("revision")+"|"
+					+this._tempRegistro.getAsString("codigo")+"|"
+					+this._tempRegistro.getAsString("nombre")+"|"
+					+this._tempRegistro.getAsString("direccion")+"|"
+					+this._tempRegistro.getAsString("serie")+"|"
+					+this._tempRegistro.getAsString("ciclo")+"|"
+					+this._tempRegistro.getAsString("promedio")+"|"
+					+this._tempRegistro.getAsString("fecha")+"|"
+					+this._tempRegistro.getAsString("hora")+"|"
+					+this._tempRegistro.getAsString("tipo")+"|"
+					+this._tempRegistro.getAsString("area")+"|"
+					+this._tempRegistro.getAsString("pisos")+"|"
+					+this._tempRegistro.getAsString("actividad")+"|"
+					+this._tempRegistro.getAsString("uso")+"|"
+					+this._tempRegistro.getAsString("residentes")+"|"
+					+this._tempRegistro.getAsString("habitado")+"|"
+					+this._tempRegistro.getAsString("estado")+"|"
+					+this._tempRegistro.getAsString("acueducto")+"|"
+					+this._tempRegistro.getAsString("camaramedidor")+"|"
+					+this._tempRegistro.getAsString("estadocamara")+"|"
+					+this._tempRegistro.getAsString("serieindividual")+"|"
+					+this._tempRegistro.getAsString("marcaindividual")+"|"
+					+this._tempRegistro.getAsString("diametroindividual")+"|"
+					+this._tempRegistro.getAsString("lecturaindividual")+"|"
+					+this._tempRegistro.getAsString("serietotalizador")+"|"
+					+this._tempRegistro.getAsString("marcatotalizador")+"|"
+					+this._tempRegistro.getAsString("diametrototalizador")+"|"
+					+this._tempRegistro.getAsString("lecturatotalizador")+"|"
+					+this._tempRegistro.getAsString("subterraneos")+"|"
+					+this._tempRegistro.getAsString("itemsubterraneos")+"|"
+					+this._tempRegistro.getAsString("estadosubterraneos")+"|"
+					+this._tempRegistro.getAsString("lavaplatos")+"|"
+					+this._tempRegistro.getAsString("itemlavaplatos")+"|"
+					+this._tempRegistro.getAsString("estadolavaplatos")+"|"
+					+this._tempRegistro.getAsString("lavaderos")+"|"
+					+this._tempRegistro.getAsString("itemlavadero")+"|"
+					+this._tempRegistro.getAsString("estadolavadero")+"|"
+					+this._tempRegistro.getAsString("elevados")+"|"
+					+this._tempRegistro.getAsString("itemelevado")+"|"
+					+this._tempRegistro.getAsString("estadoelevado")+"|"
+					+this._tempRegistro.getAsString("iteminternas")+"|"
+					+this._tempRegistro.getAsString("estadointernas")+"|"
+					+this._tempRegistro.getAsString("piscinas")+"|"
+					+this._tempRegistro.getAsString("itempiscina")+"|"
+					+this._tempRegistro.getAsString("estadopiscina")+"|"
+					+this._tempRegistro.getAsString("medidorregpaso")+"|"
+					+this._tempRegistro.getAsString("medidorregantifraude")+"|"
+					+this._tempRegistro.getAsString("medidordestruido")+"|"
+					+this._tempRegistro.getAsString("medidorinvertido")+"|"
+					+this._tempRegistro.getAsString("medidorilegible")+"|"
+					+this._tempRegistro.getAsString("medidorprecintoroto")+"|"
+					+this._tempRegistro.getAsString("hermeticidadreginternos")+"|"
+					+this._tempRegistro.getAsString("hermeticidadequipomedida")+"|"
+					+this._tempRegistro.getAsString("estanqueidadreselevado")+"-"+this._tempRegistro.getAsString("estanqueidadreslavadero")+"-"+this._tempRegistro.getAsString("estanqueidadressubterraneo")+"|"
+					+this._tempRegistro.getAsString("estanqueidadcapelevado")+"-"+this._tempRegistro.getAsString("estanqueidadcaplavadero")+"-"+this._tempRegistro.getAsString("estanqueidadcapsubterraneo")+"|"
+					+this._tempRegistro.getAsString("estanqueidadfugaelevado")+"-"+this._tempRegistro.getAsString("estanqueidadfugalavadero")+"-"+this._tempRegistro.getAsString("estanqueidadfugasubterrano")+"|"
+					+this._tempRegistro.getAsString("hermeticidadfugaimperceptible")+"|"
+					+this._tempRegistro.getAsString("hermeticidadfugas")+"|"
+					+this._tempRegistro.getAsString("hermeticidadfugavisible")+"|"
+					+this._tempRegistro.getAsString("diagnostico")+"|"
+					+this._tempRegistro.getAsString("estrato")+"|"
+					+this._tempRegistro.getAsString("precinto")+"|"
+					+this._tempRegistro.getAsString("serviciodirecto")+"|"
+					+this._tempRegistro.getAsString("bypass")+"|"
+					+this._tempRegistro.getAsString("horaapertura")+"|"
+					+this._tempRegistro.getAsString("nombreusuario")+"|"
+					+this._tempRegistro.getAsString("cedulausuario")+"|"
+					+this._tempRegistro.getAsString("nombretestigo")+"|"
+					+this._tempRegistro.getAsString("cedulatestigo")+"|"
+					+this._tempRegistro.getAsString("cisterna")+"|"
+					+this._tempRegistro.getAsString("itemcisterna")+"|"
+					+this._tempRegistro.getAsString("estadocisterna")+"|"
+					+this._tempRegistro.getAsString("ducha")+"|"
+					+this._tempRegistro.getAsString("itemducha")+"|"
+					+this._tempRegistro.getAsString("estadoducha")+"|"
+					+this._tempRegistro.getAsString("lavamanos")+"|"
+					+this._tempRegistro.getAsString("itemlavamanos")+"|"
+					+this._tempRegistro.getAsString("estadolavamanos")+"|"
+					+this._tempRegistro.getAsString("servicioacueducto, , ")+"|"
+					+this._tempRegistro.getAsString("servicioalcantarillado")+"|"
+					+this._tempRegistro.getAsString("horacierre")+"|"
+					+this._tempRegistro.getAsString("segundoconcepto")+"|"
+					+this._tempRegistro.getAsString("respuestadesviacion")+"|" 
+					+this._tempRegistro.getAsString("escapecamara")+"|&";
+					NumTerminadas += 1;
+				}    			
+    		}
     		
-    		NumNotificadas = this._tempTabla.size();
-    		
-			for(int i=0;i<this._tempTabla.size();i++){
-				this._tempRegistro = this._tempTabla.get(i);
-				CadenaArchivo+="N|"+this._tempRegistro.getAsString("fecha_notificacion")+"|"+
-									this._tempRegistro.getAsString("revision")+"|"+
-									this._tempRegistro.getAsString("codigo")+"|"+
-									this._tempRegistro.getAsString("nombre")+"|"+
-									this._tempRegistro.getAsString("direccion")+"|"+
-									this._tempRegistro.getAsString("serie")+"|"+
-									this._tempRegistro.getAsString("ciclo")+"|"+
-									this._tempRegistro.getAsString("promedio")+"|"+
-									this._tempRegistro.getAsString("visita")+"|"+
-									this._tempRegistro.getAsString("lectura")+"|"+
-									this._tempRegistro.getAsString("medidor")+"|"+
-									this._tempRegistro.getAsString("precinto")+"|"+
-									this._tempRegistro.getAsString("observacion")+"|"+
-									this._tempRegistro.getAsString("fecha_visita")+"|"+
-									this._tempRegistro.getAsString("motivo")+"|"+
-									this._tempRegistro.getAsString("jornada_notificacion")+"|"+
-									this._tempRegistro.getAsString("hora_visita")+"|&";
-			}
-    		    		
-			this._tempTabla = this.RealizadoSQL.SelectData(	"db_desviaciones", 
-															"revision, codigo, nombre," +
-															"direccion, serie, ciclo," +
-															"promedio, fecha, hora," +
-															"tipo, area, pisos, " +
-															"actividad, uso, residentes, " +
-															"habitado, estado, acueducto, " +
-															"camaramedidor, estadocamara, serieindividual," +
-															"marcaindividual, diametroindividual, lecturaindividual, " +
-															"serietotalizador, marcatotalizador,diametrototalizador, " +
-															"lecturatotalizador, subterraneos, itemsubterraneos, " +
-															"estadosubterraneos, lavaplatos, itemlavaplatos, " +
-															"estadolavaplatos, lavaderos,itemlavadero, " +
-															"estadolavadero, elevados, itemelevado, " +
-															"estadoelevado, iteminternas, estadointernas, " +
-															"piscinas, itempiscina, estadopiscina, "+
-															"medidorregpaso, medidorregantifraude, medidordestruido, " +
-															"medidorinvertido, medidorilegible, medidorprecintoroto, " +
-															"hermeticidadreginternos, hermeticidadequipomedida, estanqueidadreselevado," +
-															"estanqueidadreslavadero,estanqueidadressubterraneo,estanqueidadcapelevado," +
-															"estanqueidadcaplavadero,estanqueidadcapsubterraneo,estanqueidadfugaelevado," +
-															"estanqueidadfugalavadero,estanqueidadfugasubterrano,hermeticidadfugaimperceptible, " +
-															"hermeticidadfugas,hermeticidadfugavisible, diagnostico, " +
-															"estrato, precinto, serviciodirecto, " +
-															"bypass, horaapertura, nombreusuario, " +
-															"cedulausuario, nombretestigo,cedulatestigo, " +
-															"cisterna, itemcisterna, estadocisterna, " +
-															"ducha, itemducha, estadoducha, " +
-															"lavamanos, itemlavamanos,estadolavamanos, " +
-															"servicioacueducto, servicioalcantarillado, horacierre, " +
-															"segundoconcepto, respuestadesviacion",
-															"revision IS NOT NULL");
-			
-			for(int i=0;i<this._tempTabla.size();i++){
-				this._tempRegistro = this._tempTabla.get(i);
-				CadenaArchivo +="T|"+this._tempRegistro.getAsString("revision")+"|"
-									+this._tempRegistro.getAsString("codigo")+"|"
-									+this._tempRegistro.getAsString("nombre")+"|"
-									+this._tempRegistro.getAsString("direccion")+"|"
-									+this._tempRegistro.getAsString("serie")+"|"
-									+this._tempRegistro.getAsString("ciclo")+"|"
-									+this._tempRegistro.getAsString("promedio")+"|"
-									+this._tempRegistro.getAsString("fecha")+"|"
-									+this._tempRegistro.getAsString("hora")+"|"
-									+this._tempRegistro.getAsString("tipo")+"|"
-									+this._tempRegistro.getAsString("area")+"|"
-									+this._tempRegistro.getAsString("pisos")+"|"
-									+this._tempRegistro.getAsString("actividad")+"|"
-									+this._tempRegistro.getAsString("uso")+"|"
-									+this._tempRegistro.getAsString("residentes")+"|"
-									+this._tempRegistro.getAsString("habitado")+"|"
-									+this._tempRegistro.getAsString("estado")+"|"
-									+this._tempRegistro.getAsString("acueducto")+"|"
-									+this._tempRegistro.getAsString("camaramedidor")+"|"
-									+this._tempRegistro.getAsString("estadocamara")+"|"
-									+this._tempRegistro.getAsString("serieindividual")+"|"
-									+this._tempRegistro.getAsString("marcaindividual")+"|"
-									+this._tempRegistro.getAsString("diametroindividual")+"|"
-									+this._tempRegistro.getAsString("lecturaindividual")+"|"
-									+this._tempRegistro.getAsString("serietotalizador")+"|"
-									+this._tempRegistro.getAsString("marcatotalizador")+"|"
-									+this._tempRegistro.getAsString("diametrototalizador")+"|"
-									+this._tempRegistro.getAsString("lecturatotalizador")+"|"
-									+this._tempRegistro.getAsString("subterraneos")+"|"
-									+this._tempRegistro.getAsString("itemsubterraneos")+"|"
-									+this._tempRegistro.getAsString("estadosubterraneos")+"|"
-									+this._tempRegistro.getAsString("lavaplatos")+"|"
-									+this._tempRegistro.getAsString("itemlavaplatos")+"|"
-									+this._tempRegistro.getAsString("estadolavaplatos")+"|"
-									+this._tempRegistro.getAsString("lavaderos")+"|"
-									+this._tempRegistro.getAsString("itemlavadero")+"|"
-									+this._tempRegistro.getAsString("estadolavadero")+"|"
-									+this._tempRegistro.getAsString("elevados")+"|"
-									+this._tempRegistro.getAsString("itemelevado")+"|"
-									+this._tempRegistro.getAsString("estadoelevado")+"|"
-									+this._tempRegistro.getAsString("iteminternas")+"|"
-									+this._tempRegistro.getAsString("estadointernas")+"|"
-									+this._tempRegistro.getAsString("piscinas")+"|"
-									+this._tempRegistro.getAsString("itempiscina")+"|"
-									+this._tempRegistro.getAsString("estadopiscina")+"|"
-									+this._tempRegistro.getAsString("medidorregpaso")+"|"
-									+this._tempRegistro.getAsString("medidorregantifraude")+"|"
-									+this._tempRegistro.getAsString("medidordestruido")+"|"
-									+this._tempRegistro.getAsString("medidorinvertido")+"|"
-									+this._tempRegistro.getAsString("medidorilegible")+"|"
-									+this._tempRegistro.getAsString("medidorprecintoroto")+"|"
-									+this._tempRegistro.getAsString("hermeticidadreginternos")+"|"
-									+this._tempRegistro.getAsString("hermeticidadequipomedida")+"|"
-									+this._tempRegistro.getAsString("estanqueidadreselevado")+"-"+this._tempRegistro.getAsString("estanqueidadreslavadero")+"-"+this._tempRegistro.getAsString("estanqueidadressubterraneo")+"|"
-									+this._tempRegistro.getAsString("estanqueidadcapelevado")+"-"+this._tempRegistro.getAsString("estanqueidadcaplavadero")+"-"+this._tempRegistro.getAsString("estanqueidadcapsubterraneo")+"|"
-									+this._tempRegistro.getAsString("estanqueidadfugaelevado")+"-"+this._tempRegistro.getAsString("estanqueidadfugalavadero")+"-"+this._tempRegistro.getAsString("estanqueidadfugasubterrano")+"|"
-									+this._tempRegistro.getAsString("hermeticidadfugaimperceptible")+"|"
-									+this._tempRegistro.getAsString("hermeticidadfugas")+"|"
-									+this._tempRegistro.getAsString("hermeticidadfugavisible")+"|"
-									+this._tempRegistro.getAsString("diagnostico")+"|"
-									+this._tempRegistro.getAsString("estrato")+"|"
-									+this._tempRegistro.getAsString("precinto")+"|"
-									+this._tempRegistro.getAsString("serviciodirecto")+"|"
-									+this._tempRegistro.getAsString("bypass")+"|"
-									+this._tempRegistro.getAsString("horaapertura")+"|"
-									+this._tempRegistro.getAsString("nombreusuario")+"|"
-									+this._tempRegistro.getAsString("cedulausuario")+"|"
-									+this._tempRegistro.getAsString("nombretestigo")+"|"
-									+this._tempRegistro.getAsString("cedulatestigo")+"|"
-									+this._tempRegistro.getAsString("cisterna")+"|"
-									+this._tempRegistro.getAsString("itemcisterna")+"|"
-									+this._tempRegistro.getAsString("estadocisterna")+"|"
-									+this._tempRegistro.getAsString("ducha")+"|"
-									+this._tempRegistro.getAsString("itemducha")+"|"
-									+this._tempRegistro.getAsString("estadoducha")+"|"
-									+this._tempRegistro.getAsString("lavamanos")+"|"
-									+this._tempRegistro.getAsString("itemlavamanos")+"|"
-									+this._tempRegistro.getAsString("estadolavamanos")+"|"
-									+this._tempRegistro.getAsString("servicioacueducto, , ")+"|"
-									+this._tempRegistro.getAsString("servicioalcantarillado")+"|"
-									+this._tempRegistro.getAsString("horacierre")+"|"
-									+this._tempRegistro.getAsString("segundoconcepto")+"|"
-									+this._tempRegistro.getAsString("respuestadesviacion")+"|&";
-				NumTerminadas += 1;
-			}
-			
-    		CadenaArchivo = CadenaArchivo.replace("\n", ". "); 	//Se elimina los saltos de linea dentro de la informacion digitada por el tecnico
-			CadenaArchivo = CadenaArchivo.replace("&", "\n");	//Se hace salto de linea por cada revision notificada o terminada que exista
+    		CadenaArchivo = CadenaArchivo.replace("\n", ". "); 	
+			CadenaArchivo = CadenaArchivo.replace("&", "\n");	
 			
 			if(!this.RealizadoArch.DoFile("Descargas",UpLoadTrabajoRealizado.ArchivoCarga, CadenaArchivo)){
 				Toast.makeText(this.CtxTrabajoRealizado,"Imposible crear el archivo de carga.", Toast.LENGTH_SHORT).show();

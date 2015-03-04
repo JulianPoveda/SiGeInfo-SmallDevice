@@ -73,7 +73,16 @@ public class FormDesviacion extends Activity implements OnClickListener, OnItemS
 	String[] strBypass 				= {"","Si","No"};
 	String[] strCamaraMedidor 		= {"","Grande","Pequena","No Tiene"};
 	String[] strEstadoCamaraMedidor	= {"","Buena","Regular","Mala","No Aplica"};
-	String[] strRespuestaDesviacion	= {"","Normal por consumo","Fuga o daño interno","Posible fraude encontrado","Equipo de medida dañado o robado","Error de lectura"};
+	String[] strRespuestaDesviacion	= {	"",
+										"Casa sola",
+										"Error de lectura",
+										"Equipo de medida dañado o robado",
+										"Fuga o daño interno",
+										"Normal por consumo",
+										"No presta colaboracion",
+										"Posible fraude encontrado",
+										"Segundo concepto",
+										"Servicio suspendido"};
 	String[] strSegundoConcepto 	= {"","Si","No"};
 	String[] strMedidor				= {"","Individual","Totalizador"};
 	String[] strDiametro			= {"","1/2","3/4","1","1-1/2","2"};
@@ -496,7 +505,25 @@ public class FormDesviacion extends Activity implements OnClickListener, OnItemS
 			}else if(this.FcnDesviacion.getHermeticidadFugaImperceptible(this.Revision).isEmpty()){
 				Toast.makeText(getApplicationContext(),"No ha ingresado la prueba de hermeticidad. Fuga imperceptible.", Toast.LENGTH_LONG).show();		
 			}else if(this.FcnDesviacion.getHermeticidadFugaVisible(this.Revision).isEmpty()){
-				Toast.makeText(getApplicationContext(),"No ha si el estado del precinto del medidor. Fuga visible.", Toast.LENGTH_LONG).show();		
+				Toast.makeText(getApplicationContext(),"No ha ingresado el estado del precinto del medidor. Fuga visible.", Toast.LENGTH_LONG).show();		
+			}else if(this.FcnRevision.getSubterraneos(this.Revision)<0){
+				Toast.makeText(getApplicationContext(),"No ha registrado los subterraneos del predio.", Toast.LENGTH_LONG).show();		
+			}else if(this.FcnRevision.getLavaplatos(this.Revision)<0){
+				Toast.makeText(getApplicationContext(),"No ha registrado los lavaplatos del predio.", Toast.LENGTH_LONG).show();		
+			}else if(this.FcnRevision.getLavaderos(this.Revision)<0){
+				Toast.makeText(getApplicationContext(),"No ha registrado los lavaderos del predio.", Toast.LENGTH_LONG).show();		
+			}else if(this.FcnRevision.getElevados(this.Revision)<0){
+				Toast.makeText(getApplicationContext(),"No ha registrado los tanques elevados del predio.", Toast.LENGTH_LONG).show();		
+			}else if(this.FcnRevision.getInternas(this.Revision)<0){
+				Toast.makeText(getApplicationContext(),"No ha registrado las instalaciones internas del predio.", Toast.LENGTH_LONG).show();		
+			}else if(this.FcnRevision.getPiscinas(this.Revision)<0){
+				Toast.makeText(getApplicationContext(),"No ha registrado las piscinas del predio.", Toast.LENGTH_LONG).show();		
+			}else if(this.FcnRevision.getCisterna(this.Revision)<0){
+				Toast.makeText(getApplicationContext(),"No ha registrado las cisternas del predio.", Toast.LENGTH_LONG).show();		
+			}else if(this.FcnRevision.getDucha(this.Revision)<0){
+				Toast.makeText(getApplicationContext(),"No ha registrado las duchas del predio.", Toast.LENGTH_LONG).show();		
+			}else if(this.FcnRevision.getLavamanos(this.Revision)<0){
+				Toast.makeText(getApplicationContext(),"No ha registrado los lavamanos del predio.", Toast.LENGTH_LONG).show();		
 			}else{
 				ValorRetorno = true;
 			}			
@@ -526,12 +553,14 @@ public class FormDesviacion extends Activity implements OnClickListener, OnItemS
 			_cmbEstado.setSelection(AdaptadorEstado.getPosition(this._tempRegistro.getAsString("estado")));
 			_cmbHabitado.setSelection(AdaptadorHabitado.getPosition(this._tempRegistro.getAsString("habitado")));
 			
-			
-			tempString = this._tempRegistro.getAsString("acueducto").split("@");			
-			if(tempString.length==2){
-				_lblOtro.setText(tempString[1]);
+			tempString = this._tempRegistro.getAsString("acueducto").split("@");
+			if(tempString.length>0){
+				_cmbClaseAcueducto.setSelection(AdaptadorClaseAcueducto.getPosition(tempString[0]));
+				if(tempString.length==2){
+					_lblOtro.setText(tempString[1]);
+				}
 			}
-			_cmbClaseAcueducto.setSelection(AdaptadorClaseAcueducto.getPosition(tempString[0]));
+			
 			_cmbCamaraMedidor.setSelection(AdaptadorCamaraMedidor.getPosition(this._tempRegistro.getAsString("camaramedidor")));
 			_cmbEscapeMedidor.setSelection(AdaptadorEscapeMedidor.getPosition(this._tempRegistro.getAsString("escapecamara")));
 			_cmbEstadoCamara.setSelection(AdaptadorEstadoCamaraMedidor.getPosition(this._tempRegistro.getAsString("estadocamara")));

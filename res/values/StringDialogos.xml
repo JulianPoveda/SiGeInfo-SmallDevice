@@ -7,5 +7,10 @@
     <string name="dc_btn_cancelar">Cancelar</string>
     <string name="dc_btn_aceptar">Aceptar</string>
     <string name="dc_lbl_mensaje">Mensaje</string>
+    <string name="dd_lbl_titulo">TITULO</string>
+    <string name="dd_lbl_text1">Text1</string>
+    <string name="dd_btn_aceptar">Aceptar</string>
+    <string name="dd_btn_cancelar">Cancelar</string>
+    <string name="dd_lbl_text2">Text2</string>
     
 </resources>

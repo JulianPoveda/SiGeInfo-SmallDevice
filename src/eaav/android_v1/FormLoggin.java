@@ -37,7 +37,7 @@ public class FormLoggin extends Activity implements OnClickListener{
 	private Button 		_btnLoggin;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loggin);
         

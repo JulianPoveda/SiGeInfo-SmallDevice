@@ -642,7 +642,7 @@ public class ClassDesviacion {
 				this._tempRegistro.put("itemlavaplatos", _item1);
 				this._tempRegistro.put("estadolavaplatos", _data1);
 			}else if(_elemento.equals("Piscina")){
-				this._tempRegistro.put("piscina", _cantidad);
+				this._tempRegistro.put("piscinas", _cantidad);
 				this._tempRegistro.put("itempiscina", _item1+"-"+_item2+"-"+_item3);
 				this._tempRegistro.put("estadopiscina", _data1+"-"+_data2+"-"+_data3);			
 			}else if(_elemento.equals("Subterraneo")){

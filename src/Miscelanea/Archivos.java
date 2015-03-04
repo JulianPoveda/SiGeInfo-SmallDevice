@@ -141,11 +141,11 @@ public class Archivos {
 	}
 	
 	
-	public void ResizePicture(String _archivo){
+	public void ResizePicture(String _destino, File _archivo, String _pre){
 		Bitmap resizedBitmap;
-		Bitmap bimage = BitmapFactory.decodeFile(_archivo);
+		Bitmap bimage = BitmapFactory.decodeFile(_archivo.toString());
 		//resizedBitmap = Bitmap.createScaledBitmap(bimage, MAX_HEIGTH, MAX_WIDTH, false);
-		this.DeleteFile(_archivo);
+		//this.DeleteFile(_archivo);
 		
 		
 		//Redimensionamos
@@ -163,7 +163,7 @@ public class Archivos {
 		
 		FileOutputStream fos = null;
 	    try{
-	        fos = new FileOutputStream(_archivo);
+	        fos = new FileOutputStream(_destino+File.separator+_pre+_archivo.getName().toString());
 	        resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
 	        fos.flush();
 	    }catch (FileNotFoundException ex){

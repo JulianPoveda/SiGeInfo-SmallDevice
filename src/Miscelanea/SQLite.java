@@ -12,7 +12,7 @@ import android.util.Log;
 public class SQLite {
 	private static String		_folderSQL;
 	private static String 		_nameBD;
-	private static final int 	_versionBD = 12;																		//Version de la base de datos
+	private static final int 	_versionBD = 13;																		//Version de la base de datos
 	
 	private BDHelper 		nHelper;
 	private final Context	_ctxSQL;
@@ -106,22 +106,22 @@ public class SQLite {
 														"marcatotalizador 		VARCHAR(50) NOT NULL DEFAULT ''," +
 														"diametrototalizador 	VARCHAR(50) NOT NULL DEFAULT ''," +
 														"lecturatotalizador		VARCHAR(50) NOT NULL DEFAULT ''," +
-														"subterraneos			INTEGER NOT NULL DEFAULT 0," +
+														"subterraneos			INTEGER NOT NULL DEFAULT -1," +
 														"itemsubterraneos		VARCHAR(100) NOT NULL DEFAULT ''," +
 														"estadosubterraneos		VARCHAR(100) NOT NULL DEFAULT ''," +
-														"lavaplatos				INTEGER NOT NULL DEFAULT 0," +
+														"lavaplatos				INTEGER NOT NULL DEFAULT -1," +
 														"itemlavaplatos			VARCHAR(100) NOT NULL DEFAULT ''," +
 														"estadolavaplatos		VARCHAR(100) NOT NULL DEFAULT ''," +
-														"lavaderos				INTEGER NOT NULL DEFAULT 0," + 
+														"lavaderos				INTEGER NOT NULL DEFAULT -1," + 
 														"itemlavadero			VARCHAR(100) NOT NULL DEFAULT ''," +
 														"estadolavadero 		VARCHAR(100) NOT NULL DEFAULT ''," +
-														"elevados				INTEGER NOT NULL DEFAULT 0," +
+														"elevados				INTEGER NOT NULL DEFAULT -1," +
 														"itemelevado			VARCHAR(100) NOT NULL DEFAULT ''," +
 														"estadoelevado			VARCHAR(100) NOT NULL DEFAULT ''," +
-														"internas				INTEGER NOT NULL DEFAULT 0," + 
+														"internas				INTEGER NOT NULL DEFAULT -1," + 
 														"iteminternas			VARCHAR(100) NOT NULL DEFAULT ''," +
 														"estadointernas 		VARCHAR(100) NOT NULL DEFAULT ''," +
-														"piscinas				INTEGER NOT NULL DEFAULT 0," +
+														"piscinas				INTEGER NOT NULL DEFAULT -1," +
 														"itempiscina			VARCHAR(100) NOT NULL DEFAULT ''," +
 														"estadopiscina			VARCHAR(100) NOT NULL DEFAULT ''," +
 														"medidorregpaso			VARCHAR(20) NOT NULL DEFAULT ''," +
@@ -154,13 +154,13 @@ public class SQLite {
 														"cedulausuario 			VARCHAR(20) NOT NULL DEFAULT ''," +
 														"nombretestigo 			VARCHAR(100) NOT NULL DEFAULT ''," +
 														"cedulatestigo			VARCHAR(20) NOT NULL DEFAULT ''," +
-														"cisterna				INTEGER NOT NULL DEFAULT 0," +
+														"cisterna				INTEGER NOT NULL DEFAULT -1," +
 														"itemcisterna			VARCHAR(100) NOT NULL DEFAULT ''," +
 														"estadocisterna			VARCHAR(100) NOT NULL DEFAULT ''," +
-														"ducha					INTEGER NOT NULL DEFAULT 0," +
+														"ducha					INTEGER NOT NULL DEFAULT -1," +
 														"itemducha				VARCHAR(100) NOT NULL DEFAULT ''," +
 														"estadoducha			VARCHAR(100) NOT NULL DEFAULT ''," +
-														"lavamanos				INTEGER NOT NULL DEFAULT 0," +
+														"lavamanos				INTEGER NOT NULL DEFAULT -1," +
 														"itemlavamanos			VARCHAR(100) NOT NULL DEFAULT ''," +
 														"estadolavamanos		VARCHAR(100) NOT NULL DEFAULT ''," +
 														"servicioacueducto		VARCHAR(10) NOT NULL DEFAULT ''," +
@@ -183,12 +183,11 @@ public class SQLite {
 			db.execSQL("INSERT INTO db_parametros (item,valor,nivel) VALUES ('cedula_tecnico','00000000',1)");
 			db.execSQL("INSERT INTO db_parametros (item,valor,nivel) VALUES ('impresora','MZ320',1)");
 			db.execSQL("INSERT INTO db_parametros (item,valor,nivel) VALUES ('web_service','WS_EAAV_Desviaciones.php',0)");
-			db.execSQL("INSERT INTO db_parametros (item,valor,nivel) VALUES ('version','2.6',0)");
+			db.execSQL("INSERT INTO db_parametros (item,valor,nivel) VALUES ('version','2.7',0)");
 		}
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			db.execSQL("UPDATE db_parametros SET valor = '2.6' WHERE item = 'version'");
 		}
 	}
 	
@@ -365,7 +364,7 @@ public class SQLite {
 	}
 		
 	
-	//Relizar la consulta teniendo en cuenta varios JOIN a la izquierda
+	/*//Relizar la consulta teniendo en cuenta varios JOIN a la izquierda
 	public ArrayList<ContentValues> SelectNJoinLeftData(String _tabla, String _campos, String _join_left[], String _on_left[], String _condicion){
 		String Query = "";
 		ArrayList<ContentValues> _query = new ArrayList<ContentValues>();
@@ -397,7 +396,7 @@ public class SQLite {
 		}	
 		this.cerrar();		
 		return _query;		
-	}
+	}*/
 	
 
 	

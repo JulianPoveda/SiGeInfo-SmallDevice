@@ -155,5 +155,39 @@ public class ClassRevision {
 		return _retorno;
 	}
 	
+	public int getSubterraneos(String _revision){
+		return this.FcnSQL.IntSelectShieldWhere("db_desviaciones", "subterraneos", "revision='"+_revision+"'");
+	}
 	
+	public int getLavaplatos(String _revision){
+		return this.FcnSQL.IntSelectShieldWhere("db_desviaciones", "lavaplatos", "revision='"+_revision+"'");
+	}
+	
+	public int getLavaderos(String _revision){
+		return this.FcnSQL.IntSelectShieldWhere("db_desviaciones", "lavaderos", "revision='"+_revision+"'");
+	}
+	
+	public int getElevados(String _revision){
+		return this.FcnSQL.IntSelectShieldWhere("db_desviaciones", "elevados", "revision='"+_revision+"'");
+	}
+	
+	public int getInternas(String _revision){
+		return this.FcnSQL.IntSelectShieldWhere("db_desviaciones", "internas", "revision='"+_revision+"'");
+	}
+	
+	public int getPiscinas(String _revision){
+		return this.FcnSQL.IntSelectShieldWhere("db_desviaciones", "piscinas", "revision='"+_revision+"'");
+	}
+	
+	public int getCisterna(String _revision){
+		return this.FcnSQL.IntSelectShieldWhere("db_desviaciones", "cisterna", "revision='"+_revision+"'");
+	}
+	
+	public int getDucha(String _revision){
+		return this.FcnSQL.IntSelectShieldWhere("db_desviaciones", "ducha", "revision='"+_revision+"'");
+	}
+	
+	public int getLavamanos(String _revision){
+		return this.FcnSQL.IntSelectShieldWhere("db_desviaciones", "lavamanos", "revision='"+_revision+"'");
+	}
 }

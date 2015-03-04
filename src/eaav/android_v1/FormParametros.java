@@ -2,9 +2,12 @@ package eaav.android_v1;
 
 import java.util.ArrayList;
 import clases.ClassConfiguracion;
+import modal.Modal_FileExplorer;
 import Miscelanea.Bluetooth;
+import Miscelanea.Zebra_QL420plus;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -15,8 +18,11 @@ import android.widget.Toast;
 
 
 public class FormParametros extends Activity implements OnClickListener{
-	private ClassConfiguracion FcnConfiguracion;
-	private Bluetooth MB;
+	private static int 			ARCHIVO_LOCAL = 1;
+	
+	private ClassConfiguracion 	FcnConfiguracion;
+	private Bluetooth 			MB;
+	private Zebra_QL420plus		FcnZebra;
 
 	private ArrayAdapter<String> 	AdapLstImpresoras;	
 	private int 					Nivel;
@@ -34,10 +40,11 @@ public class FormParametros extends Activity implements OnClickListener{
 		Bundle bundle = getIntent().getExtras();
 		this.Nivel				= bundle.getInt("Nivel");
 		this.FolderAplicacion 	= bundle.getString("FolderAplicacion");
-		this.MB 				= new Bluetooth(this);
+		this.MB 				= Bluetooth.getInstance();
 		
 		
-		this.FcnConfiguracion = new ClassConfiguracion(this, this.FolderAplicacion);
+		this.FcnZebra 			= new Zebra_QL420plus(this,570, 10, 3, 15, 100, false);		
+		this.FcnConfiguracion 	= new ClassConfiguracion(this, this.FolderAplicacion);
 		
 		this._txtServidor 		= (EditText) findViewById(R.id.CfgTxtServidor);
 		this._txtPuerto 		= (EditText) findViewById(R.id.CfgTxtPuerto);
@@ -49,7 +56,7 @@ public class FormParametros extends Activity implements OnClickListener{
 		this._cmbImpresora 		= (Spinner) findViewById(R.id.CfgCmbImpresora);
 		this._btnGuardar 		= (Button) findViewById(R.id.CfgBtnGuardar);
 		
-		this._listaImpresoras 	= this.MB.GetDeviceBluetooth();
+		this._listaImpresoras 	= this.MB.GetDeviceBluetoothByAddress();
 		this.AdapLstImpresoras 	= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,_listaImpresoras);
 		this._cmbImpresora.setAdapter(this.AdapLstImpresoras);
 				
@@ -99,5 +106,16 @@ public class FormParametros extends Activity implements OnClickListener{
 				break;
 		}		
 	}
+	
+	
+	/*@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(resultCode == RESULT_OK && requestCode == ARCHIVO_LOCAL){
+			if(!data.getExtras().getString("archivo_seleccionado").isEmpty()){
+				this.FcnZebra.sendFile(	data.getExtras().getString("archivo_seleccionado"), 
+										this.FcnConfiguracion.getImpresora());
+			}
+		}
+    }*/
 
 }

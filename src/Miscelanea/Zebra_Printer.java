@@ -1,7 +1,10 @@
 package Miscelanea;
 
+import java.text.DecimalFormat;
+
 
 public class Zebra_Printer {
+	DecimalFormat 	FormatDosDecimas= new DecimalFormat("0.00");
 	private boolean _copiaArchivo;
 	
 	private String _infImpresora;
@@ -57,10 +60,10 @@ public class Zebra_Printer {
 	}
 		
 	public void DrawImage(String NameFile, double PosX, double PosY){
-		this._infImpresora 	+= "PCX "+(this._margenIzquierda+PosX)+" "+(this._lineaActual+PosY)+" !<"+NameFile+"\r\n";
+		this._infImpresora 	+= "PCX "+FormatDosDecimas.format(this._margenIzquierda+PosX)+" "+FormatDosDecimas.format(this._lineaActual+PosY)+" !<"+NameFile+"\r\n";
         
         if(this._copiaArchivo){
-			this._infArchivo+= "5;"+(this._margenIzquierda+PosX)+";"+(this._lineaActual+PosY)+";"+NameFile+";\r\n";			
+			this._infArchivo+= "5;"+FormatDosDecimas.format(this._margenIzquierda+PosX)+";"+FormatDosDecimas.format(this._lineaActual+PosY)+";"+NameFile+";\r\n";			
 		}
     }
 	
@@ -89,7 +92,7 @@ public class Zebra_Printer {
 	
 	        if ((WordsLine.length() + Justificacion) > Char2Line){
 	            Justificacion = (this._anchoEtiqueta - (WordsLine.length() * this._anchoFuente1)) / 2;
-	            this._infImpresora += "TEXT " + this._tipoFuente1 + " 0 " + Justificacion + " " + this._lineaActual + " " + WordsLine +"\r\n";
+	            this._infImpresora += "TEXT " + this._tipoFuente1 + " 0 " + FormatDosDecimas.format(Justificacion) + " " + FormatDosDecimas.format(this._lineaActual) + " " + WordsLine +"\r\n";
 	            if(this._copiaArchivo){
 	    			this._infArchivo += "1;"+Justificacion+";"+this._lineaActual+";"+WordsLine+";\r\n";			
 	    		}
@@ -98,9 +101,9 @@ public class Zebra_Printer {
 	        }
 	    }
 	    Justificacion = (this._anchoEtiqueta - (WordsLine.length() * this._anchoFuente1)) / 2;
-	    this._infImpresora += "TEXT " + this._tipoFuente1+ " 0 " + Justificacion + " " + this._lineaActual + " " + WordsLine + "\r\n";
+	    this._infImpresora += "TEXT " + this._tipoFuente1+ " 0 " + FormatDosDecimas.format(Justificacion) + " " + FormatDosDecimas.format(this._lineaActual) + " " + WordsLine + "\r\n";
 	    if(this._copiaArchivo){
-			this._infImpresora += "1;"+Justificacion+";"+this._lineaActual+";"+WordsLine+";\r\n";			
+			this._infImpresora += "1;"+FormatDosDecimas.format(Justificacion)+";"+FormatDosDecimas.format(this._lineaActual)+";"+WordsLine+";\r\n";			
 		}
 	    this._lineaActual += this._altoFuente1 * SaltoLineaPos;
 	}
@@ -110,22 +113,22 @@ public class Zebra_Printer {
 		if (Label.equals("TITULO")){
 	        this._tipoFuente1 	= "INSTRUCT.CPF";	//LabelFont = "INSTRUCT.CPF";
 	        this._altoFuente1	= 22;				//HeightFont = 22;
-	        this._anchoFuente1	= 14;				//WidthFont = 13;
+	        this._anchoFuente1	= 13;				//WidthFont = 13;
 	    }else if(Label.equals("SUBTITULO")){
 	    	this._tipoFuente1 	= "LIBERATI.CPF";	//LabelFont = "LIBERATI.CPF";
 	    	this._altoFuente1	= 20;				//HeightFont = 20;
-	    	this._anchoFuente1	= 11;				//WidthFont = 10;
+	    	this._anchoFuente1	= 10;				//WidthFont = 10;
 	    }else if(Label.equals("LABEL")){
 	    	this._tipoFuente1 	= "JACKINPU.CPF";	//LabelFont = "JACKINPU.CPF";
 	    	this._altoFuente1	= 18;				//HeightFont = 18;
-	    	this._anchoFuente1	= 12;				//WidthFont = 11;	
+	    	this._anchoFuente1	= 11;				//WidthFont = 11;	
 	    	this._tipoFuente2 	= "JACKINPU.CPF";	//TextFont = "JACKINPU.CPF";
 	    	this._altoFuente2	= 18;				//HeightText = 18;
-	    	this._anchoFuente2	= 12;				//WidthText = 11;
+	    	this._anchoFuente2	= 11;				//WidthText = 11;
 	    }else{
 	    	this._tipoFuente2 	= "JACKINPU.CPF";	//TextFont = "JACKINPU.CPF";
 	        this._altoFuente2	= 18;				//HeightText = 18;
-	        this._anchoFuente2	= 12;				//
+	        this._anchoFuente2	= 11;				//
 	    }
 	}
 	
@@ -133,11 +136,11 @@ public class Zebra_Printer {
 	public void WrLabel(String Etiqueta, String InfEtiqueta, int OffsetWrLabel, double SaltoLineaPre, double SaltoLineaPos){ 
 		this._lineaActual += this._altoFuente1 * SaltoLineaPre;
 	    SetValuesFont("LABEL");
-	    this._infImpresora += "TEXT " + this._tipoFuente1 + " 0 " + OffsetWrLabel + " " + this._lineaActual + " " + Etiqueta + " \r\n";
-	    this._infImpresora += "TEXT " + this._tipoFuente2 + " 0 " + (OffsetWrLabel + ((Etiqueta.length() + 1) * this._anchoFuente1)) + " " + this._lineaActual+ " " + InfEtiqueta + "\r\n";
+	    this._infImpresora += "TEXT " + this._tipoFuente1 + " 0 " + FormatDosDecimas.format(OffsetWrLabel) + " " + FormatDosDecimas.format(this._lineaActual) + " " + Etiqueta + " \r\n";
+	    this._infImpresora += "TEXT " + this._tipoFuente2 + " 0 " + FormatDosDecimas.format(OffsetWrLabel + ((Etiqueta.length() + 1) * this._anchoFuente1)) + " " + FormatDosDecimas.format(this._lineaActual)+ " " + InfEtiqueta + "\r\n";
 	    
 	    if(this._copiaArchivo){
-			this._infArchivo += "3;"+OffsetWrLabel+";"+ this._lineaActual+";"+Etiqueta+";"+InfEtiqueta+";\r\n";			
+			this._infArchivo += "3;"+FormatDosDecimas.format(OffsetWrLabel)+";"+ FormatDosDecimas.format(this._lineaActual)+";"+Etiqueta+";"+InfEtiqueta+";\r\n";			
 		}
 	    
 	    this._lineaActual += this._altoFuente1 * SaltoLineaPos;
@@ -150,16 +153,16 @@ public class Zebra_Printer {
 		this._lineaActual += this._altoFuente2* SaltoLineaPre;
 
 		while (Informacion.length() > Char2Line){
-			this._infImpresora += "TEXT " + this._tipoFuente2 + " 0 " + OffsetInformation + " " + this._lineaActual+ " " + Informacion.substring(0, (int)Char2Line) + " \r\n";
+			this._infImpresora += "TEXT " + this._tipoFuente2 + " 0 " + FormatDosDecimas.format(OffsetInformation) + " " + FormatDosDecimas.format(this._lineaActual)+ " " + Informacion.substring(0, (int)Char2Line) + " \r\n";
 			if(this._copiaArchivo){
-				this._infArchivo += "4;"+OffsetInformation+";"+this._lineaActual+";"+Informacion.substring(0, (int)Char2Line)+";\r\n";			
+				this._infArchivo += "4;"+FormatDosDecimas.format(OffsetInformation)+";"+FormatDosDecimas.format(this._lineaActual)+";"+Informacion.substring(0, (int)Char2Line)+";\r\n";			
 			}
 			Informacion = Informacion.substring((int)Char2Line);
 			this._lineaActual += this._altoFuente2;
 		}
-		this._infImpresora += "TEXT " + this._tipoFuente2+ " 0 " + OffsetInformation + " " + this._lineaActual+ " " + Informacion + " \r\n";
+		this._infImpresora += "TEXT " + this._tipoFuente2+ " 0 " + FormatDosDecimas.format(OffsetInformation) + " " + FormatDosDecimas.format(this._lineaActual)+ " " + Informacion + " \r\n";
 		if(this._copiaArchivo){
-			this._infArchivo += "4;"+OffsetInformation+";"+this._lineaActual+";"+Informacion+";\r\n";			
+			this._infArchivo += "4;"+FormatDosDecimas.format(OffsetInformation)+";"+FormatDosDecimas.format(this._lineaActual)+";"+Informacion+";\r\n";			
 		}		
 		this._lineaActual += this._altoFuente2* SaltoLineaPos;		
 	}
@@ -168,9 +171,9 @@ public class Zebra_Printer {
 	public void WrSubTitulo(String InfSubtitulo, int OffsetSub, double SaltoLineaPre, double SaltoLineaPos){
 		this._lineaActual += this._altoFuente1 * SaltoLineaPre;
 		SetValuesFont("SUBTITULO");
-		this._infImpresora += "TEXT " + this._tipoFuente1+ " 0 " + OffsetSub + " " + this._lineaActual+ " " + InfSubtitulo + " \r\n";
+		this._infImpresora += "TEXT " + this._tipoFuente1+ " 0 " + FormatDosDecimas.format(OffsetSub) + " " + FormatDosDecimas.format(this._lineaActual)+ " " + InfSubtitulo + " \r\n";
 		if(this._copiaArchivo){
-			this._infArchivo += "2;"+OffsetSub+";"+this._lineaActual+";"+InfSubtitulo+";\r\n";			
+			this._infArchivo += "2;"+FormatDosDecimas.format(OffsetSub)+";"+FormatDosDecimas.format(this._lineaActual)+";"+InfSubtitulo+";\r\n";			
 		}
 		this._lineaActual += this._altoFuente1 * SaltoLineaPos;
 	}
@@ -179,18 +182,17 @@ public class Zebra_Printer {
 	public void WrRectangle(double PosX1, double PosY1, double PosX2, double PosY2, double Incremento, int Shadow){
 		double IncLine = 0;
 	    int i;	
-	    this._infImpresora += "BOX " + PosX1 + " " + PosY1 + " " + PosX2 + " " + PosY2 + " 2 \r\n";
+	    this._infImpresora += "BOX " + FormatDosDecimas.format(PosX1) + " " + FormatDosDecimas.format(PosY1) + " " + FormatDosDecimas.format(PosX2) + " " + FormatDosDecimas.format(PosY2) + " 2 \r\n";
 	
 	    if (Shadow != 0){
 	        IncLine = (PosX2 - PosX1) / Shadow;
 	        for (i = 0; i<Shadow;i++){
-	        	this._infImpresora += "BOX " + (PosX1 + (IncLine * i)) + " " + PosY1 + " " + (PosX1 + (IncLine * i)) + " " + PosY2 + " 0 \r\n";
+	        	this._infImpresora += "BOX " + FormatDosDecimas.format(PosX1 + (IncLine * i)) + " " + FormatDosDecimas.format(PosY1) + " " + FormatDosDecimas.format(PosX1 + (IncLine * i)) + " " + FormatDosDecimas.format(PosY2) + " 0 \r\n";
 	        }	
 	        for(i = 0;i<Shadow;i++){
-	        	this._infImpresora += "BOX " + PosX1 + " " + (PosY1 + (IncLine * i)) + " " + PosX2 + " " + (PosY1 + (IncLine * i)) + " 0 \r\n";
+	        	this._infImpresora += "BOX " + FormatDosDecimas.format(PosX1) + " " + FormatDosDecimas.format(PosY1 + (IncLine * i)) + " " + FormatDosDecimas.format(PosX2) + " " + FormatDosDecimas.format(PosY1 + (IncLine * i)) + " 0 \r\n";
 	        }
-	    }
-	
+	    }	
 	    if (Incremento != 0) {
 	        this._lineaActual += PosY2 - PosY1;
 	    }
@@ -198,7 +200,7 @@ public class Zebra_Printer {
 	
 	
 	public String getDoLabel(){
-		this._infImpresora = "! " + this._margenIzquierda+ " 200 200 " + (this._lineaActual + this._lineaFinal) + " 1" + " \r\n" + "ENCODING UTF-8 \r\n LABEL " + " \r\n" + this._infImpresora+ " \r\n";
+		this._infImpresora = "! " + this._margenIzquierda+ " 200 200 " + FormatDosDecimas.format(this._lineaActual + this._lineaFinal) + " 1" + " \r\n" + "ENCODING UTF-8 \r\n LABEL " + " \r\n" + this._infImpresora+ " \r\n";
 		this._infImpresora += "PRINT \r\n";
 	    return this._infImpresora;
 	}

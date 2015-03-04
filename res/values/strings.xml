@@ -146,5 +146,7 @@
     <string name="title_activity_modal_informacion">ModalInformacion</string>
     <string name="title_activity_modal_date">SELECCIONE FECHA</string>
     <string name="title_activity_modal_confirmacion">Confirmacion</string>
+    <string name="title_activity_modal_input_double">Modal_input_double</string>
+    <string name="no_archivos"></string>
 
 </resources>
