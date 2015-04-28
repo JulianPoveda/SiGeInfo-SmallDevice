@@ -41,6 +41,8 @@ public class SQLite {
 			//Tabla con los parametros del sistema
 			db.execSQL(	"CREATE TABLE db_parametros (item TEXT PRIMARY KEY, valor TEXT NOT NULL, nivel INTEGER NOT NULL)");
 			
+			db.execSQL(	"CREATE TABLE db_parametros_valores (item TEXT NOT NULL, valor TEXT NOT NULL, proceso TEXT NOT NUll, PRIMARY KEY(item,valor))");
+			
 			//Tabla con las solicitudes de trabajo, esta tabla contiene la informacion basica para iniciar el trabajo
 			db.execSQL(	"CREATE TABLE db_solicitudes (	id_serial INTEGER UNIQUE ,  revision VARCHAR(8) NOT NULL," + 
 														"codigo VARCHAR(6) NOT NULL, nombre VARCHAR(255) NOT NULL, " +

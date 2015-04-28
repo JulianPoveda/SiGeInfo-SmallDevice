@@ -7,6 +7,7 @@ import modal.ModalInfGeneral;
 import modal.ModalInputSingle;
 import modal.ModalConfirmacion;
 
+import clases.ClassDataSpinner;
 import clases.ClassDesviacion;
 import clases.ClassRevision;
 
@@ -50,6 +51,7 @@ public class FormDesviacion extends Activity implements OnClickListener, OnItemS
 	private	Archivos			FcnArchivos;
 	private ClassDesviacion 	FcnDesviacion;
 	private ClassRevision		FcnRevision;
+	private ClassDataSpinner    FcnDataS;
 	
 	/**Variables del activity**/
 	private String Revision;
@@ -58,11 +60,16 @@ public class FormDesviacion extends Activity implements OnClickListener, OnItemS
 	boolean MenuEnabled = false;
 	
 	/*String's Adaptadores Informacion General*/
-	String[] strEstrato			= {"","1","2","3","4","5","6"};																
-	String[] strEstado 			= {"","Habitado","Deshabitado","Abandonado","Demolido","Lote","Construccion","Predio Solo"};
-	String[] strHabitado 		= {"","Propietario","Arrendatario"};
-	String[] strTipo			= {"","Apartamentos","Centro Comercial","Conjunto Residencial","Hotel y/o Residencias","Inquilinato","Oficinas","Unidad Locativa","Vivienda","Vivienda-Local Anexo","Otros"};		
-	String[] strAcueducto 		= {"","Si","No"};
+	//String[] strEstrato			= {"","1","2","3","4","5","6"};
+	private ArrayList<String> strEstrato;
+	//String[] strEstado 			= {"","Habitado","Deshabitado","Abandonado","Demolido","Lote","Construccion","Predio Solo"};
+	private ArrayList<String> strEstado;
+	//String[] strHabitado 		= {"","Propietario","Arrendatario"};
+	private ArrayList<String> strHabitado;
+	//String[] strTipo			= {"","Apartamentos","Centro Comercial","Conjunto Residencial","Hotel y/o Residencias","Inquilinato","Oficinas","Unidad Locativa","Vivienda","Vivienda-Local Anexo","Otros"};
+	private ArrayList<String> strTipo;
+	//String[] strAcueducto 		= {"","Si","No"};
+	private ArrayList<String> strAcueducto;
 	String[] strAlcantarillado 	= {"","Si","No"};
 	String[] strUso 			= {"","Oficial","Residencial","Comercial","Especial","Industrial","Provisional"};
 	
@@ -265,12 +272,23 @@ public class FormDesviacion extends Activity implements OnClickListener, OnItemS
 		_cmbItem6			= (Spinner) findViewById(R.id.VisitaCmbItem6);
 		_btnGuardarVisita	= (Button) findViewById(R.id.VisitaBtnGuardar);
 		
+		this.FcnDataS   = new ClassDataSpinner(this,this.FolderAplicacion);
+		
+		this.strEstrato = new ArrayList<String>();
+		this.strEstrato.clear();
+		this.strEstrato = this.FcnDataS.getDataSpinner("Estrato");
+		
+		this.strEstado = new ArrayList<String>();
+		this.strEstado.clear();
+		this.strEstado = this.FcnDataS.getDataSpinner("Estado");
 		
 		/*Asociacion de adaptadores y objetos Informacion General*/
 		AdaptadorEstrato 	= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,strEstrato);
+		this.AdaptadorEstrato.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		_cmbEstrato.setAdapter(AdaptadorEstrato);
 		
 		AdaptadorEstado= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,strEstado);
+		this.AdaptadorEstado.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		_cmbEstado.setAdapter(AdaptadorEstado);
 		
 		AdaptadorHabitado= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,strHabitado);

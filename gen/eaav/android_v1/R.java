@@ -26,6 +26,7 @@ public final class R {
         public static final int tabla_celda_cabecera=0x7f020002;
     }
     public static final class id {
+        public static final int CargarParametros=0x7f0900c8;
         public static final int CargarTrabajoProgramado=0x7f0900c0;
         public static final int CfgBtnGuardar=0x7f09007e;
         public static final int CfgCmbImpresora=0x7f09007d;
@@ -216,19 +217,19 @@ public final class R {
         public static final int ds_lbl_titulo=0x7f0900ad;
         public static final int ds_txt_text1=0x7f0900ae;
         public static final int imageView1=0x7f09008c;
-        public static final int menu_tomar_foto=0x7f0900cd;
+        public static final int menu_tomar_foto=0x7f0900ce;
         public static final int menu_ver_informacion=0x7f0900b3;
         public static final int menu_ver_solicitudes=0x7f0900ba;
         public static final int mnu_apertura=0x7f0900bf;
         public static final int mnu_desviacion=0x7f0900be;
-        public static final int mnu_imprimir=0x7f0900c9;
+        public static final int mnu_imprimir=0x7f0900ca;
         public static final int mnu_informacion_general=0x7f0900bc;
-        public static final int mnu_loggin=0x7f0900ce;
+        public static final int mnu_loggin=0x7f0900cf;
         public static final int mnu_notificacion=0x7f0900bd;
-        public static final int mnu_notificacion_swap_desviacion=0x7f0900cb;
-        public static final int mnu_solicitudes=0x7f0900cc;
-        public static final int mnu_terminar_notificacion=0x7f0900ca;
-        public static final int mnu_ver_informacion=0x7f0900c8;
+        public static final int mnu_notificacion_swap_desviacion=0x7f0900cc;
+        public static final int mnu_solicitudes=0x7f0900cd;
+        public static final int mnu_terminar_notificacion=0x7f0900cb;
+        public static final int mnu_ver_informacion=0x7f0900c9;
         public static final int path=0x7f090088;
         public static final int textView_direccion=0x7f090084;
         public static final int textView_orden_trabajo=0x7f090083;

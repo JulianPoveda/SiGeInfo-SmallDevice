@@ -67,11 +67,13 @@ public class FormLoggin extends Activity implements OnClickListener{
         	menu.findItem(R.id.DescargarTrabajo).setEnabled(true);
         	menu.findItem(R.id.IniciarTrabajo).setEnabled(true);
         	menu.findItem(R.id.Parametros).setEnabled(true);
+        	menu.findItem(R.id.CargarParametros).setEnabled(true);
         }else{
     		menu.findItem(R.id.CargarTrabajoProgramado).setEnabled(false);
         	menu.findItem(R.id.DescargarTrabajo).setEnabled(false);
         	menu.findItem(R.id.IniciarTrabajo).setEnabled(false);
         	menu.findItem(R.id.Parametros).setEnabled(false);
+        	menu.findItem(R.id.CargarParametros).setEnabled(false);
         }    	
         return true;  
     }
@@ -127,7 +129,11 @@ public class FormLoggin extends Activity implements OnClickListener{
 		case R.id.DescargarFotos:
 			ConnectServer CS= new ConnectServer(this, FormLoggin.CARPETA_RAIZ);
 			CS.UpLoadFotos();
-			return true;	
+			return true;
+		
+		case R.id.CargarParametros:
+			new DownLoadParametros(this, FormLoggin.CARPETA_RAIZ).execute(this.FcnConfiguracion.getEquipo());
+			return true;
 			
 		case R.id.Salir:
 			this.finish();
