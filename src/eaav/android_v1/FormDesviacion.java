@@ -70,17 +70,25 @@ public class FormDesviacion extends Activity implements OnClickListener, OnItemS
 	private ArrayList<String> strTipo;
 	//String[] strAcueducto 		= {"","Si","No"};
 	private ArrayList<String> strAcueducto;
-	String[] strAlcantarillado 	= {"","Si","No"};
-	String[] strUso 			= {"","Oficial","Residencial","Comercial","Especial","Industrial","Provisional"};
+	//String[] strAlcantarillado 	= {"","Si","No"};
+	private ArrayList<String> strAlcantarillado;
+	//String[] strUso 			= {"","Oficial","Residencial","Comercial","Especial","Industrial","Provisional"};
+	private ArrayList<String> strUso;
 	
 	/*String's Adaptadores Informacion Tecnica*/
-	String[] strClaseAcueducto 		= {"","EAAV","Pozo Profundo","Aljibe","J.A.C.","Otro"};
-	String[] strEscapeMedidor 		= {"","No Tiene","En El Medidor","Antes del Medidor","Despues del Medidor"};
-	String[] strServicioDirecto 	= {"","Si","No"};
-	String[] strBypass 				= {"","Si","No"};
-	String[] strCamaraMedidor 		= {"","Grande","Pequena","No Tiene"};
-	String[] strEstadoCamaraMedidor	= {"","Buena","Regular","Mala","No Aplica"};
-	String[] strRespuestaDesviacion	= {	"",
+	//String[] strClaseAcueducto 		= {"","EAAV","Pozo Profundo","Aljibe","J.A.C.","Otro"};
+	private ArrayList<String> strClaseAcueducto;
+	//String[] strEscapeMedidor 		= {"","No Tiene","En El Medidor","Antes del Medidor","Despues del Medidor"};
+	private ArrayList<String> strEscapeMedidor;
+	//String[] strServicioDirecto 	= {"","Si","No"};
+	private ArrayList<String> strServicioDirecto;
+	//String[] strBypass 				= {"","Si","No"};
+	private ArrayList<String> strBypass;
+	//String[] strCamaraMedidor 		= {"","Grande","Pequena","No Tiene"};
+	private ArrayList<String> strCamaraMedidor;
+	//String[] strEstadoCamaraMedidor	= {"","Buena","Regular","Mala","No Aplica"};
+	private ArrayList<String> strEstadoCamaraMedidor;
+	/*String[] strRespuestaDesviacion	= {	"",
 										"Casa sola",
 										"Error de lectura",
 										"Equipo de medida dañado o robado",
@@ -89,10 +97,14 @@ public class FormDesviacion extends Activity implements OnClickListener, OnItemS
 										"No presta colaboracion",
 										"Posible fraude encontrado",
 										"Segundo concepto",
-										"Servicio suspendido"};
-	String[] strSegundoConcepto 	= {"","Si","No"};
-	String[] strMedidor				= {"","Individual","Totalizador"};
-	String[] strDiametro			= {"","1/2","3/4","1","1-1/2","2"};
+										"Servicio suspendido"};*/
+	private ArrayList<String> strRespuestaDesviacion;
+	//String[] strSegundoConcepto 	= {"","Si","No"};
+	private ArrayList<String> strSegundoConcepto;
+	//String[] strMedidor				= {"","Individual","Totalizador"};
+	private ArrayList<String> strMedidor;
+	//String[] strDiametro			= {"","1/2","3/4","1","1-1/2","2"};
+	private ArrayList<String> strDiametro;
 	
 	/*String´s Adaptadores Informacion Visita Tecnica*/
 	ArrayList<String> strClase;//		= {"","Elementos","Estanqueidad","Instalaciones","Medidor"};
@@ -272,7 +284,8 @@ public class FormDesviacion extends Activity implements OnClickListener, OnItemS
 		_cmbItem6			= (Spinner) findViewById(R.id.VisitaCmbItem6);
 		_btnGuardarVisita	= (Button) findViewById(R.id.VisitaBtnGuardar);
 		
-		this.FcnDataS   = new ClassDataSpinner(this,this.FolderAplicacion);
+		//this.FcnDataS   = new ClassDataSpinner(this,this.FolderAplicacion);
+		this.FcnDataS = ClassDataSpinner.getInstance(this);
 		
 		this.strEstrato = new ArrayList<String>();
 		this.strEstrato.clear();
@@ -282,60 +295,135 @@ public class FormDesviacion extends Activity implements OnClickListener, OnItemS
 		this.strEstado.clear();
 		this.strEstado = this.FcnDataS.getDataSpinner("Estado");
 		
+		this.strHabitado = new ArrayList<String>();
+		this.strHabitado.clear();
+		this.strHabitado = this.FcnDataS.getDataSpinner("Habitado");
+		
+		this.strTipo = new ArrayList<String>();
+		this.strTipo.clear();
+		this.strTipo = this.FcnDataS.getDataSpinner("Tipo");
+		
+		this.strAcueducto = new ArrayList<String>();
+		this.strAcueducto.clear();
+		this.strAcueducto = this.FcnDataS.getDataSpinner("Acueducto");
+		
+		this.strAlcantarillado = new ArrayList<String>();
+		this.strAlcantarillado.clear();
+		this.strAlcantarillado = this.FcnDataS.getDataSpinner("Alcantarillado");
+		
+		this.strUso = new ArrayList<String>();
+		this.strUso.clear();
+		this.strUso = this.FcnDataS.getDataSpinner("Uso");
+		
+		this.strClaseAcueducto = new ArrayList<String>();
+		this.strClaseAcueducto.clear();
+		this.strClaseAcueducto = this.FcnDataS.getDataSpinner("ClaseAcueducto");
+		
+		this.strEscapeMedidor = new ArrayList<String>();
+		this.strEscapeMedidor.clear();
+		this.strEscapeMedidor = this.FcnDataS.getDataSpinner("EscapeMedidor");
+		
+		this.strServicioDirecto = new ArrayList<String>();
+		this.strServicioDirecto.clear();
+		this.strServicioDirecto = this.FcnDataS.getDataSpinner("ServicioDirecto");
+		
+		this.strBypass = new ArrayList<String>();
+		this.strBypass.clear();
+		this.strBypass = this.FcnDataS.getDataSpinner("Bypass");
+		
+		this.strCamaraMedidor = new ArrayList<String>();
+		this.strCamaraMedidor.clear();
+		this.strCamaraMedidor = this.FcnDataS.getDataSpinner("CamaraMedidor");
+		
+		this.strEstadoCamaraMedidor = new ArrayList<String>();
+		this.strEstadoCamaraMedidor.clear();
+		this.strEstadoCamaraMedidor = this.FcnDataS.getDataSpinner("EstadoCamaraMedidor");
+		
+		this.strRespuestaDesviacion = new ArrayList<String>();
+		this.strRespuestaDesviacion.clear();
+		this.strRespuestaDesviacion = this.FcnDataS.getDataSpinner("RespuestaDesviacion");
+		
+		this.strSegundoConcepto = new ArrayList<String>();
+		this.strSegundoConcepto.clear();
+		this.strSegundoConcepto = this.FcnDataS.getDataSpinner("SegundoConcepto");
+		
+		this.strMedidor = new ArrayList<String>();
+		this.strMedidor.clear();
+		this.strMedidor = this.FcnDataS.getDataSpinner("Medidor");
+		
+		this.strDiametro = new ArrayList<String>();
+		this.strDiametro.clear();
+		this.strDiametro = this.FcnDataS.getDataSpinner("strDiametro");
+		
 		/*Asociacion de adaptadores y objetos Informacion General*/
 		AdaptadorEstrato 	= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,strEstrato);
-		this.AdaptadorEstrato.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		AdaptadorEstrato.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		_cmbEstrato.setAdapter(AdaptadorEstrato);
 		
 		AdaptadorEstado= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,strEstado);
-		this.AdaptadorEstado.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		AdaptadorEstado.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		_cmbEstado.setAdapter(AdaptadorEstado);
 		
 		AdaptadorHabitado= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,strHabitado);
+		AdaptadorHabitado.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		_cmbHabitado.setAdapter(AdaptadorHabitado);
 		
 		AdaptadorTipo= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,strTipo);
+		AdaptadorTipo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		_cmbTipo.setAdapter(AdaptadorTipo);
 		
 		AdaptadorAcueducto= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,strAcueducto);
+		AdaptadorAcueducto.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		_cmbAcueducto.setAdapter(AdaptadorAcueducto);
 		
 		AdaptadorAlcantarillado= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,strAlcantarillado);
+		AdaptadorAlcantarillado.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		_cmbAlcantarillado.setAdapter(AdaptadorAlcantarillado);
 		
 		AdaptadorUso= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,strUso);
+		AdaptadorUso.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		_cmbUso.setAdapter(AdaptadorUso);
 		
 		
 		/*Asociacion de adaptadores y objetos Informacion Tecnica*/
 		AdaptadorClaseAcueducto= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,strClaseAcueducto);
+		AdaptadorClaseAcueducto.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		_cmbClaseAcueducto.setAdapter(AdaptadorClaseAcueducto);
 		
 		AdaptadorEscapeMedidor= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,strEscapeMedidor);
+		AdaptadorEscapeMedidor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		_cmbEscapeMedidor.setAdapter(AdaptadorEscapeMedidor);
 		
 		AdaptadorServicioDirecto= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,strServicioDirecto);
+		AdaptadorServicioDirecto.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		_cmbServicioDirecto.setAdapter(AdaptadorServicioDirecto);
 		
 		AdaptadorBypass= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,strBypass);
+		AdaptadorBypass.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		_cmbBypass.setAdapter(AdaptadorBypass);
 		
 		AdaptadorCamaraMedidor= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,strCamaraMedidor);
+		AdaptadorCamaraMedidor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		_cmbCamaraMedidor.setAdapter(AdaptadorCamaraMedidor);
 		
 		AdaptadorEstadoCamaraMedidor= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,strEstadoCamaraMedidor);
+		AdaptadorEstadoCamaraMedidor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		_cmbEstadoCamara.setAdapter(AdaptadorEstadoCamaraMedidor);
 		
 		AdaptadorRespuestaDesviacion= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,strRespuestaDesviacion);
+		AdaptadorRespuestaDesviacion.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		_cmbRespuesta.setAdapter(AdaptadorRespuestaDesviacion);
 		
 		AdaptadorSegundoConcepto= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,strSegundoConcepto);
+		AdaptadorSegundoConcepto.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		_cmbSegundoConcepto.setAdapter(AdaptadorSegundoConcepto);
 		
 		AdaptadorMedidor= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,strMedidor);
+		AdaptadorMedidor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		_cmbMedidor.setAdapter(AdaptadorMedidor);
 		
 		AdaptadorDiametro= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,strDiametro);
+		AdaptadorDiametro.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		_cmbDiametro.setAdapter(AdaptadorDiametro);
 		
 		

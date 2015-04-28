@@ -10,15 +10,26 @@ import android.content.Context;
 
 public class ClassDataSpinner {
 
-    private Context context;
+	private static Context context;
     private SQLite  FcnSQL;
-    private String DirectorioConexion;
+    //private String DirectorioConexion;
+    private static ClassDataSpinner ourInstance;
     private ArrayList<ContentValues> _tempTabla = new ArrayList<ContentValues>();
+    
+    public static ClassDataSpinner getInstance(Context _ctx){
+        if(ourInstance==null){
+            ourInstance = new ClassDataSpinner(_ctx);
+        }
+        else{
+            context = _ctx;
+        }
+        return ourInstance;
+    }
 
-    public ClassDataSpinner(Context _ctx, String Directorio){
+    public ClassDataSpinner(Context _ctx){
         this.context = _ctx;        
-        this.DirectorioConexion = Directorio;
-        this.FcnSQL         = new SQLite(this.context,this.DirectorioConexion, FormLoggin.NOMBRE_DATABASE);
+        //this.DirectorioConexion = Directorio;
+        this.FcnSQL         = new SQLite(this.context, FormLoggin.CARPETA_RAIZ, FormLoggin.NOMBRE_DATABASE);
     }
 
     public ArrayList<String> getDataSpinner(String _spinner){
