@@ -49,11 +49,11 @@ public class ConnectServer {
 		this.ConnectServerContext 		= context;
 		this.DirectorioConexionServer 	= Directorio;
 		this.FcnConfiguracion			= new ClassConfiguracion(this.ConnectServerContext, FormLoggin.CARPETA_RAIZ);
-		_servidor 	= this.FcnConfiguracion.getServidor();
-		_puerto 	= this.FcnConfiguracion.getPuerto();
-		_pagina 	= this.FcnConfiguracion.getServicio();		
-		_web_service= this.FcnConfiguracion.getWebService();
-		_pda 		= this.FcnConfiguracion.getEquipo();		
+		_servidor 		= this.FcnConfiguracion.getServidor();
+		_puerto 		= this.FcnConfiguracion.getPuerto();
+		_pagina 		= this.FcnConfiguracion.getServicio();		
+		_web_service	= this.FcnConfiguracion.getWebService();
+		_pda 			= this.FcnConfiguracion.getEquipo();		
 		this.URL 		= this._servidor+":"+this._puerto+"/"+this._pagina+"/"+this._web_service;
 		this.NAMESPACE 	= this._servidor+":"+this._puerto+"/"+this._pagina;
 	}

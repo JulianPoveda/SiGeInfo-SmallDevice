@@ -99,7 +99,8 @@ public class FormLoggin extends Activity implements OnClickListener{
 			return true;
 			
 		case R.id.CargarTrabajoProgramado:
-			this.ProgramadoCS.DownLoadTrabajoProgramado();
+			//this.ProgramadoCS.DownLoadTrabajoProgramado();
+			new DownLoadTrabajo(this, FormLoggin.CARPETA_RAIZ).execute(this.FcnConfiguracion.getEquipo());
 			return true;
 		
 		case R.id.DescargarTrabajoRealizado:

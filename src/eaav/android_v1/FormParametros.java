@@ -43,7 +43,7 @@ public class FormParametros extends Activity implements OnClickListener{
 		this.MB 				= Bluetooth.getInstance();
 		
 		
-		this.FcnZebra 			= new Zebra_QL420plus(this,570, 10, 3, 15, 100, false);		
+		this.FcnZebra 			= new Zebra_QL420plus(570, 10, 3, 15, 100, false);		
 		this.FcnConfiguracion 	= new ClassConfiguracion(this, this.FolderAplicacion);
 		
 		this._txtServidor 		= (EditText) findViewById(R.id.CfgTxtServidor);

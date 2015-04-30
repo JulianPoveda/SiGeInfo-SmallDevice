@@ -54,7 +54,7 @@ public class Impresiones {
 	            Direccion = Direccion.substring(0, 35);
 	        }
 	
-	        this.FcnZebra = new Zebra_QL420plus(this.context,570, 10, 3, 15, 100, false);	
+	        this.FcnZebra = new Zebra_QL420plus(570, 10, 3, 15, 100, false);	
 	        this.FcnZebra.clearInformacion();
 	        
 	        this.FcnZebra.DrawImage("AGUAS.PCX", 0, 5);
@@ -172,7 +172,7 @@ public class Impresiones {
 	        	Precinto = this._tempRegistro.getAsString("precinto");
 	        }
 	        
-	        this.FcnZebra = new Zebra_QL420plus(this.context, 570, 10, 3, 15, 100, false);
+	        this.FcnZebra = new Zebra_QL420plus(570, 10, 3, 15, 100, false);
 	        this.FcnZebra.clearInformacion();
 	        this.FcnZebra.DrawImage("AGUAS.PCX", 0, 5);
 	        this.FcnZebra.DrawImage("EAAV.PCX", 410, 5);

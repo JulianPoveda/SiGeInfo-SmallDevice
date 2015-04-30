@@ -1,189 +1,254 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    android:weightSum="10"
     tools:context=".FormParametros" >
 
-    <EditText
-        android:id="@+id/CfgTxtPuerto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/CfgTxtServidor"
-        android:layout_below="@+id/CfgTxtServidor"
-        android:ems="10"
-        android:inputType="number" />
+    <LinearLayout
+    	android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_weight="1"
+    	android:orientation="horizontal"
+    	android:weightSum="10">
+    	
+        <TextView
+	        android:id="@+id/CfgLblServidor"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="4"
+	        android:gravity="end|center_vertical"
+	        android:text="@string/CfgLblServidor"
+	        android:textSize="@dimen/TextLabelNormal"
+		    android:textStyle="bold"
+		   	android:textAppearance="?android:attr/textAppearanceMedium" />
+    	
+        <EditText
+	        android:id="@+id/CfgTxtServidor"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="6"
+	        android:inputType="text"
+	        android:textSize="@dimen/TextLabelNormal"
+	        android:textColor="@color/blue" />
+    </LinearLayout>
+    
+    
+    <LinearLayout
+    	android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_weight="1"
+    	android:orientation="horizontal"
+    	android:weightSum="10">
+    
+        <TextView
+	        android:id="@+id/CfgLblPuerto"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="4"
+	        android:gravity="end|center_vertical"
+	        android:text="@string/CfgLblPuerto"
+	        android:textSize="@dimen/TextLabelNormal"
+		    android:textStyle="bold"
+		   	android:textAppearance="?android:attr/textAppearanceMedium" />
+	        
+	    <EditText
+	        android:id="@+id/CfgTxtPuerto"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="6"
+	        android:textSize="@dimen/TextLabelNormal"
+	        android:textColor="@color/blue"
+	        android:inputType="number" />
+	</LinearLayout>
+	
+    <LinearLayout
+    	android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_weight="1"
+    	android:orientation="horizontal"
+    	android:weightSum="10">
+	    	
+        <TextView
+	        android:id="@+id/CfgLblServicio"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="4"
+	        android:gravity="end|center_vertical"
+	        android:text="@string/CfgLblServicio"
+	        android:textSize="@dimen/TextLabelNormal"
+		    android:textStyle="bold"
+		   	android:textAppearance="?android:attr/textAppearanceMedium" />
+        
+        <EditText
+	        android:id="@+id/CfgTxtServicio"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="6"
+	        android:textSize="@dimen/TextLabelNormal"
+	        android:textColor="@color/blue"
+	        android:inputType="text" />        
+   	</LinearLayout>
 
-    <EditText
-        android:id="@+id/CfgTxtServicio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/CfgTxtPuerto"
-        android:layout_below="@+id/CfgTxtPuerto"
-        android:ems="10"
-        android:inputType="text" />
-
-    <EditText
-        android:id="@+id/CfgTxtEquipo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/CfgTxtServicio"
-        android:layout_below="@+id/CfgTxtWebService"
-        android:ems="10"
-        android:inputType="number" />
-
-    <TextView
-        android:id="@+id/CfgLblServidor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/CfgTxtServidor"
-        android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/CfgTxtServidor"
-        android:layout_toLeftOf="@+id/CfgTxtServidor"
-        android:gravity="right|center_vertical"
-        android:text="@string/CfgLblServidor"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/CfgLblPuerto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/CfgTxtServicio"
-        android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/CfgLblServidor"
-        android:layout_below="@+id/CfgLblServidor"
-        android:gravity="right|center_vertical"
-        android:text="@string/CfgLblPuerto"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/CfgLblServicio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/CfgTxtWebService"
-        android:layout_alignLeft="@+id/CfgLblPuerto"
-        android:layout_alignRight="@+id/CfgLblPuerto"
-        android:layout_below="@+id/CfgLblPuerto"
-        android:gravity="right|center_vertical"
-        android:text="@string/CfgLblServicio"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/CfgLblWebService"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/CfgTxtEquipo"
-        android:layout_alignLeft="@+id/CfgLblServicio"
-        android:layout_alignTop="@+id/CfgTxtWebService"
-        android:layout_toLeftOf="@+id/CfgTxtWebService"
-        android:gravity="right|center_vertical"
-        android:text="@string/CfgLblWebServcice"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/CfgLblPDA"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/CfgTxtEquipo"
-        android:layout_alignLeft="@+id/CfgLblWebService"
-        android:layout_alignRight="@+id/CfgLblWebService"
-        android:layout_below="@+id/CfgLblWebService"
-        android:gravity="right|center_vertical"
-        android:text="@string/CfgLblEquipo"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/CfgLblImpresora"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/CfgCmbImpresora"
-        android:layout_alignLeft="@+id/CfgLblPDA"
-        android:layout_alignRight="@+id/CfgLblPDA"
-        android:layout_alignTop="@+id/CfgCmbImpresora"
-        android:gravity="right|center_vertical"
-        android:text="@string/CfgLblImpresora"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <EditText
-        android:id="@+id/CfgTxtWebService"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/CfgTxtServicio"
-        android:layout_below="@+id/CfgTxtServicio"
-        android:ems="10"
-        android:inputType="textPersonName" >
-
-        <requestFocus />
-    </EditText>
-
-    <Button
-        android:id="@+id/CfgBtnGuardar"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/CfgCmbImpresora"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="34dp"
-        android:text="@string/CfgBtnGuardar" />
-
-    <EditText
-        android:id="@+id/CfgTxtServidor"
-        android:layout_width="170dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:ems="10"
-        android:inputType="text" />
-
-    <EditText
-        android:id="@+id/CfgTxtNombreTecnico"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/CfgTxtEquipo"
-        android:layout_alignRight="@+id/CfgTxtEquipo"
-        android:layout_below="@+id/CfgTxtEquipo"
-        android:inputType="text" />
-
-    <EditText
-        android:id="@+id/CfgTxtCedulaTecnico"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/CfgTxtNombreTecnico"
-        android:layout_alignRight="@+id/CfgTxtNombreTecnico"
-        android:layout_below="@+id/CfgTxtNombreTecnico"
-        android:inputType="number" />
-
-    <TextView
-        android:id="@+id/CfgLblNombreTecnico"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/CfgTxtCedulaTecnico"
-        android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/CfgLblPDA"
-        android:layout_alignTop="@+id/CfgTxtNombreTecnico"
-        android:gravity="right|center_vertical"
-        android:text="@string/CfgLblNombreTecnico"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/CfgLblCedulaTecnico"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/CfgTxtCedulaTecnico"
-        android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/CfgLblNombreTecnico"
-        android:layout_below="@+id/CfgLblNombreTecnico"
-        android:gravity="right|center_vertical"
-        android:text="@string/CfgLblCedulaTecnico"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <Spinner
-        android:id="@+id/CfgCmbImpresora"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_alignLeft="@+id/CfgTxtCedulaTecnico"
-        android:layout_below="@+id/CfgTxtCedulaTecnico" />
-
-</RelativeLayout>
+    
+    <LinearLayout
+    	android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_weight="1"
+    	android:orientation="horizontal"
+    	android:weightSum="10">
+        
+        <TextView
+	        android:id="@+id/CfgLblWebService"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="4"
+	        android:gravity="end|center_vertical"
+	        android:text="@string/CfgLblWebServcice"
+	        android:textSize="@dimen/TextLabelNormal"
+		    android:textStyle="bold"
+		   	android:textAppearance="?android:attr/textAppearanceMedium" />
+        
+        <EditText
+	        android:id="@+id/CfgTxtWebService"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="6"
+	        android:textSize="@dimen/TextLabelNormal"
+	        android:textColor="@color/blue"
+	        android:inputType="textPersonName" />        
+    </LinearLayout>    
+    
+    
+    <LinearLayout
+    	android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_weight="1"
+    	android:orientation="horizontal"
+    	android:weightSum="10">
+        
+        <TextView
+	        android:id="@+id/CfgLblPDA"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="4"
+	        android:gravity="end|center_vertical"
+	        android:text="@string/CfgLblEquipo"
+	        android:textSize="@dimen/TextLabelNormal"
+		    android:textStyle="bold"
+		   	android:textAppearance="?android:attr/textAppearanceMedium" />
+        
+        <EditText
+	        android:id="@+id/CfgTxtEquipo"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="6"
+	        android:textSize="@dimen/TextLabelNormal"
+	        android:textColor="@color/blue"
+	        android:inputType="number" />
+    </LinearLayout>    
+    
+    
+    <LinearLayout
+    	android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_weight="1"
+    	android:orientation="horizontal"
+    	android:weightSum="10">
+        
+        <TextView
+	        android:id="@+id/CfgLblNombreTecnico"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="4"
+	        android:gravity="end|center_vertical"
+	        android:text="@string/CfgLblNombreTecnico"
+	        android:textSize="@dimen/TextLabelNormal"
+		    android:textStyle="bold"
+		   	android:textAppearance="?android:attr/textAppearanceMedium" />
+	        
+        <EditText
+	        android:id="@+id/CfgTxtNombreTecnico"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="6"
+	        android:textSize="@dimen/TextLabelNormal"
+	        android:textColor="@color/blue"
+	        android:inputType="text" />
+        
+    </LinearLayout>    
+    
+    
+    <LinearLayout
+    	android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_weight="1"
+    	android:orientation="horizontal"
+    	android:weightSum="10">
+        
+        <TextView
+	        android:id="@+id/CfgLblCedulaTecnico"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="4"
+	        android:gravity="end|center_vertical"
+	        android:text="@string/CfgLblCedulaTecnico"
+	        android:textSize="@dimen/TextLabelNormal"
+		    android:textStyle="bold"
+		   	android:textAppearance="?android:attr/textAppearanceMedium" />
+        
+        <EditText
+	        android:id="@+id/CfgTxtCedulaTecnico"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="6"
+	        android:textSize="@dimen/TextLabelNormal"
+	        android:textColor="@color/blue"
+	        android:inputType="number" />
+    </LinearLayout>    
+    
+    <LinearLayout
+    	android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_weight="1"
+    	android:orientation="horizontal"
+    	android:weightSum="10">
+        
+        <TextView
+	        android:id="@+id/CfgLblImpresora"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="4"
+	        android:gravity="end|center_vertical"
+	        android:text="@string/CfgLblImpresora"
+	        android:textSize="@dimen/TextLabelNormal"
+		    android:textStyle="bold"
+		   	android:textAppearance="?android:attr/textAppearanceMedium" />
+	
+	    <Spinner
+	        android:id="@+id/CfgCmbImpresora"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="6" />        
+    </LinearLayout>    
+    
+    <LinearLayout
+    	android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_weight="1"
+    	android:orientation="horizontal"
+    	android:gravity="center_vertical|center_horizontal"
+    	android:weightSum="10">
+    
+        <Button
+	        android:id="@+id/CfgBtnGuardar"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="6"
+	        android:text="@string/CfgBtnGuardar"
+	        android:textSize="@dimen/TextLabelNormal"
+	        android:textColor="@color/blue"
+	        android:textStyle="bold" />	
+    </LinearLayout>    
+</LinearLayout>

@@ -1,80 +1,118 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    android:weightSum="9"
     tools:context=".FormLoggin" >
 
     <TextView
-        android:id="@+id/LogginLblUsuario"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/LogginTxtUsuario"
-        android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/LogginTxtUsuario"
-        android:layout_toLeftOf="@+id/LogginTxtUsuario"
-        android:gravity="right|center_vertical"
-        android:text="@string/LogginLblUsuario"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/LogginLblContrasena"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/LogginTxtClave"
-        android:layout_alignTop="@+id/LogginTxtClave"
-        android:layout_toLeftOf="@+id/LogginTxtClave"
-        android:gravity="right|center_vertical"
-        android:text="@string/LogginLblContrasena"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <EditText
-        android:id="@+id/LogginTxtUsuario"
-        android:layout_width="170dp"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/LogginTxtClave"
-        android:layout_alignRight="@+id/LogginLblVersion"
-        android:ems="10"
-        android:inputType="text" />
-
-    <TextView
-        android:id="@+id/LogginLblVersion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
+    	android:id="@+id/LogginLblVersion"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical|end"
         android:text="@string/LogginLblVersion"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <TextView
-        android:id="@+id/LogginLblEquipo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/LogginLblVersion"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="35dp"
-        android:text="@string/LogginLblEquipo"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <Button
-        android:id="@+id/LogginBtnIngresar"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="141dp"
-        android:text="@string/LogginBtnIngresar" />
-
-    <EditText
-        android:id="@+id/LogginTxtClave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/LogginTxtUsuario"
-        android:layout_centerVertical="true"
-        android:ems="10"
-        android:inputType="textPassword" />
-
-</RelativeLayout>
+        android:textSize="@dimen/TextLabelSmall"
+        android:textAppearance="?android:attr/textAppearanceSmall" />	 
+    
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9"
+        android:weightSum="9"
+        android:orientation="vertical"
+        android:gravity="center_vertical|center_horizontal">
+    
+        
+	  	<TextView
+			android:id="@+id/LogginLblEquipo"
+		    android:layout_width="match_parent"
+		    android:layout_height="0dp"
+		    android:layout_weight="1"
+		    android:gravity="center_vertical|center_horizontal"
+		    android:text="@string/LogginLblEquipo"
+		    android:textSize="@dimen/TextLabelNormal"
+		    android:textStyle="bold"
+		    android:textAppearance="?android:attr/textAppearanceMedium" />        	    
+	        
+	   	
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="0dp"
+	        android:layout_weight="1"
+	        android:weightSum="10">
+	    	
+	    	<TextView
+		        android:id="@+id/LogginLblUsuario"
+		        android:layout_width="0dp"
+		        android:layout_height="match_parent"
+		        android:layout_weight="4"
+		        android:gravity="end|center_vertical"
+		        android:text="@string/LogginLblUsuario"
+		        android:textSize="@dimen/TextLabelNormal"
+		    	android:textStyle="bold"
+		    	android:textAppearance="?android:attr/textAppearanceMedium" />
+	
+		    <EditText
+		        android:id="@+id/LogginTxtUsuario"
+		        android:layout_width="0dp"
+		        android:layout_height="match_parent"
+		        android:layout_weight="4"
+		        android:inputType="text"
+		        android:textSize="@dimen/TextLabelNormal"
+		        android:gravity="center_vertical|center_horizontal"
+		    	android:textColor="@color/blue"
+		    	android:textStyle="bold" />
+		        
+	    </LinearLayout>
+	    
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="0dp"
+	        android:layout_weight="1"
+	        android:weightSum="10">
+		    
+		    <TextView
+		        android:id="@+id/LogginLblContrasena"
+		        android:layout_width="0dp"
+		        android:layout_height="match_parent"
+		        android:layout_weight="4"
+		        android:gravity="end|center_vertical"
+		        android:text="@string/LogginLblContrasena"
+		        android:textSize="@dimen/TextLabelNormal"
+		    	android:textStyle="bold"
+		    	android:textAppearance="?android:attr/textAppearanceMedium" />
+		
+			<EditText
+		        android:id="@+id/LogginTxtClave"
+		        android:layout_width="0dp"
+		        android:layout_height="match_parent"
+		        android:layout_weight="4"
+		        android:inputType="textPassword"
+		        android:textSize="@dimen/TextLabelNormal"
+		        android:gravity="center_vertical|center_horizontal"
+		    	android:textColor="@color/blue"
+		    	android:textStyle="bold" />
+		</LinearLayout>
+	
+	    
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="0dp"
+	        android:layout_weight="1"
+	        android:weightSum="10"
+	        android:gravity="center_vertical|center_horizontal">
+			
+	        <Button
+		        android:id="@+id/LogginBtnIngresar"
+		        android:layout_width="0dp"
+		        android:layout_height="match_parent"
+		        android:layout_weight="6"
+		        android:text="@string/LogginBtnIngresar"
+		        android:textSize="@dimen/TextLabelNormal"
+		    	android:textStyle="bold" />
+	    </LinearLayout>	
+	</LinearLayout>
+</LinearLayout>

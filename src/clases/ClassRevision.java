@@ -41,7 +41,7 @@ public class ClassRevision {
 		
 		ListIterator<String> iCiclo = _revisiones.listIterator();
 		while(iCiclo.hasNext()){
-			Registro = iCiclo.next().split("\\;",22);
+			Registro = iCiclo.next().split("\\|",22);
 			this._tempRegistro.clear();
 			for(int i=0;i<Campos.length;i++){
 				this._tempRegistro.put(Campos[i],Registro[i]);

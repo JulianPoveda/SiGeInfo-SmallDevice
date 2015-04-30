@@ -1,6 +1,7 @@
 package eaav.android_v1;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -15,16 +16,23 @@ import org.kobjects.base64.Base64;
 import android.widget.Toast;
 import clases.ClassConfiguracion;
 import clases.ClassFlujoInformacion;
+import clases.ClassRevision;
 import Miscelanea.Archivos;
+import Miscelanea.Dialogos;
 
-public class DownLoadParametros extends AsyncTask<String, Integer, Integer>{ //doInBakGround, Progress, onPostExecute
+public class DownLoadTrabajo extends AsyncTask<String, Integer, Integer>{ //doInBakGround, Progress, onPostExecute
 
     private Archivos 			    FcnArch;    
     private ClassFlujoInformacion   FcnInformacion;
     private ClassConfiguracion      FcnConfiguracion;
+    private ClassRevision 			FcnRevision;
+    private Dialogos 				MensajeDialog;
     
 	private Context ConnectServerContext;
 	private String 	DirectorioConexionServer;
+	
+	private ArrayList<String> OrdenesTrabajo = new ArrayList<String>();
+    
 
 	//nusoap
 	public String 		URL;			
@@ -35,18 +43,21 @@ public class DownLoadParametros extends AsyncTask<String, Integer, Integer>{ //d
 	private String 		_web_service;
 	private String 		_pda;
 
-    private static final String METHOD_NAME	= "DownLoadParametros";
-    private static final String SOAP_ACTION	= "DownLoadParametros";
+    private static final String METHOD_NAME	= "DownLoadRevisiones";
+    private static final String SOAP_ACTION	= "DownLoadRevisiones";
     SoapPrimitive 	response = null;
     ProgressDialog 	_pDialog;
 
 
     //Contructor de la clase
-    public DownLoadParametros(Context context, String Directorio){
+    public DownLoadTrabajo(Context context, String Directorio){
     	this.ConnectServerContext 		= context;
 		this.DirectorioConexionServer 	= Directorio;
 		this.FcnConfiguracion			= new ClassConfiguracion(this.ConnectServerContext, FormLoggin.CARPETA_RAIZ);
 		this.FcnInformacion				= new ClassFlujoInformacion(this.ConnectServerContext,this.DirectorioConexionServer);
+		this.FcnRevision				= new ClassRevision(this.ConnectServerContext, this.DirectorioConexionServer);
+		this.MensajeDialog 				= new Dialogos(this.ConnectServerContext);
+		
 		_servidor 	= this.FcnConfiguracion.getServidor();
 		_puerto 	= this.FcnConfiguracion.getPuerto();
 		//_pagina 	= this.FcnConfiguracion.getServicio();
@@ -96,12 +107,15 @@ public class DownLoadParametros extends AsyncTask<String, Integer, Integer>{ //d
                 _retorno = -2;
             }else{
                 try {
-                    this.FcnInformacion.EliminarParametros();
+                    //this.FcnInformacion.EliminarParametros();
                     String informacion[] = new String(Base64.decode(response.toString()), "ISO-8859-1").split("\\n");
+                    this.OrdenesTrabajo.clear();
                     for(int i=0;i<informacion.length;i++){
-                        this.FcnInformacion.CargarParametros(informacion[i],"\\|");
-                        onProgressUpdate(i*100/informacion.length);
+                        //this.FcnInformacion.CargarParametros(informacion[i],"\\|");
+                    	this.OrdenesTrabajo.add(informacion[i]);
+                    	onProgressUpdate(i*100/informacion.length);
                     }
+                    //this.FcnRevision.registrarRevisiones(OrdenesTrabajo);
                     _retorno = 1;
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -121,13 +135,13 @@ public class DownLoadParametros extends AsyncTask<String, Integer, Integer>{ //d
     @Override
     protected void onPostExecute(Integer rta) {
         if(rta==1){
-            Toast.makeText(this.ConnectServerContext,"Carga de parametros finalizada.", Toast.LENGTH_LONG).show();
+            MensajeDialog.DialogoInformativo("ESTADO DE LA RECEPCION","Revisiones Recepcionadas \n"+this.FcnRevision.registrarRevisiones(this.OrdenesTrabajo)+" \n");
         }else if(rta==-1){
-            Toast.makeText(this.ConnectServerContext,"Intento fallido, el servidor no ha respondido.", Toast.LENGTH_SHORT).show();
+        	MensajeDialog.DialogoInformativo("ERROR","Intento fallido, el servidor no ha respondido.");
         }else if(rta==-2){
-            Toast.makeText(this.ConnectServerContext,"No hay nuevas ordenes pendientes para cargar.", Toast.LENGTH_SHORT).show();
+        	MensajeDialog.DialogoInformativo("ERROR","No hay nuevas ordenes pendientes para cargar.");
         }else{
-            Toast.makeText(this.ConnectServerContext,"Error desconocido.", Toast.LENGTH_SHORT).show();
+        	MensajeDialog.DialogoInformativo("ERROR","Error desconocido.");
         }
         _pDialog.dismiss();
     }
@@ -139,5 +153,6 @@ public class DownLoadParametros extends AsyncTask<String, Integer, Integer>{ //d
         _pDialog.setProgress(progreso);
     }
 }
+
 
 
