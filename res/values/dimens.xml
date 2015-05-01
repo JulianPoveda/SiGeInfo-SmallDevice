@@ -5,8 +5,9 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <string name="BtnIngresar">Ingresar</string>
     
-    <dimen name="TextLabelNormal">20dp</dimen>
-    <dimen name="TextLabelMedium">15dp</dimen>
-    <dimen name="TextLabelSmall">10dp</dimen>
+    <dimen name="TextLabelBig">18dp</dimen>
+    <dimen name="TextLabelNormal">15dp</dimen>
+    <dimen name="TextLabelMedium">12dp</dimen>
+    <dimen name="TextLabelSmall">9dp</dimen>
     
 </resources>

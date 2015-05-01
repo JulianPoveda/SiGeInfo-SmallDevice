@@ -60,54 +60,28 @@ public class FormDesviacion extends Activity implements OnClickListener, OnItemS
 	boolean MenuEnabled = false;
 	
 	/*String's Adaptadores Informacion General*/
-	//String[] strEstrato			= {"","1","2","3","4","5","6"};
 	private ArrayList<String> strEstrato;
-	//String[] strEstado 			= {"","Habitado","Deshabitado","Abandonado","Demolido","Lote","Construccion","Predio Solo"};
 	private ArrayList<String> strEstado;
-	//String[] strHabitado 		= {"","Propietario","Arrendatario"};
 	private ArrayList<String> strHabitado;
-	//String[] strTipo			= {"","Apartamentos","Centro Comercial","Conjunto Residencial","Hotel y/o Residencias","Inquilinato","Oficinas","Unidad Locativa","Vivienda","Vivienda-Local Anexo","Otros"};
 	private ArrayList<String> strTipo;
-	//String[] strAcueducto 		= {"","Si","No"};
 	private ArrayList<String> strAcueducto;
-	//String[] strAlcantarillado 	= {"","Si","No"};
 	private ArrayList<String> strAlcantarillado;
-	//String[] strUso 			= {"","Oficial","Residencial","Comercial","Especial","Industrial","Provisional"};
 	private ArrayList<String> strUso;
 	
 	/*String's Adaptadores Informacion Tecnica*/
-	//String[] strClaseAcueducto 		= {"","EAAV","Pozo Profundo","Aljibe","J.A.C.","Otro"};
 	private ArrayList<String> strClaseAcueducto;
-	//String[] strEscapeMedidor 		= {"","No Tiene","En El Medidor","Antes del Medidor","Despues del Medidor"};
 	private ArrayList<String> strEscapeMedidor;
-	//String[] strServicioDirecto 	= {"","Si","No"};
 	private ArrayList<String> strServicioDirecto;
-	//String[] strBypass 				= {"","Si","No"};
 	private ArrayList<String> strBypass;
-	//String[] strCamaraMedidor 		= {"","Grande","Pequena","No Tiene"};
 	private ArrayList<String> strCamaraMedidor;
-	//String[] strEstadoCamaraMedidor	= {"","Buena","Regular","Mala","No Aplica"};
 	private ArrayList<String> strEstadoCamaraMedidor;
-	/*String[] strRespuestaDesviacion	= {	"",
-										"Casa sola",
-										"Error de lectura",
-										"Equipo de medida dañado o robado",
-										"Fuga o daño interno",
-										"Normal por consumo",
-										"No presta colaboracion",
-										"Posible fraude encontrado",
-										"Segundo concepto",
-										"Servicio suspendido"};*/
 	private ArrayList<String> strRespuestaDesviacion;
-	//String[] strSegundoConcepto 	= {"","Si","No"};
 	private ArrayList<String> strSegundoConcepto;
-	//String[] strMedidor				= {"","Individual","Totalizador"};
 	private ArrayList<String> strMedidor;
-	//String[] strDiametro			= {"","1/2","3/4","1","1-1/2","2"};
 	private ArrayList<String> strDiametro;
 	
 	/*String´s Adaptadores Informacion Visita Tecnica*/
-	ArrayList<String> strClase;//		= {"","Elementos","Estanqueidad","Instalaciones","Medidor"};
+	ArrayList<String> strClase;
 	ArrayList<String> strSubClase;
 	ArrayList<String> strItem1;
 	ArrayList<String> strItem2;
@@ -175,6 +149,8 @@ public class FormDesviacion extends Activity implements OnClickListener, OnItemS
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_desviacion); 
+		
+		this.IniciarCamara	= new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 		
 		//Captura de la solicitud seleccionada
 		Bundle bundle = getIntent().getExtras();
@@ -527,20 +503,33 @@ public class FormDesviacion extends Activity implements OnClickListener, OnItemS
 				return true;
 	
 			case R.id.DesviacionTomarFoto:
-				if(!this.FcnArchivos.ExistFolderOrFile(this.Revision, true)){
+				this.getFoto();
+				/*if(!this.FcnArchivos.ExistFolderOrFile(this.Revision, true)){
 					this.FcnArchivos.MakeDirectory(this.Revision, true);
 				}
 				File imagesFolder = new File(FormLoggin.CARPETA_RAIZ, this.Revision);
 				File image = new File(imagesFolder, this.Revision +"_"+this.FcnArchivos.numArchivosInFolder(this.Revision, true)+".jpeg"); 
 				Uri uriSavedImage = Uri.fromFile(image);
 				this.IniciarCamara.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
-				startActivityForResult(IniciarCamara, INICIAR_CAMARA);
+				startActivityForResult(IniciarCamara, INICIAR_CAMARA);*/
 				return true;	
 				
 			default:
 				return super.onOptionsItemSelected(item);
 			}
 		}
+		
+		private void getFoto(){
+	        File imagesFolder   = new File(FormLoggin.CARPETA_RAIZ, FormLoggin.CARPETA_FOTOS);
+	        File image          = new File( imagesFolder,
+	                                        this.Revision+"_"+this.FcnArchivos.numArchivosInFolderBeginByName(FormLoggin.CARPETA_FOTOS, this.Revision, true)+".jpeg");
+
+	        //this.fotoParcial = image.toString();
+	        Uri uriSavedImage = Uri.fromFile(image);
+	        this.IniciarCamara.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
+	        startActivityForResult(IniciarCamara, INICIAR_CAMARA);
+	    }
+		
 		
 		private boolean ValidarImpresionDesviacion(){
 			boolean ValorRetorno = false;
@@ -1132,4 +1121,6 @@ public class FormDesviacion extends Activity implements OnClickListener, OnItemS
 				startActivity(FormSolicitudes);
 			}
 	    }
+		
+		
 }

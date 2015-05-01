@@ -40,7 +40,7 @@
                     android:layout_height="match_parent"
                     android:baselineAligned="false"
                     android:orientation="vertical"
-                    android:weightSum="14" >
+                    android:weightSum="12" >
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -56,6 +56,8 @@
                             android:layout_weight="3"
                             android:gravity="end|center_vertical"
                             android:text="@string/TecnicaLblAcueducto"
+                            android:textSize="@dimen/TextLabelNormal"
+                            android:textStyle="bold"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
                         
                         <Spinner
@@ -71,6 +73,8 @@
                             android:layout_weight="3"
                             android:gravity="end|center_vertical"
                             android:text="@string/TecnicaLblOtro"
+                            android:textSize="@dimen/TextLabelNormal"
+                            android:textStyle="bold"
                             android:textAppearance="?android:attr/textAppearanceMedium" />
                     </LinearLayout>
 
@@ -88,6 +92,8 @@
                             android:layout_weight="3"
                             android:gravity="end|center_vertical"
                             android:text="@string/TecnicaLblEscape"
+                            android:textSize="@dimen/TextLabelNormal"
+                            android:textStyle="bold"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
                         
                         <Spinner
@@ -111,6 +117,8 @@
                             android:layout_weight="3"
                             android:gravity="end|center_vertical"
                             android:text="@string/TecnicaLblServicioDirecto"
+                            android:textSize="@dimen/TextLabelNormal"
+                            android:textStyle="bold"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
                         
                         <Spinner
@@ -126,6 +134,8 @@
                             android:layout_weight="3"
                             android:gravity="end|center_vertical"
                             android:text="@string/TecnicaLblBypass"
+                            android:textSize="@dimen/TextLabelNormal"
+                            android:textStyle="bold"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <Spinner
@@ -150,6 +160,8 @@
                             android:layout_weight="4"
                             android:gravity="end|center_vertical"
                             android:text="@string/TecnicaLblCamaraMedidor"
+                            android:textSize="@dimen/TextLabelNormal"
+                            android:textStyle="bold"
                             android:textAppearance="?android:attr/textAppearanceSmall" />    
                   	    
                   	    <Spinner
@@ -173,6 +185,8 @@
                             android:layout_weight="2"
                             android:gravity="end|center_vertical"
                             android:text="@string/TecnicaLblEstadoCamara"
+                            android:textSize="@dimen/TextLabelNormal"
+                            android:textStyle="bold"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
                         
                         <Spinner
@@ -187,6 +201,8 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="4"
+                            android:textSize="@dimen/TextLabelNormal"
+                            android:textStyle="bold"
                             android:text="@string/TecnicaBtnGuardar" />
                   	</LinearLayout>    
                         
@@ -205,6 +221,8 @@
                             android:layout_weight="3"
                             android:gravity="end|center_vertical"
                             android:text="@string/TecnicaLblRespuesta"
+                            android:textSize="@dimen/TextLabelNormal"
+                            android:textStyle="bold"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <Spinner
@@ -228,6 +246,8 @@
                             android:layout_height="match_parent"
                             android:layout_weight="3"
                             android:text="@string/TecnicaLblSegundoConcepto"
+                            android:textSize="@dimen/TextLabelNormal"
+                            android:textStyle="bold"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
                         
                         <Spinner
@@ -242,6 +262,8 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="4"
+                            android:textSize="@dimen/TextLabelNormal"
+                            android:textStyle="bold"
                             android:text="@string/TecnicaBtnObservacion" />
                   	</LinearLayout>                        
                     
@@ -250,7 +272,7 @@
                    		android:id="@+id/TecnicaTxtObservacion"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="3"
+                        android:layout_weight="2"
                         android:gravity="top|start"
                         android:inputType="textMultiLine" />
                                         
@@ -269,6 +291,8 @@
                             android:layout_weight="2.5"
                             android:gravity="end|center_vertical"
                             android:text="@string/TecnicaLblDatosMedidor"
+                            android:textSize="@dimen/TextLabelBig"
+                            android:textStyle="bold"
                             android:textAppearance="?android:attr/textAppearanceMedium" />
 
                         <Spinner
@@ -283,6 +307,8 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="4"
+                            android:textSize="@dimen/TextLabelNormal"
+                            android:textStyle="bold"
                             android:text="@string/TecnicaBtnGuardarDatosMedidor" />
 					</LinearLayout>
                         
@@ -301,6 +327,8 @@
                             android:layout_weight="2"
                             android:gravity="end|center_vertical"
                             android:text="@string/TecnicaLblNumero"
+                            android:textSize="@dimen/TextLabelNormal"
+                            android:textStyle="bold"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <EditText
@@ -317,6 +345,8 @@
                             android:layout_weight="2"
                             android:gravity="end|center_vertical"
                             android:text="@string/TecnicaLblMarca"
+                            android:textSize="@dimen/TextLabelNormal"
+                            android:textStyle="bold"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <EditText
@@ -341,6 +371,8 @@
                             android:layout_weight="2"
                             android:gravity="end|center_vertical"
                             android:text="@string/TecnicaLblLectura"
+                            android:textSize="@dimen/TextLabelNormal"
+                            android:textStyle="bold"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <EditText
@@ -849,7 +881,7 @@
                             android:id="@+id/VisitaTxtCantidad"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="4"
+                            android:layout_weight="3"
                             android:gravity="center_vertical|center_horizontal"
                             android:inputType="number"
                             android:textStyle="bold" >
@@ -862,8 +894,10 @@
                             style="?android:attr/buttonStyleSmall"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="3"
-                            android:text="@string/VisitaBtnGuardar" />
+                            android:layout_weight="4"
+                            android:text="@string/VisitaBtnGuardar"
+                            android:textSize="@dimen/TextLabelNormal"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
                     <LinearLayout

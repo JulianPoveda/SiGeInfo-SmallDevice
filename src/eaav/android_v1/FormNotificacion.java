@@ -196,20 +196,33 @@ public class FormNotificacion extends Activity implements OnItemSelectedListener
 			return true;	
 		
 		case R.id.menu_tomar_foto:
-			if(!this.FcnArchivos.ExistFolderOrFile(this.Revision, true)){
+			this.getFoto();
+			/*if(!this.FcnArchivos.ExistFolderOrFile(this.Revision, true)){
 				this.FcnArchivos.MakeDirectory(this.Revision, true);
 			}
 			File imagesFolder = new File(FormLoggin.CARPETA_RAIZ, this.Revision);
 			File image = new File(imagesFolder, this.Revision +"_"+this.FcnArchivos.numArchivosInFolder(this.Revision, true)+".jpeg"); 
 			Uri uriSavedImage = Uri.fromFile(image);
 			this.IniciarCamara.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
-			startActivityForResult(IniciarCamara, INICIAR_CAMARA);
+			startActivityForResult(IniciarCamara, INICIAR_CAMARA);*/
 			return true;
 			
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
+	
+	
+	private void getFoto(){
+        File imagesFolder   = new File(FormLoggin.CARPETA_RAIZ, FormLoggin.CARPETA_FOTOS);
+        File image          = new File( imagesFolder,
+                                        this.Revision+"_"+this.FcnArchivos.numArchivosInFolderBeginByName(FormLoggin.CARPETA_FOTOS, this.Revision, true)+".jpeg");
+
+        //this.fotoParcial = image.toString();
+        Uri uriSavedImage = Uri.fromFile(image);
+        this.IniciarCamara.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
+        startActivityForResult(IniciarCamara, INICIAR_CAMARA);
+    }
 	
 	
 	@Override

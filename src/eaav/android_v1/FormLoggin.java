@@ -22,6 +22,7 @@ import android.widget.Toast;
 public class FormLoggin extends Activity implements OnClickListener{
 	public static String 	NOMBRE_DATABASE	= "BD_EAAV";
 	public static String 	CARPETA_RAIZ 	= Environment.getExternalStorageDirectory()+File.separator+"EAAV";		//Ruta donde se encuentra la carpeta principal del programa
+	public static String 	CARPETA_FOTOS	= "Fotos";
 	
 	private ConnectServer 		ProgramadoCS;
 	private ClassRevision		FcnRevision;
@@ -67,13 +68,13 @@ public class FormLoggin extends Activity implements OnClickListener{
         	menu.findItem(R.id.DescargarTrabajo).setEnabled(true);
         	menu.findItem(R.id.IniciarTrabajo).setEnabled(true);
         	menu.findItem(R.id.Parametros).setEnabled(true);
-        	menu.findItem(R.id.CargarParametros).setEnabled(true);
+        	menu.findItem(R.id.CargarParametros).setEnabled(true);        	
         }else{
     		menu.findItem(R.id.CargarTrabajoProgramado).setEnabled(false);
         	menu.findItem(R.id.DescargarTrabajo).setEnabled(false);
         	menu.findItem(R.id.IniciarTrabajo).setEnabled(false);
         	menu.findItem(R.id.Parametros).setEnabled(false);
-        	menu.findItem(R.id.CargarParametros).setEnabled(false);
+        	menu.findItem(R.id.CargarParametros).setEnabled(false);        	
         }    	
         return true;  
     }
@@ -128,14 +129,13 @@ public class FormLoggin extends Activity implements OnClickListener{
 			return true;
 			
 		case R.id.DescargarFotos:
-			ConnectServer CS= new ConnectServer(this, FormLoggin.CARPETA_RAIZ);
-			CS.UpLoadFotos();
+			new UpLoadFoto(this).execute(this._txtUsuario.getText().toString());
 			return true;
 		
 		case R.id.CargarParametros:
 			new DownLoadParametros(this, FormLoggin.CARPETA_RAIZ).execute(this.FcnConfiguracion.getEquipo());
 			return true;
-			
+						
 		case R.id.Salir:
 			this.finish();
 			return true;
